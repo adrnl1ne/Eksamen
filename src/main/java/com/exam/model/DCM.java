@@ -16,9 +16,9 @@ public class DCM {
     private static Connection conn = createConnection();
 
     private static Connection createConnection() {
-        hostname = "jdbc:mysql://nocluewhatsoever.mysql.database.azure.com/bilabnmt";
-        username = "HaDoCK";
-        password = "Nikolaj#14";
+        hostname = System.getenv("hostname");
+        username = System.getenv("username");
+        password = System.getenv("password");
         try {
             conn = DriverManager.getConnection(hostname, username, password);
         } catch (SQLException e) {
