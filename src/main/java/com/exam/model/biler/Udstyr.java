@@ -3,8 +3,12 @@ package com.exam.model.biler;
 import javax.sound.midi.VoiceStatus;
 
 public enum Udstyr {
-    BAKKAMERA,
-    VSTIK,
+    BAKKAMERA(1),
+    VSTIK (2);
 
-    // Der kommer meget mere udstyr som de forskellige bilmodeler kan have, der burde være en int værdi som bliver returnet fra en enum der passer med det et ID i Udstyr tabellen
+        private int Id;
+
+        private Udstyr(int id) {
+            Id = id;
+        }
 }

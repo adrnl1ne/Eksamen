@@ -1,19 +1,28 @@
 package com.exam.model.kunder;
 
-import com.exam.service.Lejeaftale;
-
-import java.util.List;
+import com.exam.service.LejeAftale;
 
 public class Kunde {
-    private List<Lejeaftale>Lejeaftaler;
-     private List<Kontaktinfo>NyestelInfo; // Dette skal ikke være en liste, det er bare den kontaktinformation for en kunde, som har den nyeste, hvilket kan ses fra Kontaktinfo tabellens Counter
-    // Der mangler en int for kundens CPR nummer
+    private LejeAftale lejeaftaler;
+
+    {
+        new LejeAftale();
+    }
+
+    private KontaktInfo Nyestelinfo;
+
+    {
+        new KontaktInfo();
+    }
+
+    private int cprnumber;
     private int RegNum;
     private int KontoNum;
 
-    public Kunde(int regNum, int kontoNum) { // Der skal overføres kundens lejeaftaler, selvom der ikke er nogen, deres CPR og nyeste kontaktinfo
-        RegNum = regNum;
-        KontoNum = kontoNum;
+    public Kunde(LejeAftale lejeaftaler, KontaktInfo kontaktinfo, int CPR) {
+        this.lejeaftaler = lejeaftaler;
+        Nyestelinfo = kontaktinfo;
+        cprnumber = CPR;
     }
 
 

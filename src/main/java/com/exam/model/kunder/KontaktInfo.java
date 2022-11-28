@@ -1,33 +1,20 @@
 package com.exam.model.kunder;
 
-public class Kontaktinfo {
+import com.exam.service.LejeAftale;
 
-    private int Lejeaftaleid; // dette burde være et objekt for en Lejeaftale som blev lavet med denne kontaktinfo
-    private int cprnummer; // Dette burde være et objekt for den kunde, som skrev kontaktinformationen
+public class KontaktInfo {
+
+    private LejeAftale KundensAftale;
+    private Kunde Kunden;
     private String FirstName;
     private String LastName;
     private String Address;
-    // Mangler et felt for et int Postnr
-    // Mangler et felt for en String By
+    private String Postnr;
+    private String By;
     private String Email;
-    // Der mangler en int Mobil for det telefon nummer en kunde brugte til at lave en lejeaftale
-    // Der mangler en int Counter, som bare er et nummer alle kontaktinfoer har, for at se ud fra en kundes CPR nummer, hvilken kontaktinformation er den nye, hvilket bare er den med det højeste nummer i sin counter
+    private int Mobil;
+    private int Counter;
 
-    public int getLejeaftaleid() {
-        return Lejeaftaleid;
-    }
-
-    public void setLejeaftaleid(int lejeaftaleid) {
-        Lejeaftaleid = lejeaftaleid;
-    }
-
-    public long getCprnummer() {
-        return cprnummer;
-    }
-
-    public void setCprnummer(int cprnummer) {
-        this.cprnummer = cprnummer;
-    }
 
     public String getFirstName() {
         return FirstName;
@@ -73,9 +60,7 @@ public class Kontaktinfo {
 
     @Override
     public String toString() {
-        return "Kontaktinfo{" +
-                "Lejeaftaleid=" + Lejeaftaleid +
-                ", cprnummer=" + cprnummer +
+        return "KontaktInfo{" +
                 ", FirstName='" + FirstName + '\'' +
                 ", LastName='" + LastName + '\'' +
                 ", Address='" + Address + '\'' +
