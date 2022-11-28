@@ -4,15 +4,7 @@ CREATE TABLE BilTilstand
     Biltilstand  enum ('Klar','Udlejet','Check-up','Skadet') NOT NULL
 );
 
-CREATE TABLE Bil
-(
-    Stelnummer   varchar(50) PRIMARY KEY,
-    Tilstands_ID tinyint(4) DEFAULT 1,
-    Model_ID     integer,
-    Km_Kørt      double,
-    FOREIGN KEY (Tilstands_ID) REFERENCES Biltilstand (TilStands_ID),
-    FOREIGN KEY (Model_ID) REFERENCES Bilmodel (Model_ID)
-);
+
 
 CREATE TABLE Mærke
 (
@@ -32,11 +24,38 @@ CREATE TABLE Udstyr
     Udstyr    varchar(50) UNIQUE             NOT NULL
 );
 
+CREATE TABLE Kunde
+(
+    CPR      int PRIMARY KEY UNIQUE NOT NULL,
+    RegNum   int                    NOT NULL,
+    KontoNum int UNIQUE             NOT NULL
+);
+
+CREATE TABLE LeveringsType
+(
+    LeveringsType_ID tinyint(2) PRIMARY KEY NOT NULL,
+    Leveringstype    varchar(50)            NOT NULL
+);
+
+CREATE TABLE PrisListe
+(
+    Pris_ID      tinyint AUTO_INCREMENT PRIMARY KEY UNIQUE NOT NULL,
+    FakturaTekst varchar(50) UNIQUE                        NOT NULL,
+    Pris         double                                    NOT NULL
+);
+
+CREATE TABLE SkadeType
+(
+    Skadetype_Id int auto_increment PRIMARY KEY UNIQUE NOT NULL,
+    Skaden       varchar(50) UNIQUE                    NOT NULL,
+    Pris         double                                NOT NULL
+);
+
 CREATE TABLE Bilmodel
 (
     Model_ID      int auto_increment PRIMARY KEY NOT NULL,
-    Bilmærke_ID   int,
-    Energitype_ID tinyint,
+    Bilmærke_ID   int                            NOT NULL,
+    Energitype_ID tinyint                        NOT NULL,
     Model         varchar(50)                    NOT NULL,
     isGearManuel  boolean                        NOT NULL,
     CO2_Udslip    double DEFAULT 0               NOT NULL,
@@ -46,35 +65,40 @@ CREATE TABLE Bilmodel
     FOREIGN KEY (Energitype_ID) REFERENCES Energitype (EnergiType_ID)
 );
 
+CREATE TABLE Bil
+(
+    Stelnummer   varchar(50) PRIMARY KEY NOT NULL,
+    Tilstands_ID tinyint(4) DEFAULT 1    NOT NULL,
+    Model_ID     integer                 NOT NULL,
+    Km_Kørt      double                  NOT NULL,
+    FOREIGN KEY (Tilstands_ID) REFERENCES Biltilstand (TilStands_ID),
+    FOREIGN KEY (Model_ID) REFERENCES Bilmodel (Model_ID)
+);
+
+
 CREATE TABLE ModelHarUdstyr
 (
     Model_ID  int NOT NULL,
     Udstyr_ID int NOT NULL,
     PRIMARY KEY (Model_ID, Udstyr_ID),
-    FOREIGN KEY (Model_ID) REFERENCES Bilmodel (Model_ID),
-    FOREIGN KEY (Udstyr_ID) REFERENCES Udstyr (Udstyr_ID)
+    FOREIGN KEY (Model_ID) REFERENCES Bilmodel (Model_ID) ON DELETE CASCADE,
+    FOREIGN KEY (Udstyr_ID) REFERENCES Udstyr (Udstyr_ID) ON DELETE CASCADE
 );
 
 CREATE TABLE AbnmtPris
 (
-    Model_ID    int PRIMARY KEY NOT NULL,
-    isUnlimited boolean         NOT NULL,
+    Model_ID    int PRIMARY KEY    NOT NULL,
+    isUnlimited boolean            NOT NULL,
     Md3Pris     double,
     Md6Pris     double,
     Md12Pris    double,
     Md24Pris    double,
     Md36Pris    double,
-    FarvePris   double,
-    Udbetaling  double,
-    FOREIGN KEY (Model_ID) REFERENCES Bilmodel (Model_ID)
+    FarvePris   double DEFAULT 0.0 NOT NULL,
+    Udbetaling  double DEFAULT 0.0 NOT NULL,
+    FOREIGN KEY (Model_ID) REFERENCES Bilmodel (Model_ID) ON DELETE CASCADE
 );
 
-CREATE TABLE Kunde
-(
-    CPR      int PRIMARY KEY UNIQUE NOT NULL,
-    RegNum   int                    NOT NULL,
-    KontoNum int UNIQUE             NOT NULL
-);
 
 CREATE TABLE LejeAftale
 (
@@ -83,14 +107,8 @@ CREATE TABLE LejeAftale
     Stelnummer    varchar(50),
     StartDato     DATE                                  NOT NULL,
     Nummerplade   varchar(8)                            NOT NULL,
-    FOREIGN KEY (Stelnummer) REFERENCES Bil (Stelnummer),
-    FOREIGN KEY (CPR) REFERENCES Kunde (CPR)
-);
-
-CREATE TABLE LeveringsType
-(
-    LeveringsType_ID tinyint(2) PRIMARY KEY NOT NULL,
-    Leveringstype    varchar(50)            NOT NULL
+    FOREIGN KEY (Stelnummer) REFERENCES Bil (Stelnummer) ON DELETE SET NULL,
+    FOREIGN KEY (CPR) REFERENCES Kunde (CPR) ON DELETE CASCADE
 );
 
 
@@ -103,64 +121,62 @@ CREATE TABLE Levering
     Km_Kørt            double                 NOT NULL,
     TransportTillæg    double,
     FOREIGN KEY (LeveringsType_ID) REFERENCES Leveringstype (LeveringsType_ID),
-    FOREIGN KEY (Lejeaftale_ID) REFERENCES Lejeaftale (Lejeaftale_ID)
+    FOREIGN KEY (Lejeaftale_ID) REFERENCES Lejeaftale (Lejeaftale_ID) ON DELETE CASCADE
 );
 
-CREATE TABLE KontaktInfo (
-    Lejeaftale_ID int PRIMARY KEY UNIQUE NOT NULL,
-    CPR int,
-    Fornavn varchar(50) NOT NULL ,
-    Efternavn varchar(50) NOT NULL,
-    Adresse varchar(50) NOT NULL,
-    Postnr int NOT NULL,
-    Mail varchar(50) NOT NULL,
-    Mobil int NOT NULL,
-    Counter int auto_increment UNIQUE NOT NULL,
-    FOREIGN KEY (CPR) REFERENCES Kunde(CPR),
-    FOREIGN KEY (Lejeaftale_ID) REFERENCES LejeAftale(Lejeaftale_ID)
+CREATE TABLE KontaktInfo
+(
+    Lejeaftale_ID int PRIMARY KEY UNIQUE    NOT NULL,
+    CPR           int,
+    Fornavn       varchar(50)               NOT NULL,
+    Efternavn     varchar(50)               NOT NULL,
+    Adresse       varchar(50)               NOT NULL,
+    Postnr        int                       NOT NULL,
+    Mail          varchar(50)               NOT NULL,
+    Mobil         int                       NOT NULL,
+    Counter       int auto_increment UNIQUE NOT NULL,
+    FOREIGN KEY (CPR) REFERENCES Kunde (CPR) ON DELETE SET NULL,
+    FOREIGN KEY (Lejeaftale_ID) REFERENCES LejeAftale (Lejeaftale_ID) ON DELETE CASCADE
 );
 
-CREATE TABLE Skade (
-    Skade_ID bigint auto_increment UNIQUE NOT NULL,
-    Skaderapport_ID int NOT NULL,
-    Skadetype_ID int NOT NULL,
-    Pris double NOT NULL,
-    PRIMARY KEY (Skade_ID, Skaderapport_ID),
-    FOREIGN KEY (Skaderapport_ID) REFERENCES Skadesrapport(Skaderapport_ID),
-    FOREIGN KEY (Skadetype_ID) REFERENCES SkadeType(Skadetype_ID)
-);
-
-CREATE TABLE SkadeType (
-    Skadetype_Id int auto_increment PRIMARY KEY UNIQUE NOT NULL,
-    Skaden varchar(50) UNIQUE NOT NULL,
-    Pris double NOT NULL
-);
-
-CREATE TABLE Skadesrapport (
+CREATE TABLE Skadesrapport
+(
     Skaderapport_ID int auto_increment PRIMARY KEY UNIQUE NOT NULL,
-    Lejeaftale_ID int UNIQUE NOT NULL,
-    Stelnummer varchar(50) NOT NULL,
-    Afleveringsdato DATE NOT NULL,
-    Kørselsdistance double NOT NULL,
-    FOREIGN KEY (Stelnummer) REFERENCES Bil(Stelnummer),
-    FOREIGN KEY (Lejeaftale_ID) REFERENCES LejeAftale(Lejeaftale_ID)
+    Lejeaftale_ID   int UNIQUE,
+    Stelnummer      varchar(50),
+    Afleveringsdato DATE                                  NOT NULL,
+    Kørselsdistance double                                NOT NULL,
+    FOREIGN KEY (Stelnummer) REFERENCES Bil (Stelnummer) ON DELETE SET NULL,
+    FOREIGN KEY (Lejeaftale_ID) REFERENCES LejeAftale (Lejeaftale_ID) ON DELETE SET NULL
 );
 
-CREATE TABLE Abnmt (
-    Lejeaftale_ID int PRIMARY KEY UNIQUE NOT NULL,
-    isUnlimited boolean NOT NULL,
-    KmPrMd int NOT NULL,
-    AbnmtLængde int NOT NULL,
-    OverAflPris double NOT NULL,
-    PrisPrMåned double NOT NULL,
-    Udbetaling double NOT NULL,
-    FarvePrisPrMåned double NOT NULL,
-    PrisPrKmOver double NOT NULL,
-    FOREIGN KEY (Lejeaftale_ID) REFERENCES LejeAftale(Lejeaftale_ID)
+CREATE TABLE Skade
+(
+    Skade_ID        bigint auto_increment UNIQUE NOT NULL,
+    Skaderapport_ID int                          NOT NULL,
+    Skadetype_ID    int                          NOT NULL,
+    Pris            double                       NOT NULL,
+    PRIMARY KEY (Skade_ID, Skaderapport_ID),
+    FOREIGN KEY (Skaderapport_ID) REFERENCES Skadesrapport (Skaderapport_ID) ON DELETE CASCADE,
+    FOREIGN KEY (Skadetype_ID) REFERENCES SkadeType (Skadetype_ID)
 );
 
-CREATE TABLE PrisListe (
-    Pris_ID tinyint AUTO_INCREMENT PRIMARY KEY UNIQUE NOT NULL,
-    FakturaTekst varchar(50) UNIQUE NOT NULL,
-    Pris double NOT NULL
+CREATE TABLE Abnmt
+(
+    Lejeaftale_ID    int PRIMARY KEY UNIQUE NOT NULL,
+    isUnlimited      boolean                NOT NULL,
+    KmPrMd           int                    NOT NULL,
+    AbnmtLængde      int                    NOT NULL,
+    OverAflPris      double                 NOT NULL,
+    PrisPrMåned      double                 NOT NULL,
+    Udbetaling       double                 NOT NULL,
+    FarvePrisPrMåned double                 NOT NULL,
+    PrisPrKmOver     double                 NOT NULL,
+    FOREIGN KEY (Lejeaftale_ID) REFERENCES LejeAftale (Lejeaftale_ID) ON DELETE CASCADE
 );
+
+
+CREATE TRIGGER Rapporttest
+    AFTER UPDATE
+    ON Skadesrapport FOR EACH ROW
+    DELETE FROM skadesrapport WHERE Stelnummer AND Lejeaftale_ID IS NULL
