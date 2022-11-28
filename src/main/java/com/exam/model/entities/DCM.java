@@ -1,4 +1,4 @@
-package com.exam.model;
+package com.exam.model.entities;
 
 import java.io.File;
 import java.io.FileNotFoundException;

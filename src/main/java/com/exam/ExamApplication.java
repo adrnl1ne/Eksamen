@@ -1,6 +1,6 @@
 package com.exam;
 
-import com.exam.model.DCM;
+import com.exam.model.entities.DCM;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
