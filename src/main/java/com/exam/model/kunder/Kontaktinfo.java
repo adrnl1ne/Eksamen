@@ -2,12 +2,16 @@ package com.exam.model.kunder;
 
 public class Kontaktinfo {
 
-    private int Lejeaftaleid;
-    private int cprnummer;
+    private int Lejeaftaleid; // dette burde være et objekt for en Lejeaftale som blev lavet med denne kontaktinfo
+    private int cprnummer; // Dette burde være et objekt for den kunde, som skrev kontaktinformationen
     private String FirstName;
     private String LastName;
     private String Address;
+    // Mangler et felt for et int Postnr
+    // Mangler et felt for en String By
     private String Email;
+    // Der mangler en int Mobil for det telefon nummer en kunde brugte til at lave en lejeaftale
+    // Der mangler en int Counter, som bare er et nummer alle kontaktinfoer har, for at se ud fra en kundes CPR nummer, hvilken kontaktinformation er den nye, hvilket bare er den med det højeste nummer i sin counter
 
     public int getLejeaftaleid() {
         return Lejeaftaleid;
