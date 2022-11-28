@@ -8,5 +8,6 @@ public class Levering {
 
     private String Leveringsadresse;
     private double KørselDistanceInden;
+    private double TransportTillæg;
 
 }
