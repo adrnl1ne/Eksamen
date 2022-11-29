@@ -11,7 +11,6 @@ public class SkadesRapport {
     private double Kørselsdistance;
     private LejeAftale lejeaftalen = new LejeAftale();
 
-    private Bil bil = new Bil();
 
     //Getters,Setters and toString
 
@@ -47,13 +46,6 @@ public class SkadesRapport {
         Lejeaftalen = lejeaftalen;
     }
 
-    public Bil getBil() {
-        return bil;
-    }
-
-    public void setBil(Bil bil) {
-        this.bil = bil;
-    }
 
     public Date getAfleveringsdate() {
         return Afleveringsdate;
@@ -81,7 +73,6 @@ public class SkadesRapport {
                 ", Afleveringsdate=" + Afleveringsdate +
                 ", Kørselsdistance=" + Kørselsdistance +
                 ", lejeaftalen=" + lejeaftalen +
-                ", bil=" + bil +
                 '}';
     }
 }

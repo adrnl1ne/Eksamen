@@ -10,4 +10,7 @@ public enum BilTilstand {
             Id = id;
         }
 
+    public int getId() {
+        return Id;
+    }
 }
