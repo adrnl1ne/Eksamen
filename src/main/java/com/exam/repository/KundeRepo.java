@@ -121,7 +121,34 @@ public class KundeRepo {
   }
 
   public void updateKunde(Kunde kunde) {
-
+    try {
+      int CPR = kunde.getCprnumber();
+      int regNum = kunde.getRegNum();
+      int kontoNum = kunde.getKontoNum();
+      String QUERY = "UPDATE kunde SET RegNum = ?, KontoNum = ? WHERE CPR = ?";
+      PreparedStatement preparedStatement = DCM.prepareStatement(QUERY);
+      preparedStatement.setInt(1, regNum);
+      preparedStatement.setInt(2, kontoNum);
+      preparedStatement.setInt(3, CPR);
+      preparedStatement.executeUpdate();
+    } catch (SQLException e) {
+      e.printStackTrace();
+      System.out.println("Det var ikke muligt at opdatere kunden: " + kunde);
+      throw new RuntimeException();
+    }
   }
 
+  public void deleteKunde(Kunde kunde) {
+    try {
+      int CPR = kunde.getCprnumber();
+      String QUERY = "DELETE FROM kunde WHERE CPR = ?";
+      PreparedStatement preparedStatement = DCM.prepareStatement(QUERY);
+      preparedStatement.setInt(1, CPR);
+      preparedStatement.executeUpdate();
+    } catch (SQLException e) {
+      e.printStackTrace();
+      System.out.println("Det var ikke muligt at delete kunden: " + kunde);
+      throw new RuntimeException(e);
+    }
+  }
 }
