@@ -4,9 +4,9 @@ import com.exam.model.entities.biler.Bil;
 import com.exam.model.entities.biler.BilModel;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class BilmodelRepo {
@@ -30,7 +30,16 @@ public class BilmodelRepo {
         System.out.println(bilModel.toString());
     }
 
+   /* public List<String> GetAlleBiler(BilModel bilModel) {
+        int id = bilModel.getModel_ID();
+        String GetAll_QUERY = "SELECT * FROM bilmodel WHERE Model_ID=?";
+        try {
+            Statement statement = DCM.createStatement();
+            ResultSet resultSet = statement.executeQuery(GetAll_QUERY);
+            while (resultSet.next())
+            preparedStatement.setInt(1, id);
+        }
 
-
+    }*/
 
 }

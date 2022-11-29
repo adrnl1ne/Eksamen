@@ -2,6 +2,7 @@ package com.exam.repository;
 
 import com.exam.Utilities.DCM;
 import com.exam.model.entities.biler.Bil;
+import com.exam.model.entities.biler.BilModel;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -42,39 +43,22 @@ public class BilRepo {
         }
     }
 
-    public ArrayList<String> GetBilByStelnummer(String stelnummer) {
-        ArrayList<String> bil = new ArrayList<>();
-        String SN_QUERY = "SELECT Stelnummer FROM bil";
-        String sn = "";
+    public void getBilByStelnummer(Bil bil, String stel) {
+        String stelnummer = bil.getStelnummer();
+        String QUERY = "SELECT FROM bilmodel WHERE Stelnummer=?";
 
         try {
-            Statement statement = DCM.createStatement();
-            ResultSet resultSet = statement.executeQuery(SN_QUERY);
+            PreparedStatement preparedStatement = DCM.prepareStatement(QUERY);
 
-            while (resultSet.next()) {
-
-                String stelnummerPlaceholder = resultSet.getString(1);
-
-                if (stelnummerPlaceholder.equals(stelnummer)) {
-                    sn = stelnummer;
-                }
-
+            if (stel == stelnummer) {
+                preparedStatement.setString(1, stel);
+                preparedStatement.executeUpdate();
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        String VIEW_QUERY = "SELECT * FROM bil WHERE Stelnummer = " + sn;
-        try {
-            Statement statement = DCM.createStatement();
-            ResultSet resultSet = statement.executeQuery(VIEW_QUERY);
 
-            while (resultSet.next()) {
-                    bil.add(resultSet.getString(1));
-            }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
-        return bil;
+        System.out.println(bil.toString());
     }
 
 
