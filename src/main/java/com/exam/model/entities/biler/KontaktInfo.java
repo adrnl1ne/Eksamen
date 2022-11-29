@@ -7,12 +7,19 @@ public class KontaktInfo {
     private String FirstName;
     private String LastName;
     private String Address;
-    private String Postnr;
-    private String By;
+    private int Postnr;
+    private String City;
     private String Email;
     private int Mobil;
     private int Counter;
 
+    private int Mobilnumber;
+
+    public KontaktInfo(Kunde kunde) {
+        this.Kunden = kunde;
+    }
+
+    // Getters and Setters
 
     public String getFirstName() {
         return FirstName;
@@ -38,6 +45,22 @@ public class KontaktInfo {
         Address = address;
     }
 
+    public int getPostnr() {
+        return Postnr;
+    }
+
+    public void setPostnr(int postnr) {
+        this.Postnr = postnr;
+    }
+
+    public String getCity() {
+        return City;
+    }
+
+    public void setCity(String City) {
+        this.City = City;
+    }
+
     public String getEmail() {
         return Email;
     }
@@ -54,7 +77,14 @@ public class KontaktInfo {
         Mobilnumber = mobilnumber;
     }
 
-    private int Mobilnumber;
+
+    public int getCounter() {
+        return Counter;
+    }
+
+    public void setCounter(int counter) {
+        Counter = counter;
+    }
 
     @Override
     public String toString() {

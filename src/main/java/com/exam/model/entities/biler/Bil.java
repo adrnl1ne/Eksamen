@@ -26,6 +26,10 @@ public class Bil {
         Skadesrapporter = skadesrapporter;
     }
 
+    public Bil(String stelnummer) {
+        this.Stelnummer = stelnummer;
+    }
+
     public String getStelnummer() {
         return Stelnummer;
     }

@@ -6,11 +6,18 @@ public class LejeAftale {
     private SkadesRapport Rapport;
     private Abonnement abonnement;
     private Levering Leveringen;
+    private Kunde Kunden;
     private KontaktInfo Kontakt;
     private String StartDate;
     private String Numberplate;
 
+    public LejeAftale(int Lejeaftale_ID) {
+        this.LejeAftale_ID = Lejeaftale_ID;
+    }
+
     // getters and setters og toString
+
+
 
 
     public int getLejeAftale_ID() {
@@ -51,6 +58,14 @@ public class LejeAftale {
 
     public void setLeveringen(Levering leveringen) {
         Leveringen = leveringen;
+    }
+
+    public Kunde getKunden() {
+        return Kunden;
+    }
+
+    public void setKunden(Kunde kunden) {
+        Kunden = kunden;
     }
 
     public KontaktInfo getKontakt() {

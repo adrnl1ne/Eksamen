@@ -9,7 +9,7 @@ public class SkadesRapport {
     private LejeAftale Lejeaftalen;
     private Date Afleveringsdate;
     private double Kørselsdistance;
-    private LejeAftale lejeaftalen = new LejeAftale();
+    private LejeAftale lejeaftalen;
 
 
     //Getters,Setters and toString
