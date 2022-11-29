@@ -9,9 +9,11 @@ public class Abonnement {
     private double Priceprmonth;
     private double Udbetaling;
     private double XtraColorprice;
-
-
     private double PriceForOverDrive;
+
+    public Abonnement(LejeAftale lejeaftalen) {
+        this.Lejeaftalen = lejeaftalen;
+    }
 
     // getters, setters and tostring.
     public LejeAftale getLejeaftalen() {

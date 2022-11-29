@@ -10,6 +10,12 @@ public class Levering {
     private double KørselDistanceInden;
     private double TransportTillæg;
 
+
+    public Levering (LejeAftale lejeaftalen) {
+        this.Lejeaftalen = lejeaftalen;
+    }
+
+
     //getters og setters
 
 

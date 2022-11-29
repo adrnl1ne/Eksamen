@@ -19,7 +19,28 @@ public class KontaktInfo {
         this.Kunden = kunde;
     }
 
+    public KontaktInfo(LejeAftale Lejeaftale) {
+        this.KundensAftale = Lejeaftale;
+    }
+
     // Getters and Setters
+
+
+    public Kunde getKunden() {
+        return Kunden;
+    }
+
+    public void setKunden(Kunde kunden) {
+        Kunden = kunden;
+    }
+
+    public LejeAftale getKundensAftale() {
+        return KundensAftale;
+    }
+
+    public void setKundensAftale(LejeAftale kundensAftale) {
+        KundensAftale = kundensAftale;
+    }
 
     public String getFirstName() {
         return FirstName;
@@ -84,6 +105,14 @@ public class KontaktInfo {
 
     public void setCounter(int counter) {
         Counter = counter;
+    }
+
+    public int getMobil() {
+        return Mobil;
+    }
+
+    public void setMobil(int mobil) {
+        Mobil = mobil;
     }
 
     @Override

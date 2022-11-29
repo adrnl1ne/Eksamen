@@ -13,6 +13,7 @@ public class KundeRepo {
 
   private final Connection DCM = com.exam.utilities.DCM.getConn();
 
+  // Marcus
   public void createKunde(Kunde kunde) {
     int CPR = kunde.getCprnumber();
     int regNum = kunde.getRegNum();
@@ -23,6 +24,7 @@ public class KundeRepo {
       preparedStatement.setInt(1, CPR);
       preparedStatement.setInt(2, regNum);
       preparedStatement.setInt(3, kontoNum);
+      preparedStatement.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
       System.out.println("Not possible to create a Kunde: " + kunde);
@@ -30,6 +32,7 @@ public class KundeRepo {
     }
   }
 
+  // Marcus
   public Kunde viewKunde(int CPR) {
     try {
       String KundeQUERY = "SELECT * FROM kunde WHERE CPR = ?";
@@ -52,6 +55,8 @@ public class KundeRepo {
           List<KontaktInfo> kontaktinformationer = new ArrayList<>();
           while (resultSet2.next()) {
             KontaktInfo kontaktInfo = new KontaktInfo(kunde);
+            int lejeAftale_ID = resultSet2.getInt("Lejeaftale_ID");
+            kontaktInfo.setKundensAftale(new LejeAftale(lejeAftale_ID));
             String fornavn = resultSet2.getString("Fornavn");
             kontaktInfo.setFirstName(fornavn);
             String efternavn = resultSet2.getString("Efternavn");
@@ -65,9 +70,7 @@ public class KundeRepo {
             String email = resultSet2.getString("Mail");
             kontaktInfo.setEmail(email);
             int mobil = resultSet2.getInt("Mobil");
-            if (mobil != 0) {
-              kontaktInfo.setMobilnumber(mobil);
-            }
+            kontaktInfo.setMobilnumber(mobil);
             int counter = resultSet2.getInt("Counter");
             kontaktInfo.setCounter(counter);
             kontaktinformationer.add(kontaktInfo);
@@ -81,8 +84,20 @@ public class KundeRepo {
             }
           }
           if (newestKontaktInfo != null) {
+            int lejeAftalens_ID = newestKontaktInfo.getKundensAftale().getLejeAftale_ID();
+            LejeAftale kontaktLejeAftale = new LejeaftaleRepo().viewLejeaftale(lejeAftalens_ID);
+            newestKontaktInfo.setKundensAftale(kontaktLejeAftale);
             kunde.setNyestelinfo(newestKontaktInfo);
           }
+          // Tilføjer alle de Lejeaftaler en kunde har
+          List<LejeAftale> lejeAftaler = new LejeaftaleRepo().viewAlleLejeaftaler();
+          for (LejeAftale lejeAftale : lejeAftaler) {
+            int lejeAftalesKundesCPR = lejeAftale.getKunden().getCprnumber();
+            if (lejeAftalesKundesCPR == kunde.getCprnumber()) {
+              lejeAftaler.add(lejeAftale);
+            }
+          }
+          kunde.setLejeaftaler(lejeAftaler);
           return kunde;
 
         } catch (SQLException e) {
@@ -99,6 +114,7 @@ public class KundeRepo {
     return null;
   }
 
+  // Marcus
   public List<Kunde> viewAllKunder() {
     List<Kunde> alleKunder = new ArrayList<>();
 
@@ -120,6 +136,7 @@ public class KundeRepo {
     return alleKunder;
   }
 
+  // Marcus
   public void updateKunde(Kunde kunde) {
     try {
       int CPR = kunde.getCprnumber();

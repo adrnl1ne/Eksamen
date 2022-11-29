@@ -1,5 +1,7 @@
 package com.exam.model.entities.biler;
 
+import java.util.Date;
+
 public class LejeAftale {
     private int LejeAftale_ID;
     private Bil Bilen;
@@ -8,7 +10,7 @@ public class LejeAftale {
     private Levering Leveringen;
     private Kunde Kunden;
     private KontaktInfo Kontakt;
-    private String StartDate;
+    private Date StartDate;
     private String Numberplate;
 
     public LejeAftale(int Lejeaftale_ID) {
@@ -76,11 +78,11 @@ public class LejeAftale {
         Kontakt = kontakt;
     }
 
-    public String getStartDate() {
+    public Date getStartDate() {
         return StartDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(Date startDate) {
         StartDate = startDate;
     }
 
