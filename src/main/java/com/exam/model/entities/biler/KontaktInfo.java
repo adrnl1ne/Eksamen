@@ -1,6 +1,4 @@
-package com.exam.model.kunder;
-
-import com.exam.service.LejeAftale;
+package com.exam.model.entities.biler;
 
 public class KontaktInfo {
 

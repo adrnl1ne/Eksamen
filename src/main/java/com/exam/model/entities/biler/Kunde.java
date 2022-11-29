@@ -1,12 +1,14 @@
-package com.exam.model.kunder;
+package com.exam.model.entities.biler;
 
-import com.exam.service.LejeAftale;
+import com.exam.model.entities.biler.KontaktInfo;
+import com.exam.model.entities.biler.LejeAftale;
+
+import java.util.List;
 
 public class Kunde {
-    private LejeAftale lejeaftaler;
+    private List<LejeAftale> lejeaftaler;
 
     {
-        new LejeAftale();
     }
 
     private KontaktInfo Nyestelinfo;
@@ -20,7 +22,6 @@ public class Kunde {
     private int KontoNum;
 
     public Kunde(LejeAftale lejeaftaler, KontaktInfo kontaktinfo, int CPR) {
-        this.lejeaftaler = lejeaftaler;
         Nyestelinfo = kontaktinfo;
         cprnumber = CPR;
     }

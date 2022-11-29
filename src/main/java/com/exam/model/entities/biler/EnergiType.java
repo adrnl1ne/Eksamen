@@ -1,4 +1,4 @@
-package com.exam.repository;
+package com.exam.model.entities.biler;
 
 public enum EnergiType {
 

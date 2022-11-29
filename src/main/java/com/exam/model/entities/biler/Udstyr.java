@@ -1,4 +1,4 @@
-package com.exam.model.biler;
+package com.exam.model.entities.biler;
 
 import javax.sound.midi.VoiceStatus;
 

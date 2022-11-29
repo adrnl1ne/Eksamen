@@ -1,4 +1,4 @@
-package com.exam.service;
+package com.exam.model.entities.biler;
 
 public enum LeveringsType {
     STANDARD(1),
