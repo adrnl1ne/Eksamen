@@ -1,8 +1,9 @@
 package com.exam.repository;
 
-import com.exam.Utilities.DCM;
+
 import com.exam.model.entities.biler.Bil;
 import com.exam.model.entities.biler.BilModel;
+import com.exam.model.entities.biler.BilTilstand;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -10,16 +11,15 @@ import java.sql.*;
 
 @Repository
 public class BilRepo {
-    private final Connection DCM = com.exam.Utilities.DCM.getConn();
+    private final Connection DCM = com.exam.utilities.DCM.getConn();
+
     public void DeleteBil(Bil bil) {
         String stelnummer = bil.getStelnummer();
         String Delete_Query = "DELETE FROM bil WHERE Stelnummer=?";
         try {
             PreparedStatement preparedStatement = DCM.prepareStatement(Delete_Query);
-
             preparedStatement.setString(1, stelnummer);
             preparedStatement.executeUpdate();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -37,10 +37,42 @@ public class BilRepo {
             preparedStatement.setInt(4, bil.getTilstand().getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Can't create car" + bil.toString());
+            System.out.println("Can't create car" + bil);
             e.printStackTrace();
         }
     }
+
+    public Bil ViewBil(String Stelnummer) {
+        try {
+            String Model_QUERY = " SELECT * FROM Bil WHERE Stelnummer=?";
+            PreparedStatement preparedStatement = DCM.prepareStatement(Model_QUERY);
+            preparedStatement.setString(1, Stelnummer);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                String stelnummer = resultSet.getString("Stelnummer");
+                int Tilstands_ID = resultSet.getInt("Tilstands_ID");
+                int Model_ID = resultSet.getInt("Model_ID");
+                double KmKørt = resultSet.getDouble("Km_Kørt");
+
+                String Tilstand_QUERY = "SELECT Biltilstand FROM biltilstand WHERE TilStands_ID = ?";
+                PreparedStatement preparedStatement1 = DCM.prepareStatement(Tilstand_QUERY);
+                preparedStatement1.setInt(1, Tilstands_ID);
+                ResultSet resultSet1 = preparedStatement1.executeQuery();
+                if (resultSet1.next()) {
+                    BilTilstand tilstand = BilTilstand.getEnum(resultSet1.getInt(Tilstands_ID));
+                    Bil bil = new Bil(stelnummer);
+                    bil.setTilstand(tilstand);
+                    bil.setModel_ID(Model_ID);
+                    bil.setKm_kørte(KmKørt);
+                    return bil;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 }
 

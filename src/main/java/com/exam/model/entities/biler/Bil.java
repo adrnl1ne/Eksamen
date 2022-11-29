@@ -6,6 +6,7 @@ public class Bil {
     private String Stelnummer;
     private BilTilstand Tilstand;
     private BilModel Model;
+    private int Model_ID;
     private List<SkadesRapport> Skadesrapporter;
     private double Km_kørte;
 
@@ -68,5 +69,13 @@ public class Bil {
 
     public void setKm_kørte(double km_kørte) {
         Km_kørte = km_kørte;
+    }
+
+    public int getModel_ID() {
+        return Model_ID;
+    }
+
+    public void setModel_ID(int model_ID) {
+        Model_ID = model_ID;
     }
 }
