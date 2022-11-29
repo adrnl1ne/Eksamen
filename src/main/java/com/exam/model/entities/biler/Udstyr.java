@@ -11,4 +11,8 @@ public enum Udstyr {
         private Udstyr(int id) {
             Id = id;
         }
+
+    public int getId() {
+        return Id;
+    }
 }

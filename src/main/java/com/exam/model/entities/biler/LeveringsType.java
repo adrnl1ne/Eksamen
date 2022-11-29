@@ -9,4 +9,8 @@ public enum LeveringsType {
         private LeveringsType(int id) {
             Id = id;
         }
+
+    public int getId() {
+        return Id;
+    }
 }

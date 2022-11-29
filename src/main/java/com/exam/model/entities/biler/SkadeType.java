@@ -15,5 +15,9 @@ public enum SkadeType {
      private  SkadeType(int id) {
         Id = id;
     }
+
+    public int getId() {
+        return Id;
+    }
 }
 

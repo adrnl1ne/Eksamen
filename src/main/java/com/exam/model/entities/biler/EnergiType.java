@@ -12,4 +12,9 @@ public enum EnergiType {
         Id = id;
     }
 
+    public int getId() {
+        return Id;
+    }
 }
+
+
