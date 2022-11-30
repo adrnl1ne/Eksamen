@@ -57,30 +57,67 @@ public class SkadesRapportRepo {
     }
   }
 
+  // Marcus
   private void createSkade(Skade skaden) {
-    // Finder de værdier en Skade har, når den for første gang skal sættes/insertes ind i tabellen
-    try {
-      int SkadesRapport_ID = skaden.getSkadesrapporten().getSkadesrapport_ID();
-      int Skadetype_ID = skaden.getType().getId();
-      double pris = skaden.getPrice();
 
-      // Inserter de fundne værdier
-      String InsertQUERY = "INSERT INTO skade (Skaderapport_ID, Skadetype_ID, Pris) VALUES (?, ?, ?)";
-      PreparedStatement preparedStatement = DCM.prepareStatement(InsertQUERY);
-      preparedStatement.setInt(1, SkadesRapport_ID);
-      preparedStatement.setInt(2, Skadetype_ID);
-      preparedStatement.setDouble(3, pris);
-      preparedStatement.executeUpdate();
+    // Finder de værdier en Skade har, når den for første gang skal sættes/insertes ind i tabellen
+    int SkadesRapport_ID = skaden.getSkadesrapporten().getSkadesrapport_ID();
+    int Skadetype_ID = skaden.getType().getId();
+    double pris;
+
+    // Finder ud af om en helt ny skade har fået indsat en pris, skadens pris er 0, fordi den ikke er sat, og så finder vi en pris inde i skadetype tabellen
+    if (skaden.getPrice() == 0.0) {
+      pris = this.findSkadePris(Skadetype_ID);
+    } else {
+      pris = skaden.getPrice();
+    }
+
+    // og hvis Skadetype_ID'et ikke er mellem de typer af skader, så vil prisen være mere end nul og skaden vil blive oprettet på tabellen
+    if (pris > 0) {
+      try {
+        // Inserter de fundne værdier
+        String InsertQUERY = "INSERT INTO skade (Skaderapport_ID, Skadetype_ID, Pris) VALUES (?, ?, ?)";
+        PreparedStatement preparedStatement = DCM.prepareStatement(InsertQUERY);
+        preparedStatement.setInt(1, SkadesRapport_ID);
+        preparedStatement.setInt(2, Skadetype_ID);
+        preparedStatement.setDouble(3, pris);
+        preparedStatement.executeUpdate();
+      } catch (SQLException e) {
+        e.printStackTrace();
+        System.err.println("Det var ikke muligt at create Skaden: " + skaden);
+        throw new RuntimeException();
+      }
+    }
+  }
+
+  // Marcus
+  private double findSkadePris(int skadetype_id) {
+    // vil finde den pris, som er blevet sat til en skadetype i tabellen
+    try {
+      String skadeTypeQUERY = "SELECT Pris FROM skadetype WHERE Skadetype_Id = ?";
+      PreparedStatement preparedStatement = DCM.prepareStatement(skadeTypeQUERY);
+      preparedStatement.setInt(1, skadetype_id);
+      ResultSet resultSet = preparedStatement.executeQuery();
+      if (resultSet.next()) {
+        return resultSet.getDouble("Pris");
+      }
+      return -1;
 
     } catch (SQLException e) {
       e.printStackTrace();
-      System.err.println("Det var ikke muligt at create Skaden: " + skaden);
+      System.err.println("Det var ikke muligt at finde prisen for en SkadeType med dette ID: " + skadetype_id);
       throw new RuntimeException();
     }
   }
 
   // Marcus
   public SkadesRapport viewSkadesRapport(int Skaderapport_ID) {
+
+    return null;
+  }
+
+  // Marcus
+  private Skade viewSkade(int Skade_ID) {
 
     return null;
   }
@@ -98,8 +135,22 @@ public class SkadesRapportRepo {
   }
 
   // Marcus
-  public void deleteSkadesRapport(SkadesRapport skadesRapport) {
+  private void updateSkade(Skade skade) {
 
+  }
+
+  // Marcus
+  public void deleteSkadesRapport(SkadesRapport skadesRapport) {
+    try {
+      String deleteQUERY = "DELETE FROM skadesrapport WHERE Skaderapport_ID = ?";
+      PreparedStatement preparedStatement = DCM.prepareStatement(deleteQUERY);
+      preparedStatement.setInt(1, skadesRapport.getSkadesrapport_ID());
+      preparedStatement.executeUpdate();
+    } catch (SQLException e) {
+      e.printStackTrace();
+      System.err.println("Det var ikke muligt at fjerne, altså Delete, SkadesRapporten: " + skadesRapport);
+      throw new RuntimeException();
+    }
   }
 
 }
