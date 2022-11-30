@@ -12,7 +12,7 @@ import java.util.List;
 
 public class LejeaftaleRepo {
 
-  private final Connection DCM = com.exam.utilities.DCM.getConn();
+  private final Connection DCM = com.exam.Utilities.DCM.getConn();
 
 
   // Marcus
@@ -252,6 +252,7 @@ public class LejeaftaleRepo {
     } catch (SQLException e) {
       e.printStackTrace();
       System.err.println("Det var ikke muligt at view alle Lejeaftaler fra tabellen");
+      throw new RuntimeException();
     }
     return lejeaftaler;
   }
@@ -291,7 +292,17 @@ public class LejeaftaleRepo {
 
   // Marcus
   public void deleteLejeaftale(LejeAftale lejeAftale) {
-
+    try {
+      int LejeAftale_ID = lejeAftale.getLejeAftale_ID();
+      String QUERY ="DELETE FROM lejeaftale WHERE Lejeaftale_ID = ?";
+      PreparedStatement preparedStatement = DCM.prepareStatement(QUERY);
+      preparedStatement.setInt(1, LejeAftale_ID);
+      preparedStatement.executeUpdate();
+    } catch (SQLException e) {
+      e.printStackTrace();
+      System.out.println("Det var ikke muligt at delete Lejeaftalen: " + lejeAftale);
+      throw new RuntimeException(e);
+    }
 
   }
 
@@ -353,6 +364,7 @@ public class LejeaftaleRepo {
       preparedStatement.setDouble(4, kmKørtFørUdlej);
       preparedStatement.setDouble(5, transporttillæg);
       preparedStatement.setInt(6, lejeAftale_ID);
+      preparedStatement.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
       System.out.println("Det var ikke muligt at Update Leveringen: " + leveringen);
@@ -362,6 +374,37 @@ public class LejeaftaleRepo {
 
   // Marcus
   private void updateKontaktInfo(KontaktInfo kontakt) {
-    // Mangler at kunne update KontaktInfo for en lejeaftale
+    // Finder id'et til hvor i tabellen denne Levering skal updates
+    int lejeAftale_ID = kontakt.getKundensAftale().getLejeAftale_ID();
+
+    // Finder alle de værdier der er i en lejeaftales levering, som så skal updates
+    int CPR = kontakt.getKunden().getCprnumber();
+    String fornavn = kontakt.getFirstName();
+    String efternavn = kontakt.getLastName();
+    String adresse = kontakt.getAddress();
+    int postnr = kontakt.getPostnr();
+    // String by = kontakt.getCity(); Mangler at have By som et felt inde i tabellen for kontaktinformationer
+    String mail = kontakt.getEmail();
+    int mobil = kontakt.getMobil();
+
+    // Updater de fundne værdier med dem i tabellen
+    try { // Mangler at indføre By
+      String kontaktQUERY = "UPDATE kontaktinfo SET CPR = ?, Fornavn = ?, Efternavn = ?, Adresse = ?, Postnr = ?, Mail = ?, Mobil = ? WHERE Lejeaftale_ID = ?";
+      PreparedStatement preparedStatement = DCM.prepareStatement(kontaktQUERY);
+      preparedStatement.setInt(1, CPR);
+      preparedStatement.setString(2, fornavn);
+      preparedStatement.setString(3, efternavn);
+      preparedStatement.setString(4, adresse);
+      preparedStatement.setInt(5, postnr);
+      preparedStatement.setString(6, mail);
+      preparedStatement.setInt(7, mobil);
+      preparedStatement.setInt(8, lejeAftale_ID);
+      preparedStatement.executeUpdate();
+    } catch (SQLException e) {
+      e.printStackTrace();
+      System.out.println("Det var ikke muligt at Update KontaktInformationen: " + kontakt);
+      throw new RuntimeException();
+    }
+
   }
 }

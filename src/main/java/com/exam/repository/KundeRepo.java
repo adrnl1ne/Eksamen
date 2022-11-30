@@ -11,25 +11,46 @@ import java.util.List;
 
 public class KundeRepo {
 
-  private final Connection DCM = com.exam.utilities.DCM.getConn();
+  private final Connection DCM = com.exam.Utilities.DCM.getConn();
 
   // Marcus
   public void createKunde(Kunde kunde) {
     int CPR = kunde.getCprnumber();
     int regNum = kunde.getRegNum();
     int kontoNum = kunde.getKontoNum();
+    boolean erNyKunde = true;
+
     try {
-      String QUERY = "INSERT INTO kunde (CPR, RegNum, KontoNum) VALUES (?, ?, ?)";
-      PreparedStatement preparedStatement = DCM.prepareStatement(QUERY);
-      preparedStatement.setInt(1, CPR);
-      preparedStatement.setInt(2, regNum);
-      preparedStatement.setInt(3, kontoNum);
-      preparedStatement.executeUpdate();
+      String findKundeQUERY = "SELECT * FROM kunde WHERE CPR = ?";
+      PreparedStatement prepStatement = DCM.prepareStatement(findKundeQUERY);
+      prepStatement.setInt(1, CPR);
+      ResultSet resultSet = prepStatement.executeQuery();
+      if (resultSet.next()) {
+        erNyKunde = false;
+      }
     } catch (SQLException e) {
       e.printStackTrace();
-      System.out.println("Not possible to create a Kunde: " + kunde);
-      throw new RuntimeException(e);
+      System.out.println("Det var ikke muligt at...");
+      throw new RuntimeException();
     }
+
+    if (erNyKunde) {
+      try {
+        String QUERY = "INSERT INTO kunde (CPR, RegNum, KontoNum) VALUES (?, ?, ?)";
+        PreparedStatement preparedStatement = DCM.prepareStatement(QUERY);
+        preparedStatement.setInt(1, CPR);
+        preparedStatement.setInt(2, regNum);
+        preparedStatement.setInt(3, kontoNum);
+        preparedStatement.executeUpdate();
+      } catch (SQLException e) {
+        e.printStackTrace();
+        System.out.println("Not possible to create a Kunde: " + kunde);
+        throw new RuntimeException(e);
+      }
+    } else {
+      this.updateKunde(kunde);
+    }
+
   }
 
   // Marcus
