@@ -8,6 +8,9 @@ public class Bil {
     private BilModel Model;
     private int Model_ID;
     private List<SkadesRapport> Skadesrapporter;
+
+
+
     private double Km_kørte;
 
 

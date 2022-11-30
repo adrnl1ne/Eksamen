@@ -1,0 +1,103 @@
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eksamens Projekt - Webside</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,600,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<section class="sub-header">
+  <nav>
+    <a href="index.html"><img src="../static/Pictures/Logo.png" alt=""></a>
+    <div class="nav-links" id="navLinks">
+      <i class="fa fa-close" onclick="hideMenu()"></i>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="Admin.html">Admin</a></li>
+        <li><a href="Skadeogfejl.html">Vaerksted</a></li>
+        <li><a href="ForretningsUdvikler.html">Forretningsudvikler</a></li>
+        <li><a href="Tjenester.html">Service</a></li>
+      </ul>
+    </div>
+    <i class="fa fa-bars" onclick="showMenu()"></i>
+  </nav>
+  <h1>Bilabonnement A/S</h1>
+</section>
+
+
+<!---------- Tjenester ----------->
+
+<section class="course">
+  <h1>Vores Tjenester</h1>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+  <div class="row">
+    <div class="course-col">
+      <h3>At Leje</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquet turpis nulla, eleifend faucibus est sollicitudin ut. Maecenas ut venenatis ex, et dapibus purus Donec sit.</p>
+    </div>
+    <div class="course-col">
+      <h3>At kobe</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquet turpis nulla, eleifend faucibus est sollicitudin ut. Maecenas ut venenatis ex, et dapibus purus Donec sit.</p>
+    </div>
+    <div class="course-col">
+      <h3>At lease</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquet turpis nulla, eleifend faucibus est sollicitudin ut. Maecenas ut venenatis ex, et dapibus purus Donec sit.</p>
+    </div>
+  </div>
+</section>
+
+<!---------- Vores Biler ---------->
+
+<section class="facility">
+  <h1>Vores Biler</h1>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+  <div class="row">
+    <div class="facility-col">
+      <a><img src="../static/Pictures/bil.png" alt=""></a>
+      <h3>World Class Car</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquet turpis nulla.</p>
+    </div>
+    <div class="facility-col">
+      <a><img src="../static/Pictures/bil4.png" alt=""></a>
+      <h3>Largest Car</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquet turpis nulla.</p>
+    </div>
+    <div class="facility-col">
+      <a><img src="../static/Pictures/bil5.png" alt=""></a>
+      <h3>Stylish Car</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquet turpis nulla.</p>
+    </div>
+  </div>
+</section>
+
+<!-------- footer ---------->
+
+<section class="footer">
+  <h4>Om os</h4>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquet turpis nulla, eleifend faucibus est<br>sollicitudin ut. Maecenas ut venenatis ex, et dapibus purus.</p>
+  <div class="icons">
+    <i class="fa fa-facebook"></i>
+    <i class="fa fa-twitter"></i>
+    <i class="fa fa-instagram"></i>
+    <i class="fa fa-linkedin"></i>
+  </div>
+  <p>made with <i class="fa fa-heart-o"></i>Flavie,Jakob,Markus</p>
+</section>
+
+
+<!----JavaScript for toggle menu---->
+<script>
+  var navLinks = document.getElementById("navLinks");
+
+  function showMenu() {
+    navLinks.style.right = "0";
+  }
+
+  function hideMenu() {
+    navLinks.style.right = "-200px";
+  }
+</script>
+
+</body>
+</html>
