@@ -15,6 +15,20 @@ public enum BilTilstand {
         return Id;
     }
 
+    public int getInt() {
+        switch (this) {
+            case KLAR:
+                return 1;
+            case UDLEJET:
+                return 2;
+            case CHECKUP:
+                return 3;
+            default:
+                return 4;
+        }
+    }
+
+    //Jakob
     public static BilTilstand getEnum(int Tilstands_ID) {
         switch (Tilstands_ID) {
             case 1:

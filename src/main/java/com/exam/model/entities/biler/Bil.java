@@ -13,7 +13,7 @@ public class Bil {
 
     private double Km_kørte;
 
-
+    //Jakob
     public Bil(String stelnummer, BilModel model, double km_kørte, BilTilstand tilstand) {
         Stelnummer = stelnummer;
         Model = model;
@@ -21,6 +21,7 @@ public class Bil {
         Tilstand = tilstand;
     }
 
+    //Jakob
     public Bil(String stelnummer, BilModel model, double km_kørte ,BilTilstand tilstand,
                List<SkadesRapport> skadesrapporter) {
         Stelnummer = stelnummer;

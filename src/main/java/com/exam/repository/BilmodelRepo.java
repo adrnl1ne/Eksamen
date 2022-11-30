@@ -10,9 +10,10 @@ import java.util.List;
 
 @Repository
 public class BilmodelRepo {
+    //Jakob
     private final Connection DCM = com.exam.utilities.DCM.getConn();
 
-
+    //Jakob
     public BilModel ViewBilmodel(int Model_ID) {
         try {
             String Model_ID_QUERY = "SELECT * FROM BilModel WHERE Model_ID=?";
@@ -52,6 +53,7 @@ public class BilmodelRepo {
         return null;
     }
 
+    //Jakob
     public List<BilModel> ViewAlleBilModeller() {
         List<BilModel> alleBilModeller = new ArrayList<>();
 
@@ -73,5 +75,33 @@ public class BilmodelRepo {
         return alleBilModeller;
     }
 
+
+    public void updateBilModel(BilModel bilModel) {
+        try {
+            int Model_ID = bilModel.getModel_ID();
+            EnergiType Energitype = bilModel.getEnergitype();
+            int Energitype_ID = Energitype.getInt();
+            String BilModel = bilModel.getMærke();
+            boolean isGearManual = bilModel.isGearManuel();
+            double CO2_Udslip = bilModel.getCO2_Udslip();
+            double Stålpris = bilModel.getStålpris();
+            double KmPrX = bilModel.getKmPrX();
+            String QUERY = "UPDATE bilmodel SET Energitype_ID = ?, Model = ?, isGearManual = ?," +
+                    " CO2_Udslip = ?, Stålpris = ?, KmPrX = ? WHERE Model_ID = ?";
+            PreparedStatement preparedStatement = DCM.prepareStatement(QUERY);
+            preparedStatement.setInt(1, Energitype_ID);
+            preparedStatement.setString(2, BilModel);
+            preparedStatement.setBoolean(3, isGearManual);
+            preparedStatement.setDouble(4, CO2_Udslip);
+            preparedStatement.setDouble(5, Stålpris);
+            preparedStatement.setDouble(6, KmPrX);
+            preparedStatement.setInt(7, Model_ID);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Kan ikke opdatere" + bilModel);
+            throw new RuntimeException(e);
+        }
+    }
 
 }

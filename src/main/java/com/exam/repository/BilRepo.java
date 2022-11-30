@@ -13,8 +13,9 @@ import java.util.List;
 
 @Repository
 public class BilRepo {
+    //Jakob
     private final Connection DCM = com.exam.utilities.DCM.getConn();
-
+    //Jakob
     public void DeleteBil(Bil bil) {
         String stelnummer = bil.getStelnummer();
         String Delete_Query = "DELETE FROM bil WHERE Stelnummer=?";
@@ -28,6 +29,7 @@ public class BilRepo {
         System.out.println("Car has been deleted, where stelnummer is: " + stelnummer);
     }
 
+    //Jakob
     public void CreateBil(Bil bil) {
 
         String QUERY = "INSERT INTO bil (Stelnummer, Model_ID, Km_Kørt, Tilstands_ID) VALUES (?,?,?,?)";
@@ -44,6 +46,7 @@ public class BilRepo {
         }
     }
 
+    //Jakob
     public Bil ViewBil(String Stelnummer) {
         try {
             String Model_QUERY = " SELECT * FROM Bil WHERE Stelnummer=?";
@@ -76,7 +79,7 @@ public class BilRepo {
         }
         return null;
     }
-
+    //Jakob
     public List<Bil> ViewAlleBiler() {
         List<Bil> alleBiler = new ArrayList<>();
 
@@ -95,6 +98,27 @@ public class BilRepo {
             throw new RuntimeException(e);
         }
         return alleBiler;
+    }
+
+    public void updateBilModel(Bil bil) {
+        try {
+            String Stelnummer = bil.getStelnummer();
+            BilTilstand tilstand = bil.getTilstand();
+            int Tilstands_ID = tilstand.getInt();
+            int Model_ID = bil.getModel_ID();
+            double Km_Kørt = bil.getKm_kørte();
+            String QUERY = "UPDATE bil SET Tilstands_ID =?, Model_ID =?, Km_Kørt =? WHERE Stelnummer=?";
+            PreparedStatement preparedStatement = DCM.prepareStatement(QUERY);
+            preparedStatement.setInt(1, Tilstands_ID);
+            preparedStatement.setInt(2, Model_ID);
+            preparedStatement.setDouble(3, Km_Kørt);
+            preparedStatement.setString(4, Stelnummer);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Kan ikke opdatere " + bil);
+            throw new RuntimeException(e);
+        }
     }
 
 }
