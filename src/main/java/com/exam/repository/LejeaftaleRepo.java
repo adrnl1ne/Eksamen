@@ -12,7 +12,7 @@ import java.util.List;
 
 public class LejeaftaleRepo {
 
-  private final Connection DCM = com.exam.Utilities.DCM.getConn();
+  private final Connection DCM = com.exam.utilities.DCM.getConn();
 
 
   // Marcus

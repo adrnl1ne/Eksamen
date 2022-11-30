@@ -15,6 +15,17 @@ public enum EnergiType {
     public int getId() {
         return Id;
     }
+
+    public static EnergiType getEnum(int EnergiType_ID) {
+        switch (EnergiType_ID) {
+            case 1:
+                return EnergiType.DIESEL;
+            case 2:
+                return EnergiType.ELEKTRISK;
+            default:
+                return EnergiType.BENZIN;
+        }
+    }
 }
 
 

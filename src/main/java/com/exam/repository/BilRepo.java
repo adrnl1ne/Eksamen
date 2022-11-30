@@ -13,7 +13,7 @@ import java.util.List;
 
 @Repository
 public class BilRepo {
-    private final Connection DCM = com.exam.Utilities.DCM.getConn();
+    private final Connection DCM = com.exam.utilities.DCM.getConn();
 
     public void DeleteBil(Bil bil) {
         String stelnummer = bil.getStelnummer();
@@ -66,6 +66,8 @@ public class BilRepo {
                     bil.setTilstand(tilstand);
                     bil.setModel_ID(Model_ID);
                     bil.setKm_kørte(KmKørt);
+                    BilModel bilModel = new BilmodelRepo().ViewBilmodel(Model_ID);
+                    bil.setModel(bilModel);
                     return bil;
                 }
             }

@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public class BilmodelRepo {
-    private final Connection DCM = com.exam.Utilities.DCM.getConn();
+    private final Connection DCM = com.exam.utilities.DCM.getConn();
 
 
     public BilModel ViewBilmodel(int Model_ID) {
@@ -37,7 +37,7 @@ public class BilmodelRepo {
                     EnergiType type = EnergiType.getEnum(resultSet1.getInt(Energitype_ID));
                     BilModel bilModel = new BilModel(model_ID);
                     bilModel.setMærke(Mærke);
-                    bilModel.setEnergiType(type);
+                    bilModel.setEnergitype(type);
                     bilModel.setModel(Model);
                     bilModel.setGearManuel(isGearManuel);
                     bilModel.setStålpris(Stålpris);

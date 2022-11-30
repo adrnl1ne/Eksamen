@@ -3,17 +3,22 @@ package com.exam.model.entities.biler;
 public class BilModel {
 
     private AbonnementsPriser Abopris;
-    private String brand;
-    private String model;
-    private int model_ID;
-    private double c02PerKm;
-    private double steelPrice;
-    private double kmprx;
+    private String Mærke;
+    private String Model;
+    private int Model_ID;
+    private double CO2_Udslip;
+    private double Stålpris;
+    private double KmPrX;
     private boolean isGearManuel;
-    private EnergiType energiType;
+    private EnergiType Energitype;
+
 
     //getters and setters and toStrings
 
+
+    public BilModel(int model_ID) {
+        Model_ID = model_ID;
+    }
 
     public AbonnementsPriser getAbopris() {
         return Abopris;
@@ -23,52 +28,52 @@ public class BilModel {
         Abopris = abopris;
     }
 
-    public String getBrand() {
-        return brand;
+    public String getMærke() {
+        return Mærke;
     }
 
-    public void setBrand(String brand) {
-        this.brand = brand;
+    public void setMærke(String mærke) {
+        this.Mærke = mærke;
     }
 
     public String getModel() {
-        return model;
+        return Model;
     }
 
     public void setModel(String model) {
-        this.model = model;
+        this.Model = model;
     }
 
     public int getModel_ID() {
-        return model_ID;
+        return Model_ID;
     }
 
     public void setModel_ID(int model_ID) {
-        this.model_ID = model_ID;
+        this.Model_ID = model_ID;
     }
 
-    public double getC02PerKm() {
-        return c02PerKm;
+    public double getCO2_Udslip() {
+        return CO2_Udslip;
     }
 
-    public void setC02PerKm(double c02PerKm) {
-        this.c02PerKm = c02PerKm;
+    public void setCO2_Udslip(double CO2_Udslip) {
+        this.CO2_Udslip = CO2_Udslip;
     }
 
-    public double getSteelPrice() {
-        return steelPrice;
+    public double getStålpris() {
+        return Stålpris;
     }
 
-    public void setSteelPrice(double steelPrice) {
-        this.steelPrice = steelPrice;
+    public void setStålpris(double stålpris) {
+        this.Stålpris = stålpris;
     }
 
-    public double getKmprx() {
-        return kmprx;
+    public double getKmPrX() {
+        return KmPrX;
     }
 
-    public void setKmprx(double kmprx) {
-        this.kmprx = kmprx;
+    public void setKmPrX(double kmPrX) {
+        this.KmPrX = kmPrX;
     }
 
     public boolean isGearManuel() {
@@ -79,26 +84,26 @@ public class BilModel {
         isGearManuel = gearManuel;
     }
 
-    public EnergiType getEnergiType() {
-        return energiType;
+    public EnergiType getEnergitype() {
+        return Energitype;
     }
 
-    public void setEnergiType(EnergiType energiType) {
-        this.energiType = energiType;
+    public void setEnergitype(EnergiType energitype) {
+        this.Energitype = energitype;
     }
 
     @Override
     public String toString() {
         return "BilModel{" +
                 "Abopris=" + Abopris +
-                ", brand='" + brand + '\'' +
-                ", model='" + model + '\'' +
-                ", model_ID=" + model_ID +
-                ", c02PerKm=" + c02PerKm +
-                ", steelPrice=" + steelPrice +
-                ", kmprx=" + kmprx +
+                ", brand='" + Mærke + '\'' +
+                ", model='" + Model + '\'' +
+                ", model_ID=" + Model_ID +
+                ", c02PerKm=" + CO2_Udslip +
+                ", steelPrice=" + Stålpris +
+                ", kmprx=" + KmPrX +
                 ", isGearManuel=" + isGearManuel +
-                ", energiType=" + energiType +
+                ", energiType=" + Energitype +
                 '}';
     }
 }
