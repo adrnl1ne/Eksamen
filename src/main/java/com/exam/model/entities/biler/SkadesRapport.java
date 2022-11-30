@@ -1,11 +1,12 @@
 package com.exam.model.entities.biler;
 
 import java.util.Date;
+import java.util.List;
 
 public class SkadesRapport {
     private int Skadesrapport_ID;
     private Bil Bilen;
-    private Skade Skader;
+    private List<Skade> Skader;
     private LejeAftale Lejeaftalen;
     private Date Afleveringsdate;
     private double Kørselsdistance;
@@ -30,12 +31,16 @@ public class SkadesRapport {
         Bilen = bilen;
     }
 
-    public Skade getSkader() {
+    public List<Skade> getSkader() {
         return Skader;
     }
 
-    public void setSkader(Skade skader) {
-        Skader = skader;
+    public void setSkader(List<Skade> skader) {
+        this.Skader = skader;
+    }
+
+    public void setSkader(Skade skade) {
+        Skader.add(skade);
     }
 
     public LejeAftale getLejeaftalen() {
