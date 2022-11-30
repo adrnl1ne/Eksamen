@@ -30,7 +30,7 @@ public class KundeRepo {
       }
     } catch (SQLException e) {
       e.printStackTrace();
-      System.out.println("Det var ikke muligt at...");
+      System.err.println("Det var ikke muligt at...");
       throw new RuntimeException();
     }
 
@@ -44,7 +44,7 @@ public class KundeRepo {
         preparedStatement.executeUpdate();
       } catch (SQLException e) {
         e.printStackTrace();
-        System.out.println("Not possible to create a Kunde: " + kunde);
+        System.err.println("Not possible to create a Kunde: " + kunde);
         throw new RuntimeException(e);
       }
     } else {
@@ -123,13 +123,13 @@ public class KundeRepo {
 
         } catch (SQLException e) {
           e.printStackTrace();
-          System.out.println("Det var ikke muligt at view nyeste kontaktinfo for kunden med CPR: " + CPR);
+          System.err.println("Det var ikke muligt at view nyeste kontaktinfo for kunden med CPR: " + CPR);
           throw new RuntimeException();
         }
       }
     } catch (SQLException e) {
       e.printStackTrace();
-      System.out.println("Not possible to view a Kunde med CPR:" + CPR);
+      System.err.println("Not possible to view a Kunde med CPR:" + CPR);
       throw new RuntimeException(e);
     }
     return null;
@@ -150,7 +150,7 @@ public class KundeRepo {
       }
     } catch (SQLException e) {
       e.printStackTrace();
-      System.out.println("Var ikke muligt at viewAllKunder");
+      System.err.println("Var ikke muligt at viewAllKunder");
       throw new RuntimeException(e);
     }
 
@@ -171,7 +171,7 @@ public class KundeRepo {
       preparedStatement.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
-      System.out.println("Det var ikke muligt at opdatere kunden: " + kunde);
+      System.err.println("Det var ikke muligt at opdatere kunden: " + kunde);
       throw new RuntimeException();
     }
   }
@@ -185,7 +185,7 @@ public class KundeRepo {
       preparedStatement.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
-      System.out.println("Det var ikke muligt at delete kunden: " + kunde);
+      System.err.println("Det var ikke muligt at delete kunden: " + kunde);
       throw new RuntimeException(e);
     }
   }

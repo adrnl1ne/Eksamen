@@ -42,7 +42,7 @@ public class LejeaftaleRepo {
 
     } catch (SQLException e) {
       e.printStackTrace();
-      System.out.println("Det var ikke muligt at create, altså inserte i tabellen, LejeAftalen: " + lejeAftale);
+      System.err.println("Det var ikke muligt at create, altså inserte i tabellen, LejeAftalen: " + lejeAftale);
       throw new RuntimeException(e);
     }
 
@@ -71,7 +71,7 @@ public class LejeaftaleRepo {
         preparedStatement2.executeUpdate();
       } catch (SQLException e) {
         e.printStackTrace();
-        System.out.println("Det var ikke muligt at create, altså inserte i tabellen, Abonnementet: " + abonnement);
+        System.err.println("Det var ikke muligt at create, altså inserte i tabellen, Abonnementet: " + abonnement);
         throw new RuntimeException();
       }
 
@@ -94,7 +94,7 @@ public class LejeaftaleRepo {
 
       } catch (SQLException e) {
         e.printStackTrace();
-        System.out.println("Det var ikke muligt at create, altså inserte i tabellen, Leveringen: " + levering);
+        System.err.println("Det var ikke muligt at create, altså inserte i tabellen, Leveringen: " + levering);
         throw new RuntimeException();
       }
 
@@ -121,7 +121,7 @@ public class LejeaftaleRepo {
         preparedStatement4.executeUpdate();
       } catch (SQLException e) {
         e.printStackTrace();
-        System.out.println("Det var ikke muligt at create, altså Inserte i tabellen, Kontaktinformationen: " + kontakt);
+        System.err.println("Det var ikke muligt at create, altså Inserte i tabellen, Kontaktinformationen: " + kontakt);
         throw new RuntimeException(e);
       }
     }
@@ -230,7 +230,7 @@ public class LejeaftaleRepo {
       }
     } catch (SQLException e) {
       e.printStackTrace();
-      System.out.println("Det var ikke muligt at view, alstå få Lejeaftalen fra tabellen, ved brug af Lejeaftale_ID: " + Lejeaftale_ID);
+      System.err.println("Det var ikke muligt at view, alstå få Lejeaftalen fra tabellen, ved brug af Lejeaftale_ID: " + Lejeaftale_ID);
       throw new RuntimeException();
     }
     return null;
@@ -284,7 +284,7 @@ public class LejeaftaleRepo {
       preparedStatement.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
-      System.out.println("Det var ikke muligt at update LejeAftalen: " + lejeAftale);
+      System.err.println("Det var ikke muligt at update LejeAftalen: " + lejeAftale);
       throw new RuntimeException();
     }
 
@@ -300,7 +300,7 @@ public class LejeaftaleRepo {
       preparedStatement.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
-      System.out.println("Det var ikke muligt at delete Lejeaftalen: " + lejeAftale);
+      System.err.println("Det var ikke muligt at delete Lejeaftalen: " + lejeAftale);
       throw new RuntimeException(e);
     }
 
@@ -337,7 +337,7 @@ public class LejeaftaleRepo {
       preparedStatement.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
-      System.out.println("Det var ikke muligt at update Abonnementet: " + abonnement);
+      System.err.println("Det var ikke muligt at update Abonnementet: " + abonnement);
       throw new RuntimeException();
     }
   }
@@ -354,7 +354,7 @@ public class LejeaftaleRepo {
     double kmKørtFørUdlej = leveringen.getKørselDistanceInden();
     double transporttillæg = leveringen.getTransportTillæg();
 
-    // Updater de fundne værdier med dem i tabellen
+    // Updater tabellen med de fundne værdier
     try {
       String leveringQUERY = "UPDATE levering SET LeveringsType_ID = ?, Leveringsadresse = ?, Afleveringsadresse = ?, Km_Kørt = ?, TransportTillæg = ? WHERE Lejeaftale_ID = ?";
       PreparedStatement preparedStatement = DCM.prepareStatement(leveringQUERY);
@@ -367,7 +367,7 @@ public class LejeaftaleRepo {
       preparedStatement.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
-      System.out.println("Det var ikke muligt at Update Leveringen: " + leveringen);
+      System.err.println("Det var ikke muligt at Update Leveringen: " + leveringen);
     }
 
   }
@@ -402,7 +402,7 @@ public class LejeaftaleRepo {
       preparedStatement.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
-      System.out.println("Det var ikke muligt at Update KontaktInformationen: " + kontakt);
+      System.err.println("Det var ikke muligt at Update KontaktInformationen: " + kontakt);
       throw new RuntimeException();
     }
 

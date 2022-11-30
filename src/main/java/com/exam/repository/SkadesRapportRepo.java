@@ -52,7 +52,7 @@ public class SkadesRapportRepo {
 
     } catch (SQLException e) {
       e.printStackTrace();
-      System.out.println("Det var ikke muligt at create, altså Inserte, SkadesRapporten: " + skadesRapport);
+      System.err.println("Det var ikke muligt at create, altså Inserte, SkadesRapporten: " + skadesRapport);
       throw new RuntimeException();
     }
   }
@@ -74,7 +74,7 @@ public class SkadesRapportRepo {
 
     } catch (SQLException e) {
       e.printStackTrace();
-      System.out.println("Det var ikke muligt at create Skaden: " + skaden);
+      System.err.println("Det var ikke muligt at create Skaden: " + skaden);
       throw new RuntimeException();
     }
   }
