@@ -7,6 +7,8 @@ import com.exam.model.entities.biler.BilTilstand;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Repository
@@ -73,6 +75,25 @@ public class BilRepo {
         return null;
     }
 
+    public List<Bil> ViewAlleBiler() {
+        List<Bil> alleBiler = new ArrayList<>();
+
+        try {
+            String QUERY = "SELECT * FROM bil";
+            PreparedStatement preparedStatement = DCM.prepareStatement(QUERY);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                String stelnummer = resultSet.getString("Stelnummer");
+                Bil bil = ViewBil(stelnummer);
+                alleBiler.add(bil);
+            }
+        } catch (SQLException e) {
+            System.out.println("Fejl, Kan ikke se alle biler");
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        return alleBiler;
+    }
 
 }
 
