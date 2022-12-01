@@ -16,7 +16,7 @@ public class BilRepo {
     //Jakob
     private final Connection DCM = com.exam.utilities.DCM.getConn();
     //Jakob
-    public void DeleteBil(Bil bil) {
+    public void DeleteBil(Bil bil) { // at kunne fjerne en bil er ikke vigtigt at kunne for vores projekt, men godt at vise vi at kan gøre det
         String stelnummer = bil.getStelnummer();
         String Delete_Query = "DELETE FROM bil WHERE Stelnummer=?";
         try {
@@ -30,7 +30,7 @@ public class BilRepo {
     }
 
     //Jakob
-    public void CreateBil(Bil bil) {
+    public void CreateBil(Bil bil) { // Create biler er heler ikke så vigtigt at kunne gøre, da vi vil kun inserte et antal biler vi bruger til vores projekt en gang
 
         String QUERY = "INSERT INTO bil (Stelnummer, Model_ID, Km_Kørt, Tilstands_ID) VALUES (?,?,?,?)";
         try {
@@ -59,22 +59,22 @@ public class BilRepo {
                 int Model_ID = resultSet.getInt("Model_ID");
                 double KmKørt = resultSet.getDouble("Km_Kørt");
 
-                String Tilstand_QUERY = "SELECT Biltilstand FROM biltilstand WHERE TilStands_ID = ?";
+                String Tilstand_QUERY = "SELECT Biltilstand FROM biltilstand WHERE TilStands_ID = ?"; // dette burde være en metode for sig selv
                 PreparedStatement preparedStatement1 = DCM.prepareStatement(Tilstand_QUERY);
                 preparedStatement1.setInt(1, Tilstands_ID);
                 ResultSet resultSet1 = preparedStatement1.executeQuery();
                 if (resultSet1.next()) {
-                    BilTilstand tilstand = BilTilstand.getEnum(resultSet1.getInt(Tilstands_ID));
+                    BilTilstand tilstand = BilTilstand.getEnum(resultSet1.getInt(Tilstands_ID)); // der bruges en int til at finde en enum, som så bruge til at finde en enum, som var det en int
                     Bil bil = new Bil(stelnummer);
                     bil.setTilstand(tilstand);
                     bil.setModel_ID(Model_ID);
                     bil.setKm_kørte(KmKørt);
                     BilModel bilModel = new BilmodelRepo().ViewBilmodel(Model_ID);
                     bil.setModel(bilModel);
-                    return bil;
+                    return bil; // Der mangler stadig at sætte alle de skadesrapporter, som denne bil har
                 }
             }
-        } catch (SQLException e) {
+        } catch (SQLException e) { // bare håndter en exception, som jeg har vist i BilmodelRepo
             e.printStackTrace();
         }
         return null;
@@ -92,7 +92,7 @@ public class BilRepo {
                 Bil bil = ViewBil(stelnummer);
                 alleBiler.add(bil);
             }
-        } catch (SQLException e) {
+        } catch (SQLException e) { // skal bare have en err i stedet for out og sige view, select et eller stadig i beskeden
             System.out.println("Fejl, Kan ikke se alle biler");
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -100,7 +100,8 @@ public class BilRepo {
         return alleBiler;
     }
 
-    public void updateBilModel(Bil bil) {
+    // denne metode, burde hedde updateBil
+    public void updateBilModel(Bil bil) { // Det som skal updates er tilstanden og kilometer kørt, for en Citroën C1 er altid en Citroën C1
         try {
             String Stelnummer = bil.getStelnummer();
             BilTilstand tilstand = bil.getTilstand();
@@ -116,10 +117,12 @@ public class BilRepo {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Kan ikke opdatere " + bil);
+            System.out.println("Kan ikke opdatere " + bil); // mangler bare err i stedet for out
             throw new RuntimeException(e);
         }
     }
+
+    // Vi mangler en metode der bringe en liste af alle biltilstande, som er public
 
 }
 
