@@ -30,7 +30,7 @@ public class KundeRepo {
       }
     } catch (SQLException e) {
       e.printStackTrace();
-      System.err.println("Det var ikke muligt at...");
+      System.err.println("Det var ikke muligt at view, altså Selecte Kunden: " + kunde);
       throw new RuntimeException();
     }
 
@@ -44,13 +44,71 @@ public class KundeRepo {
         preparedStatement.executeUpdate();
       } catch (SQLException e) {
         e.printStackTrace();
-        System.err.println("Not possible to create a Kunde: " + kunde);
+        System.err.println("Not possible to create, to Insert, a Kunde: " + kunde);
         throw new RuntimeException(e);
       }
     } else {
       this.updateKunde(kunde);
     }
 
+  }
+
+  // Marcus
+  private KontaktInfo findNyesteKontaktFor (Kunde kunde) {
+    // Finder kundens primær nøgle, CPR
+    int CPR = kunde.getCprnumber();
+
+    try {
+      String KontaktInfoQUERY = "SELECT * FROM kontaktinfo WHERE CPR = ?";
+      PreparedStatement preparedStatement = DCM.prepareStatement(KontaktInfoQUERY);
+      preparedStatement.setInt(1, CPR);
+      ResultSet resultSet = preparedStatement.executeQuery();
+      List<KontaktInfo> kontaktinformationer = new ArrayList<>();
+      while (resultSet.next()) {
+        KontaktInfo kontaktInfo = new KontaktInfo(kunde);
+        int lejeAftale_ID = resultSet.getInt("Lejeaftale_ID");
+        kontaktInfo.setKundensAftale(new LejeAftale(lejeAftale_ID));
+        String fornavn = resultSet.getString("Fornavn");
+        kontaktInfo.setFirstName(fornavn);
+        String efternavn = resultSet.getString("Efternavn");
+        kontaktInfo.setLastName(efternavn);
+        String adresse = resultSet.getString("Adresse");
+        kontaktInfo.setAddress(adresse);
+        int postnr = resultSet.getInt("Postnr");
+        kontaktInfo.setPostnr(postnr);
+        String by = resultSet.getString("By");
+        kontaktInfo.setCity(by);
+        String email = resultSet.getString("Mail");
+        kontaktInfo.setEmail(email);
+        int mobil = resultSet.getInt("Mobil");
+        kontaktInfo.setMobilnumber(mobil);
+        int counter = resultSet.getInt("Counter");
+        kontaktInfo.setCounter(counter);
+        kontaktinformationer.add(kontaktInfo);
+      }
+
+      KontaktInfo newestKontaktInfo = null;
+      int highestCounter = 0;
+      for (KontaktInfo kInfo : kontaktinformationer) {
+        int theCounter = kInfo.getCounter();
+        if (theCounter > highestCounter) {
+          newestKontaktInfo = kInfo;
+        }
+      }
+
+      if (newestKontaktInfo != null) {
+        int lejeAftalens_ID = newestKontaktInfo.getKundensAftale().getLejeAftale_ID();
+        LejeAftale kontaktLejeAftale = new LejeaftaleRepo().viewLejeaftale(lejeAftalens_ID);
+        newestKontaktInfo.setKundensAftale(kontaktLejeAftale);
+      }
+
+      return newestKontaktInfo;
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+      System.err.println("Det var ikke muligt at view nyeste kontaktinfo for Kunden: " + kunde);
+      throw new RuntimeException();
+    }
   }
 
   // Marcus
@@ -67,72 +125,30 @@ public class KundeRepo {
         Kunde kunde = new Kunde(CPRNum);
         kunde.setRegNum(regNum);
         kunde.setKontoNum(kontoNum);
-        // Finder den nyeste kontaktinfo for denne kunde med det CPR som blev givet
-        try {
-          String KontaktInfoQUERY = "SELECT * FROM kontaktinfo WHERE CPR = ?";
-          PreparedStatement preparedStatement2 = DCM.prepareStatement(KontaktInfoQUERY);
-          preparedStatement2.setInt(1, CPRNum);
-          ResultSet resultSet2 = preparedStatement2.executeQuery();
-          List<KontaktInfo> kontaktinformationer = new ArrayList<>();
-          while (resultSet2.next()) {
-            KontaktInfo kontaktInfo = new KontaktInfo(kunde);
-            int lejeAftale_ID = resultSet2.getInt("Lejeaftale_ID");
-            kontaktInfo.setKundensAftale(new LejeAftale(lejeAftale_ID));
-            String fornavn = resultSet2.getString("Fornavn");
-            kontaktInfo.setFirstName(fornavn);
-            String efternavn = resultSet2.getString("Efternavn");
-            kontaktInfo.setLastName(efternavn);
-            String adresse = resultSet2.getString("Adresse");
-            kontaktInfo.setAddress(adresse);
-            int postnr = resultSet2.getInt("Postnr");
-            kontaktInfo.setPostnr(postnr);
-            // String by = resultSet2.getString("By"); Mangler at indføre By i tabellen Kontaktinfo
-            // kontaktInfo.setCity(by);
-            String email = resultSet2.getString("Mail");
-            kontaktInfo.setEmail(email);
-            int mobil = resultSet2.getInt("Mobil");
-            kontaktInfo.setMobilnumber(mobil);
-            int counter = resultSet2.getInt("Counter");
-            kontaktInfo.setCounter(counter);
-            kontaktinformationer.add(kontaktInfo);
-          }
-          KontaktInfo newestKontaktInfo = null;
-          int highestCounter = 0;
-          for (KontaktInfo kInfo : kontaktinformationer) {
-            int theCounter = kInfo.getCounter();
-            if (theCounter > highestCounter) {
-              newestKontaktInfo = kInfo;
-            }
-          }
-          if (newestKontaktInfo != null) {
-            int lejeAftalens_ID = newestKontaktInfo.getKundensAftale().getLejeAftale_ID();
-            LejeAftale kontaktLejeAftale = new LejeaftaleRepo().viewLejeaftale(lejeAftalens_ID);
-            newestKontaktInfo.setKundensAftale(kontaktLejeAftale);
-            kunde.setNyestelinfo(newestKontaktInfo);
-          }
-          // Tilføjer alle de Lejeaftaler en kunde har
-          List<LejeAftale> lejeAftaler = new LejeaftaleRepo().viewAlleLejeaftaler();
-          for (LejeAftale lejeAftale : lejeAftaler) {
-            int lejeAftalesKundesCPR = lejeAftale.getKunden().getCprnumber();
-            if (lejeAftalesKundesCPR == kunde.getCprnumber()) {
-              lejeAftaler.add(lejeAftale);
-            }
-          }
-          kunde.setLejeaftaler(lejeAftaler);
-          return kunde;
 
-        } catch (SQLException e) {
-          e.printStackTrace();
-          System.err.println("Det var ikke muligt at view nyeste kontaktinfo for kunden med CPR: " + CPR);
-          throw new RuntimeException();
+        // Finder den nyeste kontaktinfo for denne kunde med det CPR som blev givet og giver det til vores kunde
+        KontaktInfo nyesteKontaktInfo = this.findNyesteKontaktFor(kunde);
+        kunde.setNyestelinfo(nyesteKontaktInfo);
+
+
+        // Tilføjer alle de Lejeaftaler en kunde har
+        List<LejeAftale> lejeAftaler = new LejeaftaleRepo().viewAlleLejeaftaler();
+        for (LejeAftale lejeAftale : lejeAftaler) {
+          int lejeAftalesKundesCPR = lejeAftale.getKunden().getCprnumber();
+          if (lejeAftalesKundesCPR == kunde.getCprnumber()) {
+            lejeAftaler.add(lejeAftale);
+          }
         }
+        kunde.setLejeaftaler(lejeAftaler);
+        return kunde;
       }
+      return null;
+
     } catch (SQLException e) {
       e.printStackTrace();
       System.err.println("Not possible to view a Kunde med CPR:" + CPR);
       throw new RuntimeException(e);
     }
-    return null;
   }
 
   // Marcus
@@ -140,11 +156,11 @@ public class KundeRepo {
     List<Kunde> alleKunder = new ArrayList<>();
 
     try {
-      String QUERY = "SELECT * FROM kunde";
+      String QUERY = "SELECT CPR FROM kunde";
       PreparedStatement preparedStatement = DCM.prepareStatement(QUERY);
       ResultSet resultSet = preparedStatement.executeQuery();
       while (resultSet.next()) {
-        int CPR = resultSet.getInt("CPR");
+        int CPR = resultSet.getInt(1);
         Kunde kunde = viewKunde(CPR);
         alleKunder.add(kunde);
       }

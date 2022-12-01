@@ -6,7 +6,7 @@ public enum SkadeType {
     MANGLE_NØGLE(3),
     LAKTFELT(4),
     RIDSET_ALUFÆLGE(5),
-    NY_FORRUDE(5);
+    NY_FORRUDE(6);
 
 
 
@@ -18,6 +18,23 @@ public enum SkadeType {
 
     public int getId() {
         return Id;
+    }
+
+    public static SkadeType getEnum(int Skadetype_ID) {
+        switch (Skadetype_ID) {
+            case 1:
+                return SkadeType.STENSLAG;
+            case 2:
+                return SkadeType.FLERE_STENSLAG;
+            case 3:
+                return SkadeType.MANGLE_NØGLE;
+            case 4:
+                return SkadeType.LAKTFELT;
+            case 5:
+                return SkadeType.RIDSET_ALUFÆLGE;
+            default:
+                return SkadeType.NY_FORRUDE;
+        }
     }
 }
 

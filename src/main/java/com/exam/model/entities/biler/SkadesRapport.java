@@ -12,6 +12,9 @@ public class SkadesRapport {
     private double Kørselsdistance;
     private LejeAftale lejeaftalen;
 
+    public SkadesRapport(int Skadesrapport_ID) {
+        this.Skadesrapport_ID = Skadesrapport_ID;
+    }
 
     //Getters,Setters and toString
 

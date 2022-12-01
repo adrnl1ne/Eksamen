@@ -49,7 +49,7 @@ public class BilRepo {
     //Jakob
     public Bil ViewBil(String Stelnummer) {
         try {
-            String Model_QUERY = " SELECT * FROM Bil WHERE Stelnummer=?";
+            String Model_QUERY = "SELECT * FROM Bil WHERE Stelnummer=?";
             PreparedStatement preparedStatement = DCM.prepareStatement(Model_QUERY);
             preparedStatement.setString(1, Stelnummer);
             ResultSet resultSet = preparedStatement.executeQuery();

@@ -8,6 +8,10 @@ public class Skade {
     private SkadeType Type;
     private double Price;
 
+    public Skade(int Skade_ID) {
+        this.Skade_ID = Skade_ID;
+    }
+
     //getters ,setters og toStrings
 
     public int getSkade_ID() {

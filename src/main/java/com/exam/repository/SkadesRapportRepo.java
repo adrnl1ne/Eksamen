@@ -1,8 +1,7 @@
 package com.exam.repository;
 
 
-import com.exam.model.entities.biler.Skade;
-import com.exam.model.entities.biler.SkadesRapport;
+import com.exam.model.entities.biler.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -113,30 +112,173 @@ public class SkadesRapportRepo {
   // Marcus
   public SkadesRapport viewSkadesRapport(int Skaderapport_ID) {
 
-    return null;
+    try {
+      String skadesRapportQUERY = "SELECT * FROM skadesrapport WHERE Skaderapport_ID = ?";
+      PreparedStatement preparedStatement = DCM.prepareStatement(skadesRapportQUERY);
+      preparedStatement.setInt(1, Skaderapport_ID);
+      ResultSet resultSet = preparedStatement.executeQuery();
+      if (resultSet.next()) {
+        SkadesRapport skadesRapport = new SkadesRapport(Skaderapport_ID);
+        int lejeAftale_ID = resultSet.getInt("Lejeaftale_ID");
+        LejeAftale lejeAftale = new LejeaftaleRepo().viewLejeaftale(lejeAftale_ID);
+        skadesRapport.setLejeaftalen(lejeAftale);
+
+        String stelnummer = resultSet.getString("Stelnummer");
+        Bil bil = new BilRepo().ViewBil(stelnummer);
+        skadesRapport.setBilen(bil);
+
+        Date afleveringsdato = resultSet.getDate("Afleveringsdato");
+        skadesRapport.setAfleveringsdate(afleveringsdato);
+
+        double kørselsdistance = resultSet.getDouble("Kørselsdistance");
+        skadesRapport.setKørselsdistance(kørselsdistance);
+
+        List<Skade> rapportensSkader = this.viewAlleSkader(skadesRapport);
+        skadesRapport.setSkader(rapportensSkader);
+
+        return skadesRapport;
+      }
+      return null;
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+      System.err.println("Det var ikke muligt at view, altså Select, en SkadesRapport med ID'et: " + Skaderapport_ID);
+      throw new RuntimeException();
+    }
+  }
+
+  private List<Skade> viewAlleSkader(SkadesRapport skadesRapport) {
+    List<Skade> skader = new ArrayList<>();
+    int skadesRapport_ID = skadesRapport.getSkadesrapport_ID();
+    try {
+      String skadeQUERY = "SELECT Skade_ID FROM skade WHERE Skaderapport_ID = ?";
+      PreparedStatement preparedStatement = DCM.prepareStatement(skadeQUERY);
+      preparedStatement.setInt(1, skadesRapport_ID);
+      ResultSet resultSet = preparedStatement.executeQuery();
+      while (resultSet.next()) {
+        int Skade_ID = resultSet.getInt(1);
+        Skade skade = this.viewSkade(Skade_ID);
+        if (skade != null) {
+          skade.setSkadesrapporten(skadesRapport);
+          skader.add(skade);
+        }
+      }
+      return skader;
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+      System.err.println("Det var ikke muligt at view alle skader for SkadeRapporten: " + skadesRapport);
+      throw new RuntimeException();
+    }
   }
 
   // Marcus
   private Skade viewSkade(int Skade_ID) {
+    try {
+      String skadeQUERY = "SELECT * FROM skade WHERE Skade_ID = ?";
+      PreparedStatement preparedStatement = DCM.prepareStatement(skadeQUERY);
+      preparedStatement.setInt(1, Skade_ID);
+      ResultSet resultSet = preparedStatement.executeQuery();
 
-    return null;
+      if (resultSet.next()) {
+        Skade skade = new Skade(Skade_ID);
+
+        int SkadesRapport_ID = resultSet.getInt("Skadesrapport_ID"); // Kan ikke bruge denne værdi, da hvis jeg laver en SkadesRapport med den, så vil den køre i selvsving
+
+        int SkadeType_ID = resultSet.getInt("Skadetype_ID");
+        SkadeType skadeType = SkadeType.getEnum(SkadeType_ID);
+        skade.setType(skadeType);
+
+        double pris = resultSet.getInt("Pris");
+        skade.setPrice(pris);
+
+        return skade;
+      }
+      return null;
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+      System.err.println("Det var ikke muligt at view en Skade med ID'et: " + Skade_ID);
+      throw new RuntimeException();
+    }
   }
 
   // Marcus
   public List<SkadesRapport> viewAlleSkadesRapporter() {
     List<SkadesRapport> skadesRapporter = new ArrayList<>();
-
+    try {
+      String alleRapporterQUERY = "SELECT Skaderapport_ID FROM skadesrapport";
+      PreparedStatement preparedStatement = DCM.prepareStatement(alleRapporterQUERY);
+      ResultSet resultSet = preparedStatement.executeQuery();
+      while (resultSet.next()) {
+        int SkadesRapport_ID = resultSet.getInt(1);
+        SkadesRapport rapport = this.viewSkadesRapport(SkadesRapport_ID);
+        if (rapport != null) {
+          skadesRapporter.add(rapport);
+        }
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+      System.err.println("Det var ikke muligt at view, altså Select, alle SkadesRapporter.");
+    }
     return skadesRapporter;
   }
 
   // Marcus
   public void updateSkadesRapport(SkadesRapport skadesRapport) {
+    // Finder de værdier i en SkadesRapport, som skal gemmes i SkadesRapport Tabellen
+    int skadesRapport_ID = skadesRapport.getSkadesrapport_ID();
+    int lejeAftale_ID = skadesRapport.getLejeaftalen().getLejeAftale_ID();
+    String stelnummer = skadesRapport.getBilen().getStelnummer();
+    Date afleveringsDato = skadesRapport.getAfleveringsdate();
+    double kørselsdistance = skadesRapport.getKørselsdistance();
 
+    // updater værdierne der lige er blevet fundet
+    try {
+      String updateQUERY = "UPDATE skadesrapport Set Lejeaftale_ID = ?, Stelnummer = ?, Afleveringsdato = ?, Kørselsdistance = ? WHERE Skaderapport_ID = ?";
+      PreparedStatement preparedStatement = DCM.prepareStatement(updateQUERY);
+      preparedStatement.setInt(1, lejeAftale_ID);
+      preparedStatement.setString(2, stelnummer);
+      preparedStatement.setDate(3, (java.sql.Date) afleveringsDato);
+      preparedStatement.setDouble(4, kørselsdistance);
+      preparedStatement.setInt(5, skadesRapport_ID);
+      preparedStatement.executeUpdate();
+    } catch (SQLException e) {
+      e.printStackTrace();
+      System.err.println("Det var ikke muligt at Update SkadesRapporten: " + skadesRapport);
+      throw new RuntimeException();
+    }
+
+    // Finder alle de skader en SkadeRapport har og updater dem, samt creater dem som er nye
+    List<Skade> skader = skadesRapport.getSkader();
+    for (Skade skade : skader) {
+      updateSkade(skade);
+    }
   }
 
   // Marcus
   private void updateSkade(Skade skade) {
+    // Finder de værdier en skade har til at blive updated, sat ind i tabellen i stedet for hvad den skades værdi har i øjeblikket
+    int skade_ID = skade.getSkade_ID();
+    double pris = skade.getPrice();
 
+    // Hvis en skades ID er 0 så må den være ny den skade vil blive Created
+    if (skade_ID <= 0) {
+      this.updateSkade(skade);
+    } // Ellers updates skaden bare, som dens nye pris er, ikke muligt at skifte en skades type eller skaderapport
+    else {
+      try {
+        String updateQUERY = "UPDATE skade SET Pris = ? WHERE Skade_ID = ?";
+        PreparedStatement preparedStatement = DCM.prepareStatement(updateQUERY);
+        preparedStatement.setDouble(1, pris);
+        preparedStatement.setInt(2, skade_ID);
+        preparedStatement.executeUpdate();
+      } catch (SQLException e) {
+        e.printStackTrace();
+        System.err.println("Det var ikke muligt at update Skaden: " + skade);
+        throw new RuntimeException();
+      }
+    }
   }
 
   // Marcus
@@ -149,6 +291,19 @@ public class SkadesRapportRepo {
     } catch (SQLException e) {
       e.printStackTrace();
       System.err.println("Det var ikke muligt at fjerne, altså Delete, SkadesRapporten: " + skadesRapport);
+      throw new RuntimeException();
+    }
+  }
+
+  public void deleteSkade(Skade skade) {
+    try {
+      String deleteQUERY = "DELETE FROM skade WHERE Skade_ID = ?";
+      PreparedStatement preparedStatement = DCM.prepareStatement(deleteQUERY);
+      preparedStatement.setInt(1, skade.getSkade_ID());
+      preparedStatement.executeUpdate();
+    } catch (SQLException e) {
+      e.printStackTrace();
+      System.err.println("Det var ikke muligt at fjerne, altså Delete, Skaden: " + skade);
       throw new RuntimeException();
     }
   }
