@@ -308,4 +308,54 @@ public class SkadesRapportRepo {
     }
   }
 
+  public List<SkadeType> viewAlleSkadeTyper(SkadesRapport rapport) {
+    // Finder de SkadeTyper, som kun må rapporteres efter at en anden er blevet rapporteret
+    SkadeType stenslag = SkadeType.STENSLAG;
+    SkadeType flereStenslag = SkadeType.FLERE_STENSLAG;
+
+
+    List<SkadeType> skadeTyper = this.viewAlleSkadeTyper();
+    List<Skade> rapportensSkader = rapport.getSkader();
+    List<SkadeType> valideSkadeTyper = new ArrayList<>();
+
+
+    for (SkadeType skadeType : skadeTyper) {
+      int antalEnSkadeTypeKanRapportes = skadeType.getTimesTypeCanBeReported();
+
+      for (Skade skade : rapportensSkader) {
+        SkadeType rapportensSkadesType = skade.getType();
+        if (rapportensSkadesType == skadeType) {
+          antalEnSkadeTypeKanRapportes--;
+          if (skadeType == stenslag) {
+            valideSkadeTyper.add(flereStenslag);
+          }
+        }
+      }
+      if (antalEnSkadeTypeKanRapportes > 0) {
+        valideSkadeTyper.add(skadeType);
+      }
+    }
+
+    return valideSkadeTyper;
+  }
+
+  public List<SkadeType> viewAlleSkadeTyper() {
+    List<SkadeType> skadeTyper = new ArrayList<>();
+    try {
+      String selectQUERY = "SELECT Skadetype_Id FROM skadetype";
+      PreparedStatement preparedStatement = DCM.prepareStatement(selectQUERY);
+      ResultSet resultSet = preparedStatement.executeQuery();
+      while (resultSet.next()) {
+        int skadetype_ID = resultSet.getInt("Skadetype_Id");
+        SkadeType type = SkadeType.getEnum(skadetype_ID);
+        skadeTyper.add(type);
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+      System.err.println("Det var ikke muligt at view, altså Select, alle SkadeTyper");
+      throw new RuntimeException();
+    }
+    return skadeTyper;
+  }
+
 }

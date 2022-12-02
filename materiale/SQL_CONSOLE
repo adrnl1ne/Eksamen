@@ -12,6 +12,12 @@ CREATE TABLE Mærke
     Mærket      varchar(50) UNIQUE  NOT NULL
 );
 
+INSERT INTO bilabnmt.mærke (Bilmærke_ID, Mærket) VALUES
+                                                     (1, 'Citroën'),
+                                                     (2, 'Fiat'),
+                                                     (3, 'Peugeot'),
+                                                     (4, 'DS');
+
 CREATE TABLE EnergiType
 (
     EnergiType_ID tinyint(3) PRIMARY KEY NOT NULL,
@@ -175,8 +181,12 @@ CREATE TABLE Abnmt
     FOREIGN KEY (Lejeaftale_ID) REFERENCES LejeAftale (Lejeaftale_ID) ON DELETE CASCADE
 );
 
+CREATE TRIGGER bilabnmt.delete_on_bil
+    AFTER DELETE
+    ON bilabnmt.bil FOR EACH ROW
+    DELETE FROM bilabnmt.skadesrapport WHERE skadesrapport.Stelnummer IS NULL AND skadesrapport.Lejeaftale_ID IS NULL;
 
-CREATE TRIGGER Rapporttest
-    AFTER UPDATE
-    ON Skadesrapport FOR EACH ROW
-    DELETE FROM skadesrapport WHERE Stelnummer AND Lejeaftale_ID IS NULL
+CREATE TRIGGER bilabnmt.delete_on_lejeaftale
+    AFTER DELETE
+    ON bilabnmt.lejeaftale FOR EACH ROW
+    DELETE FROM bilabnmt.skadesrapport WHERE skadesrapport.Stelnummer IS NULL AND skadesrapport.Lejeaftale_ID IS NULL;
