@@ -39,7 +39,7 @@ public class LejeaftaleRepo {
     KontaktInfo kontakt = lejeAftale.getKontakt();
 
     int lejeaftalens_ID;
-    int CPR = lejeAftale.getKunden().getCprnumber();
+    String CPR = lejeAftale.getKunden().getCprnumber();
 
     String stelnummer = lejeAftale.getBilen().getStelnummer();
     Date startDato = lejeAftale.getStartDate();
@@ -48,7 +48,7 @@ public class LejeaftaleRepo {
     try {
       String QUERY = "INSERT INTO lejeaftale (CPR, Stelnummer, StartDato, Nummerplade) VALUES (?, ?, ?, ?)";
       PreparedStatement preparedStatement = DCM.prepareStatement(QUERY);
-      preparedStatement.setInt(1, CPR);
+      preparedStatement.setString(1, CPR);
       preparedStatement.setString(2, stelnummer);
       preparedStatement.setDate(3, (java.sql.Date) startDato);
       preparedStatement.setString(4, nummerplade);
@@ -79,13 +79,13 @@ public class LejeaftaleRepo {
   // Marcus
   private void createKontaktinfo(KontaktInfo kontakt) {
     int lejeaftalens_ID = kontakt.getKundensAftale().getLejeAftale_ID();
-    int CPR = kontakt.getKundensAftale().getKunden().getCprnumber();
+    String CPR = kontakt.getKundensAftale().getKunden().getCprnumber();
     String fornavn = kontakt.getFirstName();
     String efternavn = kontakt.getLastName();
     String adresse = kontakt.getAddress();
     int postNr = kontakt.getPostnr();
     String email = kontakt.getEmail();
-    int mobil = kontakt.getMobilnumber();
+    int mobil = kontakt.getMobilNumber();
     String by = kontakt.getCity();
 
     try {
@@ -93,7 +93,7 @@ public class LejeaftaleRepo {
       String kontaktQUERY = "INSERT INTO kontaktinfo (Lejeaftale_ID, CPR, Fornavn, Efternavn, Adresse, Postnr, Mail, Mobil, By) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
       PreparedStatement preparedStatement4 = DCM.prepareStatement(kontaktQUERY);
       preparedStatement4.setInt(1, lejeaftalens_ID);
-      preparedStatement4.setInt(2, CPR);
+      preparedStatement4.setString(2, CPR);
       preparedStatement4.setString(3, fornavn);
       preparedStatement4.setString(4, efternavn);
       preparedStatement4.setString(5, adresse);
@@ -195,7 +195,7 @@ public class LejeaftaleRepo {
           }
         }
 
-        int CPR = resultSet.getInt("CPR");
+        String CPR = resultSet.getString("CPR");
         kunden = new KundeRepo().viewKunde(CPR);
         lejeAftalen.setKunden(kunden);
 
@@ -262,7 +262,7 @@ public class LejeaftaleRepo {
         kontaktInfo.setEmail(mail);
 
         int mobil = resultSet.getInt("Mobil");
-        kontaktInfo.setMobil(mobil);
+        kontaktInfo.setMobilNumber(mobil);
 
         String by = resultSet.getString("By");
         kontaktInfo.setCity(by);
@@ -398,7 +398,7 @@ public class LejeaftaleRepo {
 
     // Finder de værdier i en lejeAftale, som skal gemmes i LejeAftale Tabellen
     int lejeAftale_ID = lejeAftale.getLejeAftale_ID();
-    int CPR_Number = lejeAftale.getKunden().getCprnumber();
+    String CPR_Number = lejeAftale.getKunden().getCprnumber();
     String stelnummer = lejeAftale.getBilen().getStelnummer();
     Date startDato = lejeAftale.getStartDate();
     String nummerplade = lejeAftale.getNumberplate();
@@ -407,7 +407,7 @@ public class LejeaftaleRepo {
     try {
       String lejeAftaleQUERY = "UPDATE lejeaftale SET CPR = ?, Stelnummer = ?, StartDato = ?, Nummerplade = ? WHERE Lejeaftale_ID = ?";
       PreparedStatement preparedStatement = DCM.prepareStatement(lejeAftaleQUERY);
-      preparedStatement.setInt(1, CPR_Number);
+      preparedStatement.setString(1, CPR_Number);
       preparedStatement.setString(2, stelnummer);
       preparedStatement.setDate(3, (java.sql.Date) startDato);
       preparedStatement.setString(4, nummerplade);
@@ -514,21 +514,21 @@ public class LejeaftaleRepo {
     // Finder id'et til hvor i tabellen denne Levering skal updates
     int lejeAftale_ID = kontakt.getKundensAftale().getLejeAftale_ID();
 
-    // Finder alle de værdier der er i en lejeaftales levering, som så skal updates
-    int CPR = kontakt.getKunden().getCprnumber();
+    // Finder alle de værdier der er i en lejeaftales KontaktInfo, som så skal updates
+    String CPR = kontakt.getKunden().getCprnumber();
     String fornavn = kontakt.getFirstName();
     String efternavn = kontakt.getLastName();
     String adresse = kontakt.getAddress();
     int postnr = kontakt.getPostnr();
     String mail = kontakt.getEmail();
-    int mobil = kontakt.getMobil();
+    int mobil = kontakt.getMobilNumber();
     String by = kontakt.getCity();
 
     // Updater de fundne værdier med dem i tabellen
     try { // Mangler at indføre By
       String kontaktQUERY = "UPDATE kontaktinfo SET CPR = ?, Fornavn = ?, Efternavn = ?, Adresse = ?, Postnr = ?, Mail = ?, Mobil = ?, 'By' = ? WHERE Lejeaftale_ID = ?";
       PreparedStatement preparedStatement = DCM.prepareStatement(kontaktQUERY);
-      preparedStatement.setInt(1, CPR);
+      preparedStatement.setString(1, CPR);
       preparedStatement.setString(2, fornavn);
       preparedStatement.setString(3, efternavn);
       preparedStatement.setString(4, adresse);

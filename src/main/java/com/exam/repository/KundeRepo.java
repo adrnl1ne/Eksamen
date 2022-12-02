@@ -15,7 +15,7 @@ public class KundeRepo {
 
   // Marcus
   public void createKunde(Kunde kunde) {
-    int CPR = kunde.getCprnumber();
+    String CPR = kunde.getCprnumber();
     int regNum = kunde.getRegNum();
     int kontoNum = kunde.getKontoNum();
     boolean erNyKunde = true;
@@ -23,7 +23,7 @@ public class KundeRepo {
     try {
       String findKundeQUERY = "SELECT * FROM kunde WHERE CPR = ?";
       PreparedStatement prepStatement = DCM.prepareStatement(findKundeQUERY);
-      prepStatement.setInt(1, CPR);
+      prepStatement.setString(1, CPR);
       ResultSet resultSet = prepStatement.executeQuery();
       if (resultSet.next()) {
         erNyKunde = false;
@@ -38,7 +38,7 @@ public class KundeRepo {
       try {
         String QUERY = "INSERT INTO kunde (CPR, RegNum, KontoNum) VALUES (?, ?, ?)";
         PreparedStatement preparedStatement = DCM.prepareStatement(QUERY);
-        preparedStatement.setInt(1, CPR);
+        preparedStatement.setString(1, CPR);
         preparedStatement.setInt(2, regNum);
         preparedStatement.setInt(3, kontoNum);
         preparedStatement.executeUpdate();
@@ -56,12 +56,12 @@ public class KundeRepo {
   // Marcus
   private KontaktInfo findNyesteKontaktFor (Kunde kunde) {
     // Finder kundens primær nøgle, CPR
-    int CPR = kunde.getCprnumber();
+    String CPR = kunde.getCprnumber();
 
     try {
       String KontaktInfoQUERY = "SELECT * FROM kontaktinfo WHERE CPR = ?";
       PreparedStatement preparedStatement = DCM.prepareStatement(KontaktInfoQUERY);
-      preparedStatement.setInt(1, CPR);
+      preparedStatement.setString(1, CPR);
       ResultSet resultSet = preparedStatement.executeQuery();
       List<KontaktInfo> kontaktinformationer = new ArrayList<>();
       while (resultSet.next()) {
@@ -81,7 +81,7 @@ public class KundeRepo {
         String email = resultSet.getString("Mail");
         kontaktInfo.setEmail(email);
         int mobil = resultSet.getInt("Mobil");
-        kontaktInfo.setMobilnumber(mobil);
+        kontaktInfo.setMobilNumber(mobil);
         int counter = resultSet.getInt("Counter");
         kontaktInfo.setCounter(counter);
         kontaktinformationer.add(kontaktInfo);
@@ -112,14 +112,14 @@ public class KundeRepo {
   }
 
   // Marcus
-  public Kunde viewKunde(int CPR) {
+  public Kunde viewKunde(String CPR) {
     try {
       String KundeQUERY = "SELECT * FROM kunde WHERE CPR = ?";
       PreparedStatement preparedStatement = DCM.prepareStatement(KundeQUERY);
-      preparedStatement.setInt(1, CPR);
+      preparedStatement.setString(1, CPR);
       ResultSet resultSet = preparedStatement.executeQuery();
       if (resultSet.next()) {
-        int CPRNum = resultSet.getInt("CPR");
+        String CPRNum = resultSet.getString("CPR");
         int regNum = resultSet.getInt("RegNum");
         int kontoNum = resultSet.getInt("KontoNum");
         Kunde kunde = new Kunde(CPRNum);
@@ -128,14 +128,14 @@ public class KundeRepo {
 
         // Finder den nyeste kontaktinfo for denne kunde med det CPR som blev givet og giver det til vores kunde
         KontaktInfo nyesteKontaktInfo = this.findNyesteKontaktFor(kunde);
-        kunde.setNyestelinfo(nyesteKontaktInfo);
+        kunde.setNyesteInfo(nyesteKontaktInfo);
 
 
         // Tilføjer alle de Lejeaftaler en kunde har
         List<LejeAftale> lejeAftaler = new LejeaftaleRepo().viewAlleLejeaftaler();
         for (LejeAftale lejeAftale : lejeAftaler) {
-          int lejeAftalesKundesCPR = lejeAftale.getKunden().getCprnumber();
-          if (lejeAftalesKundesCPR == kunde.getCprnumber()) {
+          String lejeAftalesKundesCPR = lejeAftale.getKunden().getCprnumber();
+          if (lejeAftalesKundesCPR.equals(kunde.getCprnumber())) {
             lejeAftaler.add(lejeAftale);
           }
         }
@@ -160,7 +160,7 @@ public class KundeRepo {
       PreparedStatement preparedStatement = DCM.prepareStatement(QUERY);
       ResultSet resultSet = preparedStatement.executeQuery();
       while (resultSet.next()) {
-        int CPR = resultSet.getInt(1);
+        String CPR = resultSet.getString(1);
         Kunde kunde = viewKunde(CPR);
         alleKunder.add(kunde);
       }
@@ -176,14 +176,14 @@ public class KundeRepo {
   // Marcus
   public void updateKunde(Kunde kunde) {
     try {
-      int CPR = kunde.getCprnumber();
+      String CPR = kunde.getCprnumber();
       int regNum = kunde.getRegNum();
       int kontoNum = kunde.getKontoNum();
       String QUERY = "UPDATE kunde SET RegNum = ?, KontoNum = ? WHERE CPR = ?";
       PreparedStatement preparedStatement = DCM.prepareStatement(QUERY);
       preparedStatement.setInt(1, regNum);
       preparedStatement.setInt(2, kontoNum);
-      preparedStatement.setInt(3, CPR);
+      preparedStatement.setString(3, CPR);
       preparedStatement.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
@@ -194,10 +194,10 @@ public class KundeRepo {
 
   public void deleteKunde(Kunde kunde) {
     try {
-      int CPR = kunde.getCprnumber();
+      String CPR = kunde.getCprnumber();
       String QUERY = "DELETE FROM kunde WHERE CPR = ?";
       PreparedStatement preparedStatement = DCM.prepareStatement(QUERY);
-      preparedStatement.setInt(1, CPR);
+      preparedStatement.setString(1, CPR);
       preparedStatement.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();

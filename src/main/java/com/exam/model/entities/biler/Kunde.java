@@ -1,8 +1,5 @@
 package com.exam.model.entities.biler;
 
-import com.exam.model.entities.biler.KontaktInfo;
-import com.exam.model.entities.biler.LejeAftale;
-
 import java.util.List;
 
 public class Kunde {
@@ -10,16 +7,16 @@ public class Kunde {
 
     private KontaktInfo Nyestelinfo;
 
-    private int cprnumber;
+    private String cprnumber;
     private int RegNum;
     private int KontoNum;
 
-    public Kunde(LejeAftale lejeaftaler, KontaktInfo kontaktinfo, int CPR) {
+    public Kunde(LejeAftale lejeaftaler, KontaktInfo kontaktinfo, String CPR) {
         Nyestelinfo = kontaktinfo;
         cprnumber = CPR;
     }
 
-    public Kunde (int CPR) {
+    public Kunde (String CPR) {
         this.cprnumber = CPR;
     }
 
@@ -38,15 +35,15 @@ public class Kunde {
         return Nyestelinfo;
     }
 
-    public void setNyestelinfo(KontaktInfo nyestelinfo) {
+    public void setNyesteInfo(KontaktInfo nyestelinfo) {
         Nyestelinfo = nyestelinfo;
     }
 
-    public int getCprnumber() {
+    public String getCprnumber() {
         return cprnumber;
     }
 
-    public void setCprnumber(int cprnumber) {
+    public void setCprnumber(String cprnumber) {
         this.cprnumber = cprnumber;
     }
 

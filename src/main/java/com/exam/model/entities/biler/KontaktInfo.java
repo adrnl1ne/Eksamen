@@ -10,10 +10,8 @@ public class KontaktInfo {
     private int Postnr;
     private String City;
     private String Email;
-    private int Mobil;
     private int Counter;
-
-    private int Mobilnumber;
+    private int MobilNumber;
 
     public KontaktInfo(Kunde kunde) {
         this.Kunden = kunde;
@@ -90,12 +88,12 @@ public class KontaktInfo {
         Email = email;
     }
 
-    public int getMobilnumber() {
-        return Mobilnumber;
+    public int getMobilNumber() {
+        return MobilNumber;
     }
 
-    public void setMobilnumber(int mobilnumber) {
-        Mobilnumber = mobilnumber;
+    public void setMobilNumber(int mobilNumber) {
+        MobilNumber = mobilNumber;
     }
 
 
@@ -107,13 +105,7 @@ public class KontaktInfo {
         Counter = counter;
     }
 
-    public int getMobil() {
-        return Mobil;
-    }
 
-    public void setMobil(int mobil) {
-        Mobil = mobil;
-    }
 
     @Override
     public String toString() {
@@ -122,7 +114,7 @@ public class KontaktInfo {
                 ", LastName='" + LastName + '\'' +
                 ", Address='" + Address + '\'' +
                 ", Email='" + Email + '\'' +
-                ", Mobilnumber=" + Mobilnumber +
+                ", Mobilnumber=" + MobilNumber +
                 '}';
     }
 }
