@@ -1,11 +1,13 @@
 package com.exam.repository;
 
 import com.exam.model.entities.biler.*;
+import com.exam.utilities.RentingOutNoneReadyCarException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,16 +35,31 @@ public class LejeaftaleRepo {
   }
 
   // Marcus
-  public void createLejeaftale(LejeAftale lejeAftale) {
+  public void createLejeaftale(LejeAftale lejeAftale) throws RentingOutNoneReadyCarException {
+    int lejeaftalens_ID;
+
+    Bil potentielBilTilUdlejning = lejeAftale.getBilen();
+    BilTilstand lejeBilensTilstand = potentielBilTilUdlejning.getTilstand();
+
+    if (lejeBilensTilstand != BilTilstand.KLAR){
+      System.err.println("En LejeAftale forsøgte at udleje en bil med Tilstanden: " + lejeBilensTilstand + ", LejeAftalen der blev modtaget af metoden, createLejeAftale, var: " + lejeAftale);
+      throw new RentingOutNoneReadyCarException(potentielBilTilUdlejning.toString());
+    }
+
+    potentielBilTilUdlejning.setTilstand(BilTilstand.UDLEJET);
+    new BilRepo().updateBilModel(potentielBilTilUdlejning);
     Abonnement abonnement = lejeAftale.getAbonnement();
     Levering levering = lejeAftale.getLeveringen();
     KontaktInfo kontakt = lejeAftale.getKontakt();
-
-    int lejeaftalens_ID;
     String CPR = lejeAftale.getKunden().getCprnumber();
 
-    String stelnummer = lejeAftale.getBilen().getStelnummer();
-    Date startDato = lejeAftale.getStartDate();
+
+
+    String stelnummer = potentielBilTilUdlejning.getStelnummer();
+    LocalDate startDato = lejeAftale.getStartDate();
+    if (startDato == null) {
+      startDato = LocalDate.now();
+    }
     String nummerplade = lejeAftale.getNumberplate();
 
     try {
@@ -50,7 +67,7 @@ public class LejeaftaleRepo {
       PreparedStatement preparedStatement = DCM.prepareStatement(QUERY);
       preparedStatement.setString(1, CPR);
       preparedStatement.setString(2, stelnummer);
-      preparedStatement.setDate(3, (java.sql.Date) startDato);
+      preparedStatement.setDate(3, java.sql.Date.valueOf(startDato));
       preparedStatement.setString(4, nummerplade);
       preparedStatement.executeUpdate();
 
@@ -203,7 +220,7 @@ public class LejeaftaleRepo {
         Bil udlejetBil = new BilRepo().ViewBil(stelnummer);
         lejeAftalen.setBilen(udlejetBil);
 
-        Date startDato = resultSet.getDate("StartDato");
+        LocalDate startDato = resultSet.getDate("StartDato").toLocalDate();
         lejeAftalen.setStartDate(startDato);
         String nummerplade = resultSet.getString("Nummerplade");
         lejeAftalen.setNumberplate(nummerplade);
@@ -400,7 +417,7 @@ public class LejeaftaleRepo {
     int lejeAftale_ID = lejeAftale.getLejeAftale_ID();
     String CPR_Number = lejeAftale.getKunden().getCprnumber();
     String stelnummer = lejeAftale.getBilen().getStelnummer();
-    Date startDato = lejeAftale.getStartDate();
+    LocalDate startDato = lejeAftale.getStartDate();
     String nummerplade = lejeAftale.getNumberplate();
 
     // updater værdierne der lige er blevet fundet
@@ -409,7 +426,7 @@ public class LejeaftaleRepo {
       PreparedStatement preparedStatement = DCM.prepareStatement(lejeAftaleQUERY);
       preparedStatement.setString(1, CPR_Number);
       preparedStatement.setString(2, stelnummer);
-      preparedStatement.setDate(3, (java.sql.Date) startDato);
+      preparedStatement.setDate(3, java.sql.Date.valueOf(startDato));
       preparedStatement.setString(4, nummerplade);
       preparedStatement.setInt(5, lejeAftale_ID);
       preparedStatement.executeUpdate();

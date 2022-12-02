@@ -1,6 +1,6 @@
 package com.exam.model.entities.biler;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class LejeAftale {
     private int LejeAftale_ID;
@@ -10,7 +10,7 @@ public class LejeAftale {
     private Levering Leveringen;
     private Kunde Kunden;
     private KontaktInfo Kontakt;
-    private Date StartDate;
+    private LocalDate StartDate;
     private String Numberplate;
 
     public LejeAftale(int Lejeaftale_ID) {
@@ -78,11 +78,11 @@ public class LejeAftale {
         Kontakt = kontakt;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return StartDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         StartDate = startDate;
     }
 
@@ -97,14 +97,15 @@ public class LejeAftale {
     @Override
     public String toString() {
         return "LejeAftale{" +
-                "LejeAftale_ID=" + LejeAftale_ID +
-                ", Bilen=" + Bilen +
-                ", Rapport=" + Rapport +
-                ", abonnement=" + abonnement +
-                ", Leveringen=" + Leveringen +
-                ", Kontakt=" + Kontakt +
-                ", StartDate='" + StartDate + '\'' +
-                ", Numberplate='" + Numberplate + '\'' +
-                '}';
+            "LejeAftale_ID=" + LejeAftale_ID +
+            ", Bilen=" + Bilen +
+            ", Rapport=" + Rapport +
+            ", abonnement=" + abonnement +
+            ", Leveringen=" + Leveringen +
+            ", Kunden=" + Kunden +
+            ", Kontakt=" + Kontakt +
+            ", StartDate=" + StartDate +
+            ", Numberplate='" + Numberplate + '\'' +
+            '}';
     }
 }

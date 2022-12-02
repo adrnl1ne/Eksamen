@@ -3,12 +3,9 @@ package com.exam.repository;
 
 import com.exam.model.entities.biler.*;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class SkadesRapportRepo {
@@ -21,7 +18,7 @@ public class SkadesRapportRepo {
       // Finder de værdier som skal Insertes i tabellen for Skadesrapporter
       int Lejeaftale_ID = skadesRapport.getLejeaftalen().getLejeAftale_ID();
       String Stelnummer = skadesRapport.getBilen().getStelnummer();
-      Date afleveringsdate = skadesRapport.getAfleveringsdate();
+      LocalDate afleveringsdate = skadesRapport.getAfleveringsdate();
       double kørselsdistance = skadesRapport.getKørselsdistance();
 
 
@@ -31,7 +28,7 @@ public class SkadesRapportRepo {
       PreparedStatement preparedStatement1 = DCM.prepareStatement(InsertQUERY);
       preparedStatement1.setInt(1, Lejeaftale_ID);
       preparedStatement1.setString(2, Stelnummer);
-      preparedStatement1.setDate(3, (java.sql.Date) afleveringsdate);
+      preparedStatement1.setDate(3, Date.valueOf(afleveringsdate));
       preparedStatement1.setDouble(4, kørselsdistance);
       preparedStatement1.executeUpdate();
 
@@ -127,7 +124,7 @@ public class SkadesRapportRepo {
         Bil bil = new BilRepo().ViewBil(stelnummer);
         skadesRapport.setBilen(bil);
 
-        Date afleveringsdato = resultSet.getDate("Afleveringsdato");
+        LocalDate afleveringsdato = resultSet.getDate("Afleveringsdato").toLocalDate();
         skadesRapport.setAfleveringsdate(afleveringsdato);
 
         double kørselsdistance = resultSet.getDouble("Kørselsdistance");
@@ -230,7 +227,7 @@ public class SkadesRapportRepo {
     int skadesRapport_ID = skadesRapport.getSkadesrapport_ID();
     int lejeAftale_ID = skadesRapport.getLejeaftalen().getLejeAftale_ID();
     String stelnummer = skadesRapport.getBilen().getStelnummer();
-    Date afleveringsDato = skadesRapport.getAfleveringsdate();
+    LocalDate afleveringsDato = skadesRapport.getAfleveringsdate();
     double kørselsdistance = skadesRapport.getKørselsdistance();
 
     // updater værdierne der lige er blevet fundet
@@ -239,7 +236,7 @@ public class SkadesRapportRepo {
       PreparedStatement preparedStatement = DCM.prepareStatement(updateQUERY);
       preparedStatement.setInt(1, lejeAftale_ID);
       preparedStatement.setString(2, stelnummer);
-      preparedStatement.setDate(3, (java.sql.Date) afleveringsDato);
+      preparedStatement.setDate(3, java.sql.Date.valueOf(afleveringsDato));
       preparedStatement.setDouble(4, kørselsdistance);
       preparedStatement.setInt(5, skadesRapport_ID);
       preparedStatement.executeUpdate();

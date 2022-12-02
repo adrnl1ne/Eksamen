@@ -1,6 +1,6 @@
 package com.exam.model.entities.biler;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 public class SkadesRapport {
@@ -8,7 +8,7 @@ public class SkadesRapport {
     private Bil Bilen;
     private List<Skade> Skader;
     private LejeAftale Lejeaftalen;
-    private Date Afleveringsdate;
+    private LocalDate Afleveringsdate;
     private double Kørselsdistance;
     private LejeAftale lejeaftalen;
 
@@ -55,11 +55,11 @@ public class SkadesRapport {
     }
 
 
-    public Date getAfleveringsdate() {
+    public LocalDate getAfleveringsdate() {
         return Afleveringsdate;
     }
 
-    public void setAfleveringsdate(Date afleveringsdate) {
+    public void setAfleveringsdate(LocalDate afleveringsdate) {
         Afleveringsdate = afleveringsdate;
     }
 
@@ -75,12 +75,12 @@ public class SkadesRapport {
     public String toString() {
         return "SkadesRapport{" +
                 "Skadesrapport_ID=" + Skadesrapport_ID +
-                ", Bilen=" + Bilen +
+                ", Bilen=" + Bilen.toString() +
                 ", Skader=" + Skader +
-                ", Lejeaftalen=" + Lejeaftalen +
-                ", Afleveringsdate=" + Afleveringsdate +
+                ", Lejeaftalen=" + Lejeaftalen.toString() +
+                ", Afleveringsdate=" + Afleveringsdate.toString() +
                 ", Kørselsdistance=" + Kørselsdistance +
-                ", lejeaftalen=" + lejeaftalen +
+                ", lejeaftalen=" + lejeaftalen.toString() +
                 '}';
     }
 }
