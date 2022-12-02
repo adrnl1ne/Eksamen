@@ -16,8 +16,8 @@ public class KundeRepo {
   // Marcus
   public void createKunde(Kunde kunde) {
     String CPR = kunde.getCprnumber();
-    int regNum = kunde.getRegNum();
-    int kontoNum = kunde.getKontoNum();
+    String regNum = kunde.getRegNum();
+    String kontoNum = kunde.getKontoNum();
     boolean erNyKunde = true;
 
     try {
@@ -39,8 +39,8 @@ public class KundeRepo {
         String QUERY = "INSERT INTO kunde (CPR, RegNum, KontoNum) VALUES (?, ?, ?)";
         PreparedStatement preparedStatement = DCM.prepareStatement(QUERY);
         preparedStatement.setString(1, CPR);
-        preparedStatement.setInt(2, regNum);
-        preparedStatement.setInt(3, kontoNum);
+        preparedStatement.setString(2, regNum);
+        preparedStatement.setString(3, kontoNum);
         preparedStatement.executeUpdate();
       } catch (SQLException e) {
         e.printStackTrace();
@@ -120,8 +120,8 @@ public class KundeRepo {
       ResultSet resultSet = preparedStatement.executeQuery();
       if (resultSet.next()) {
         String CPRNum = resultSet.getString("CPR");
-        int regNum = resultSet.getInt("RegNum");
-        int kontoNum = resultSet.getInt("KontoNum");
+        String regNum = resultSet.getString("RegNum");
+        String kontoNum = resultSet.getString("KontoNum");
         Kunde kunde = new Kunde(CPRNum);
         kunde.setRegNum(regNum);
         kunde.setKontoNum(kontoNum);
@@ -177,12 +177,12 @@ public class KundeRepo {
   public void updateKunde(Kunde kunde) {
     try {
       String CPR = kunde.getCprnumber();
-      int regNum = kunde.getRegNum();
-      int kontoNum = kunde.getKontoNum();
+      String regNum = kunde.getRegNum();
+      String kontoNum = kunde.getKontoNum();
       String QUERY = "UPDATE kunde SET RegNum = ?, KontoNum = ? WHERE CPR = ?";
       PreparedStatement preparedStatement = DCM.prepareStatement(QUERY);
-      preparedStatement.setInt(1, regNum);
-      preparedStatement.setInt(2, kontoNum);
+      preparedStatement.setString(1, regNum);
+      preparedStatement.setString(2, kontoNum);
       preparedStatement.setString(3, CPR);
       preparedStatement.executeUpdate();
     } catch (SQLException e) {

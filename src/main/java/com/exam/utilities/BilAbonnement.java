@@ -15,11 +15,13 @@ public class BilAbonnement {
 
 
 
+  // Marcus
   private BilAbonnement() {
 
   }
 
 
+  // Marcus
   public static LejeAftale simulateLejeAftale() {
     // skab en tilfældig kunde med en kontaktinfo
     Kunde skabtKunde = simulateKundeInfo();
@@ -32,14 +34,235 @@ public class BilAbonnement {
   }
 
   private static Kunde simulateKundeInfo() {
-
-    return null;
+    List<Kunde> potentieleKunder = getKunder();
+    int randomNum = getRandomNum(potentieleKunder.size());
+    return potentieleKunder.get(randomNum);
   }
 
+
+
+
+
+
+  // MARCUS: alle disse get kunder metoder er lavet af mig
+  private static List<Kunde> getKunder () {
+    List<Kunde> kundeList = new ArrayList<>();
+
+    Kunde kunde1 = getKunde1();
+    kundeList.add(kunde1);
+
+    Kunde kunde2 = getKunde2();
+    kundeList.add(kunde2);
+
+    Kunde kunde3 = getKunde3();
+    kundeList.add(kunde3);
+
+    Kunde kunde4 = getKunde4();
+    kundeList.add(kunde4);
+
+    Kunde kunde5 = getKunde5();
+    kundeList.add(kunde5);
+
+    Kunde kunde6 = getKunde6();
+    kundeList.add(kunde6);
+
+    Kunde kunde7 = getKunde7();
+    kundeList.add(kunde7);
+
+    Kunde kunde8 = getKunde8();
+    kundeList.add(kunde8);
+
+    Kunde kunde9 = getKunde9();
+    kundeList.add(kunde9);
+
+    Kunde kunde10 = getKunde10();
+    kundeList.add(kunde10);
+
+    return kundeList;
+  }
+  private static Kunde getKunde10() {
+    Kunde kunde10 = new Kunde("311201-5119");
+    kunde10.setRegNum("0000");
+    kunde10.setKontoNum("4973620183");
+    KontaktInfo kontaktInfo10 = new KontaktInfo(kunde10);
+    kunde10.setNyesteInfo(kontaktInfo10);
+    kontaktInfo10.setFirstName("Anders");
+    kontaktInfo10.setAddress("Snaregade 8, 1.");
+    kontaktInfo10.setPostnr(1205);
+    kontaktInfo10.setCity("København K");
+
+    int randomNum = getRandomNum(20, 1);
+    if (randomNum < 15) {
+      kontaktInfo10.setLastName("Sand");
+      kontaktInfo10.setEmail("sand@email.dk");
+      kontaktInfo10.setMobilNumber(98342716);
+    } else {
+      kontaktInfo10.setLastName("White");
+      kontaktInfo10.setEmail("white@email.com");
+      kontaktInfo10.setMobilNumber(35825616);
+    }
+    return kunde10;
+  }
+  private static Kunde getKunde9() {
+    Kunde kunde9 = new Kunde("061200-1115");
+    kunde9.setRegNum("9999");
+    kunde9.setKontoNum("9836291204");
+    KontaktInfo kontaktInfo9 = new KontaktInfo(kunde9);
+    kunde9.setNyesteInfo(kontaktInfo9);
+    kontaktInfo9.setFirstName("Sophie");
+    kontaktInfo9.setLastName("Blomster");
+    kontaktInfo9.setEmail("Soph99@email.dk");
+    kontaktInfo9.setAddress("Læderstræde 32B");
+    kontaktInfo9.setPostnr(1201);
+    kontaktInfo9.setCity("København K");
+    kontaktInfo9.setMobilNumber(53762938);
+    return kunde9;
+  }
+  private static Kunde getKunde8() {
+    Kunde kunde8 = new Kunde("200655-2356");
+    kunde8.setRegNum("8888");
+    kunde8.setKontoNum("6923405868");
+    KontaktInfo kontaktInfo8 = new KontaktInfo(kunde8);
+    kunde8.setNyesteInfo(kontaktInfo8);
+    kontaktInfo8.setFirstName("Gertrud");
+    kontaktInfo8.setLastName("Hildebrand");
+
+    kontaktInfo8.setAddress("Naboløs 4");
+    kontaktInfo8.setPostnr(1206);
+    kontaktInfo8.setCity("København K");
+
+    int randomNum = getRandomNum(5, 1);
+    if (randomNum < 3) {
+      kontaktInfo8.setEmail("brand@email.dk");
+      kontaktInfo8.setMobilNumber(73452651);
+    } else {
+      kontaktInfo8.setEmail("hildebrand@email.com");
+      kontaktInfo8.setMobilNumber(88453658);
+    }
+    return kunde8;
+  }
+  private static Kunde getKunde7() {
+    Kunde kunde7 = new Kunde("050506-2415");
+    kunde7.setRegNum("7777");
+    kunde7.setKontoNum("8373920671");
+    KontaktInfo kontaktInfo7 = new KontaktInfo(kunde7);
+    kunde7.setNyesteInfo(kontaktInfo7);
+    kontaktInfo7.setFirstName("Johan");
+    kontaktInfo7.setLastName("Buller");
+    kontaktInfo7.setMobilNumber(28595538);
+    int randomNum = getRandomNum(3, 1);
+    if (randomNum == 1) {
+      kontaktInfo7.setEmail("bøllebuller@email.dk");
+      kontaktInfo7.setAddress("Peter Fabers Gade 15, st. tv");
+      kontaktInfo7.setPostnr(2200);
+      kontaktInfo7.setCity("København N");
+    } else if (randomNum == 2) {
+      kontaktInfo7.setEmail("bul06@email.dk");
+      kontaktInfo7.setAddress("Peter Fabers Gade 15, st. tv");
+      kontaktInfo7.setPostnr(2200);
+      kontaktInfo7.setCity("København N");
+    } else {
+      kontaktInfo7.setEmail("bul06@email.dk");
+      kontaktInfo7.setAddress("Brolæggerstræde 5 4");
+      kontaktInfo7.setPostnr(1211);
+      kontaktInfo7.setCity("København K");
+    }
+    return kunde7;
+  }
+  private static Kunde getKunde6() {
+    Kunde kunde6 = new Kunde("010101-0101");
+    kunde6.setRegNum("6666");
+    kunde6.setKontoNum("9483729657");
+    KontaktInfo kontaktInfo6 = new KontaktInfo(kunde6);
+    kunde6.setNyesteInfo(kontaktInfo6);
+    kontaktInfo6.setFirstName("NumseManden");
+    kontaktInfo6.setLastName("HanNumseKan");
+    kontaktInfo6.setEmail("numsMigHer@email.anus");
+    kontaktInfo6.setAddress("Afføringstræde 8, 4. th");
+    kontaktInfo6.setPostnr(1666);
+    kontaktInfo6.setCity("Tarm");
+    kontaktInfo6.setMobilNumber(51535151);
+    return kunde6;
+  }
+  private static Kunde getKunde5() {
+    Kunde kunde5 = new Kunde("290402-6752");
+    kunde5.setRegNum("5555");
+    kunde5.setKontoNum("9856308931");
+    KontaktInfo kontaktInfo5 = new KontaktInfo(kunde5);
+    kunde5.setNyesteInfo(kontaktInfo5);
+    kontaktInfo5.setFirstName("Anna");
+    kontaktInfo5.setLastName("Rasmussen");
+
+    kontaktInfo5.setAddress("Gedstedvej 25");
+    kontaktInfo5.setPostnr(2770);
+    kontaktInfo5.setCity("Kastrup");
+    kontaktInfo5.setMobilNumber(29383746);
+    int randomNum = getRandomNum(1, 6);
+    if (randomNum < 4) {
+      kontaktInfo5.setEmail("mussen@email.dk");
+    } else {
+      kontaktInfo5.setEmail("anna@email.com");
+    }
+    return kunde5;
+  }
+  private static Kunde getKunde4() {
+    Kunde kunde4 = new Kunde("261000-1116");
+    kunde4.setRegNum("4444");
+    kunde4.setKontoNum("8735201907");
+    KontaktInfo kontaktInfo4 = new KontaktInfo(kunde4);
+    kunde4.setNyesteInfo(kontaktInfo4);
+    kontaktInfo4.setFirstName("Louise");
+    kontaktInfo4.setLastName("Gren");
+    kontaktInfo4.setEmail("gren@email.dk");
+    kontaktInfo4.setAddress("Olsbækdal 23");
+    kontaktInfo4.setPostnr(2670);
+    kontaktInfo4.setCity("Greve");
+    kontaktInfo4.setMobilNumber(38532091);
+    return kunde4;
+  }
+  private static Kunde getKunde3() {
+    Kunde kunde3 = new Kunde("270378-5566");
+    kunde3.setRegNum("3333");
+    kunde3.setKontoNum("1234567890");
+    KontaktInfo kontaktInfo3 = new KontaktInfo(kunde3);
+    kunde3.setNyesteInfo(kontaktInfo3);
+    kontaktInfo3.setFirstName("Grethe");
+    kontaktInfo3.setLastName("Hansen");
+    kontaktInfo3.setEmail("knallertGrethe@email.dk");
+    kontaktInfo3.setAddress("Fuglegårdsvej 22B");
+    kontaktInfo3.setPostnr(2820);
+    kontaktInfo3.setCity("Gentofte");
+    kontaktInfo3.setMobilNumber(75936769);
+    return kunde3;
+  }
+  private static Kunde getKunde2() {
+    Kunde kunde2 = new Kunde("061290-6666");
+    kunde2.setRegNum("2222");
+    kunde2.setKontoNum("2087654321");
+    KontaktInfo kontaktInfo2 = new KontaktInfo(kunde2);
+    kunde2.setNyesteInfo(kontaktInfo2);
+    kontaktInfo2.setFirstName("Marie");
+    kontaktInfo2.setLastName("Petersen");
+    kontaktInfo2.setEmail("marie@email.dk");
+
+    int randumNum = getRandomNum(20, 1);
+    if (randumNum <= 18) {
+      kontaktInfo2.setAddress("Frederiksvej 11B, 2.");
+      kontaktInfo2.setPostnr(2000);
+      kontaktInfo2.setCity("Frederiksberg");
+      kontaktInfo2.setMobilNumber(13752915);
+    } else {
+      kontaktInfo2.setAddress("Nørregade 4, st.");
+      kontaktInfo2.setPostnr(1165);
+      kontaktInfo2.setCity("København K");
+      kontaktInfo2.setMobilNumber(31355916);
+    }
+    return kunde2;
+  }
   private static Kunde getKunde1() {
     Kunde kunde1 = new Kunde("061200-1115");
-    kunde1.setRegNum(1111);
-    kunde1.setKontoNum(1234567890);
+    kunde1.setRegNum("1111");
+    kunde1.setKontoNum("1234567890");
     KontaktInfo kontaktInfo1 = new KontaktInfo(kunde1);
     kunde1.setNyesteInfo(kontaktInfo1);
     kontaktInfo1.setFirstName("Hans");
@@ -61,151 +284,7 @@ public class BilAbonnement {
     return kunde1;
   }
 
-  private static Kunde getKunde2() {
-    Kunde kunde2 = new Kunde("061290-6666");
-    kunde2.setRegNum(2222);
-    kunde2.setKontoNum(2087654321);
-    KontaktInfo kontaktInfo2 = new KontaktInfo(kunde2);
-    kunde2.setNyesteInfo(kontaktInfo2);
-    kontaktInfo2.setFirstName("Marie");
-    kontaktInfo2.setLastName("Petersen");
-    kontaktInfo2.setEmail("marie@email.dk");
 
-    int randumNum = getRandomNum(20, 1);
-    if (randumNum <= 18) {
-      kontaktInfo2.setAddress("Verstergade 29, 1. tv");
-      kontaktInfo2.setPostnr(1456);
-      kontaktInfo2.setCity("København K");
-      kontaktInfo2.setMobilNumber(15352515);
-    } else {
-
-    }
-    return kunde2;
-  }
-
-  private static List<Kunde> getKunder () {
-    List<Kunde> kundeList = new ArrayList<>();
-
-    Kunde kunde1 = getKunde1();
-    kundeList.add(kunde1);
-
-    Kunde kunde2 = getKunde2();
-    kundeList.add(kunde2);
-
-    Kunde kunde3 = new Kunde("061200-1115");
-    kunde3.setRegNum(1111);
-    kunde3.setKontoNum(1234567890);
-    KontaktInfo kontaktInfo3 = new KontaktInfo(kunde3);
-    kunde1.setNyesteInfo(kontaktInfo3);
-    kontaktInfo3.setFirstName("Hans");
-    kontaktInfo3.setLastName("Hansen");
-    kontaktInfo3.setEmail("hans@email.dk");
-    kontaktInfo3.setAddress("Verstergade 29, 1. tv");
-    kontaktInfo3.setPostnr(1456);
-    kontaktInfo3.setCity("København K");
-    kontaktInfo3.setMobilNumber(15352515);
-    kundeList.add(kunde3);
-
-    Kunde kunde4 = new Kunde("061200-1115");
-    kunde4.setRegNum(1111);
-    kunde4.setKontoNum(1234567890);
-    KontaktInfo kontaktInfo4 = new KontaktInfo(kunde4);
-    kunde1.setNyesteInfo(kontaktInfo4);
-    kontaktInfo4.setFirstName("Hans");
-    kontaktInfo4.setLastName("Hansen");
-    kontaktInfo4.setEmail("hans@email.dk");
-    kontaktInfo4.setAddress("Verstergade 29, 1. tv");
-    kontaktInfo4.setPostnr(1456);
-    kontaktInfo4.setCity("København K");
-    kontaktInfo4.setMobilNumber(15352515);
-    kundeList.add(kunde4);
-
-    Kunde kunde5 = new Kunde("061200-1115");
-    kunde5.setRegNum(1111);
-    kunde5.setKontoNum(1234567890);
-    KontaktInfo kontaktInfo5 = new KontaktInfo(kunde5);
-    kunde1.setNyesteInfo(kontaktInfo5);
-    kontaktInfo5.setFirstName("Hans");
-    kontaktInfo5.setLastName("Hansen");
-    kontaktInfo5.setEmail("hans@email.dk");
-    kontaktInfo5.setAddress("Verstergade 29, 1. tv");
-    kontaktInfo5.setPostnr(1456);
-    kontaktInfo5.setCity("København K");
-    kontaktInfo5.setMobilNumber(15352515);
-    kundeList.add(kunde5);
-
-    Kunde kunde6 = new Kunde("061200-1115");
-    kunde6.setRegNum(1111);
-    kunde6.setKontoNum(1234567890);
-    KontaktInfo kontaktInfo6 = new KontaktInfo(kunde6);
-    kunde1.setNyesteInfo(kontaktInfo6);
-    kontaktInfo6.setFirstName("Hans");
-    kontaktInfo6.setLastName("Hansen");
-    kontaktInfo6.setEmail("hans@email.dk");
-    kontaktInfo6.setAddress("Verstergade 29, 1. tv");
-    kontaktInfo6.setPostnr(1456);
-    kontaktInfo6.setCity("København K");
-    kontaktInfo6.setMobilNumber(15352515);
-    kundeList.add(kunde6);
-
-    Kunde kunde7 = new Kunde("061200-1115");
-    kunde7.setRegNum(1111);
-    kunde7.setKontoNum(1234567890);
-    KontaktInfo kontaktInfo7 = new KontaktInfo(kunde7);
-    kunde1.setNyesteInfo(kontaktInfo7);
-    kontaktInfo7.setFirstName("Hans");
-    kontaktInfo7.setLastName("Hansen");
-    kontaktInfo7.setEmail("hans@email.dk");
-    kontaktInfo7.setAddress("Verstergade 29, 1. tv");
-    kontaktInfo7.setPostnr(1456);
-    kontaktInfo7.setCity("København K");
-    kontaktInfo7.setMobilNumber(15352515);
-    kundeList.add(kunde7);
-
-    Kunde kunde8 = new Kunde("061200-1115");
-    kunde8.setRegNum(1111);
-    kunde8.setKontoNum(1234567890);
-    KontaktInfo kontaktInfo8 = new KontaktInfo(kunde8);
-    kunde1.setNyesteInfo(kontaktInfo8);
-    kontaktInfo8.setFirstName("Hans");
-    kontaktInfo8.setLastName("Hansen");
-    kontaktInfo8.setEmail("hans@email.dk");
-    kontaktInfo8.setAddress("Verstergade 29, 1. tv");
-    kontaktInfo8.setPostnr(1456);
-    kontaktInfo8.setCity("København K");
-    kontaktInfo8.setMobilNumber(15352515);
-    kundeList.add(kunde8);
-
-    Kunde kunde9 = new Kunde("061200-1115");
-    kunde9.setRegNum(1111);
-    kunde9.setKontoNum(1234567890);
-    KontaktInfo kontaktInfo9 = new KontaktInfo(kunde9);
-    kunde1.setNyesteInfo(kontaktInfo9);
-    kontaktInfo9.setFirstName("Hans");
-    kontaktInfo9.setLastName("Hansen");
-    kontaktInfo9.setEmail("hans@email.dk");
-    kontaktInfo9.setAddress("Verstergade 29, 1. tv");
-    kontaktInfo9.setPostnr(1456);
-    kontaktInfo9.setCity("København K");
-    kontaktInfo9.setMobilNumber(15352515);
-    kundeList.add(kunde9);
-
-    Kunde kunde10 = new Kunde("061200-1115");
-    kunde10.setRegNum(1111);
-    kunde10.setKontoNum(1234567890);
-    KontaktInfo kontaktInfo10 = new KontaktInfo(kunde10);
-    kunde1.setNyesteInfo(kontaktInfo10);
-    kontaktInfo10.setFirstName("Hans");
-    kontaktInfo10.setLastName("Hansen");
-    kontaktInfo10.setEmail("hans@email.dk");
-    kontaktInfo10.setAddress("Verstergade 29, 1. tv");
-    kontaktInfo10.setPostnr(1456);
-    kontaktInfo10.setCity("København K");
-    kontaktInfo10.setMobilNumber(15352515);
-    kundeList.add(kunde10);
-
-    return kundeList;
-  }
 
 
   // Metode der finder et random tal fra 0 til men ikke med et givet max tal

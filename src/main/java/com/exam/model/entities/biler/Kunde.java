@@ -8,8 +8,8 @@ public class Kunde {
     private KontaktInfo Nyestelinfo;
 
     private String cprnumber;
-    private int RegNum;
-    private int KontoNum;
+    private String RegNum;
+    private String KontoNum;
 
     public Kunde(LejeAftale lejeaftaler, KontaktInfo kontaktinfo, String CPR) {
         Nyestelinfo = kontaktinfo;
@@ -47,19 +47,19 @@ public class Kunde {
         this.cprnumber = cprnumber;
     }
 
-    public int getRegNum() {
+    public String getRegNum() {
         return RegNum;
     }
 
-    public void setRegNum(int regNum) {
+    public void setRegNum(String regNum) {
         RegNum = regNum;
     }
 
-    public int getKontoNum() {
+    public String getKontoNum() {
         return KontoNum;
     }
 
-    public void setKontoNum(int kontoNum) {
+    public void setKontoNum(String kontoNum) {
         KontoNum = kontoNum;
     }
 
