@@ -31,7 +31,7 @@ public class Kunde {
         this.lejeaftaler = lejeaftaler;
     }
 
-    public KontaktInfo getNyestelinfo() {
+    public KontaktInfo getNyesteinfo() {
         return Nyestelinfo;
     }
 

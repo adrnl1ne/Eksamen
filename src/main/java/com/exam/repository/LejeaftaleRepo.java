@@ -132,7 +132,7 @@ public class LejeaftaleRepo {
     int leveringsType_ID = levering.getType().getId();
     String leveringsAdresse = levering.getLeveringsadresse();
     String afleveringsAdresse = levering.getAfleveringsadress();
-    double kørtDistanceFørUdlejning = levering.getKørselDistanceInden();
+    double kørtDistanceFørUdlejning = levering.getLejeaftalen().getBilen().getKm_kørte();
     double transporttillæg = levering.getTransportTillæg();
 
     try {

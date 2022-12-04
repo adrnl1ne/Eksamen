@@ -17,6 +17,14 @@ public class LejeAftale {
         this.LejeAftale_ID = Lejeaftale_ID;
     }
 
+    public LejeAftale(Bil bilen, Kunde kunden) {
+        this.Bilen = bilen;
+        this.Kunden = kunden;
+        KontaktInfo kundensKontaktInfo = kunden.getNyesteinfo();
+        this.Kontakt = kundensKontaktInfo;
+        kundensKontaktInfo.setKundensAftale(this);
+    }
+
     // getters and setters og toString
 
 

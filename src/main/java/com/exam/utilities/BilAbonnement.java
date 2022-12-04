@@ -1,18 +1,22 @@
 package com.exam.utilities;
 
-import com.exam.model.entities.biler.KontaktInfo;
-import com.exam.model.entities.biler.Kunde;
-import com.exam.model.entities.biler.LejeAftale;
+import com.exam.model.entities.biler.*;
 import com.exam.repository.BilRepo;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+// Marcus: Alt inde i denne klasse er lavet af mig
 public class BilAbonnement {
 
   private static BilRepo bilRepo = new BilRepo();
-
+  private static final Connection DCM = com.exam.utilities.DCM.getConn();
 
 
   // Marcus
@@ -22,15 +26,279 @@ public class BilAbonnement {
 
 
   // Marcus
-  public static LejeAftale simulateLejeAftale() {
+  public static LejeAftale simulateLejeAftale() throws NoCarReadyToRentOutException {
     // skab en tilfældig kunde med en kontaktinfo
     Kunde skabtKunde = simulateKundeInfo();
 
     // Find en tilfældig bil der har tilstand KLAR
+    Bil enTilfældigKlarBil = simulateValgAfKlarBIL();
 
     // skab en Lejeaftale ud fra tilfældige valg
+    LejeAftale enSimuleretLejeAftale = simulateLejeAftaleValg(enTilfældigKlarBil, skabtKunde);
 
-    return null;
+    List<LejeAftale> kundensLejeAftaler = new ArrayList<>();
+    kundensLejeAftaler.add(enSimuleretLejeAftale);
+    skabtKunde.setLejeaftaler(kundensLejeAftaler);
+
+    return enSimuleretLejeAftale;
+  }
+
+
+
+
+  private static LejeAftale simulateLejeAftaleValg(Bil enTilfældigKlarBil, Kunde skabtKunde) {
+    LejeAftale simuleretLejeAftale = new LejeAftale(enTilfældigKlarBil, skabtKunde);
+
+    LocalDate simulatedStartDato = simulateDatoValg();
+    simuleretLejeAftale.setStartDate(simulatedStartDato);
+
+    String simulatedNummerplade = simulateNumberplate();
+    simuleretLejeAftale.setNumberplate(simulatedNummerplade);
+
+    Levering simulatedLevering = simulateLevering(simuleretLejeAftale);
+    simuleretLejeAftale.setLeveringen(simulatedLevering);
+
+    Abonnement simulatedAbonnement = simulateAbonnement(simuleretLejeAftale);
+    simuleretLejeAftale.setAbonnement(simulatedAbonnement);
+
+    return simuleretLejeAftale;
+  }
+
+  private static Abonnement simulateAbonnement(LejeAftale simuleretLejeAftale) {
+    Abonnement simuleretAbonnement = new Abonnement(simuleretLejeAftale);
+    AbonnementsPriser udlejetBilModelsAbonnement = simuleretLejeAftale.getBilen().getModel().getAbopris();
+    boolean isUnlimited = udlejetBilModelsAbonnement.isUnlimited();
+
+    double prisPrMd;
+    int abonnementslængde;
+    int kmPrMd;
+    if (isUnlimited) {
+      double[] månederOgPris = pickRandomAbonnement(udlejetBilModelsAbonnement);
+      prisPrMd = månederOgPris[0];
+      abonnementslængde = (int) månederOgPris[1];
+      kmPrMd = 1500;
+    } else {
+      prisPrMd = udlejetBilModelsAbonnement.getSiXMonthsPris();
+      abonnementslængde = 6;
+      kmPrMd = 2000;
+    }
+
+    double udbetaling = udlejetBilModelsAbonnement.getStartUdbetaling();
+    double farvePris = simulateFarveValg(udlejetBilModelsAbonnement);
+    double overAflPris = viewPrisliste("Overskredet Aflevering");
+    double prisPrKmOver = viewPrisliste("Per Overkørt km");
+
+    simuleretAbonnement.setUnlimited(isUnlimited);
+    simuleretAbonnement.setPriceprmonth(prisPrMd);
+    simuleretAbonnement.setAbonnementLængde(abonnementslængde);
+    simuleretAbonnement.setKmprMd(kmPrMd);
+    simuleretAbonnement.setUdbetaling(udbetaling);
+    simuleretAbonnement.setXtraColorprice(farvePris);
+    simuleretAbonnement.setAfleveringPrice(overAflPris);
+    simuleretAbonnement.setPriceForOverDrive(prisPrKmOver);
+
+    return simuleretAbonnement;
+  }
+
+  private static double simulateFarveValg(AbonnementsPriser udlejetBilsAbonnement) {
+    double farvePrisPrMd = udlejetBilsAbonnement.getPriceForColorChoice();
+    int randomNum = getRandomNum(4, 1);
+    if (randomNum == 4) {
+      return farvePrisPrMd;
+    }
+    return 0;
+  }
+
+  private static double[] pickRandomAbonnement(AbonnementsPriser udlejetBilModelsAbonnement) {
+    List<double[]> prisOgMånedList = new ArrayList<>();
+
+    double måneder;
+
+    double md3Pris = udlejetBilModelsAbonnement.getThreeMonthsPris();
+    if (md3Pris != 0){
+      måneder = 3;
+      double[] md3 = {md3Pris, måneder};
+      prisOgMånedList.add(md3);
+    }
+
+    double md6Pris = udlejetBilModelsAbonnement.getSiXMonthsPris();
+    if (md6Pris != 0){
+      måneder = 6;
+      double[] md6 = {md6Pris, måneder};
+      prisOgMånedList.add(md6);
+    }
+
+    double md12Pris = udlejetBilModelsAbonnement.getTwelveMonthsPrice();
+    if (md12Pris != 0){
+      måneder = 12;
+      double[] md12 = {md12Pris, måneder};
+      prisOgMånedList.add(md12);
+    }
+
+    double md24Pris = udlejetBilModelsAbonnement.getTwentyFourMonthsPrice();
+    if (md24Pris != 0){
+      måneder = 24;
+      double[] md24 = {md24Pris, måneder};
+      prisOgMånedList.add(md24);
+    }
+
+    double md36Pris = udlejetBilModelsAbonnement.getThirtysixMonthsPrice();
+    if (md36Pris != 0){
+      måneder = 36;
+      double[] md36 = {md36Pris, måneder};
+      prisOgMånedList.add(md36);
+    }
+
+    int randomNum = getRandomNum(prisOgMånedList.size());
+    return prisOgMånedList.get(randomNum);
+  }
+
+  private static Levering simulateLevering(LejeAftale simuleretLejeAftale) {
+    Levering simulatedLevering = new Levering(simuleretLejeAftale);
+    BilModel udlejetBilsModel = simuleretLejeAftale.getBilen().getModel();
+
+    LeveringsType simulatedLeveringsType = decideLeveringsType(udlejetBilsModel);
+    double transportTillæg = calculateTransportTillæg(simulatedLeveringsType);
+    String leveringsAdresse = simulateLeveringsAdresse(simulatedLeveringsType);
+    String afleveringsAdresse = leveringsAdresse;
+    double kørselsdistanceFørUdlejning = simuleretLejeAftale.getBilen().getKm_kørte();
+
+    simulatedLevering.setType(simulatedLeveringsType);
+    simulatedLevering.setTransportTillæg(transportTillæg);
+    simulatedLevering.setLeveringsadresse(leveringsAdresse);
+    simulatedLevering.setAfleveringsadress(afleveringsAdresse);
+    simulatedLevering.setKørselDistanceInden(kørselsdistanceFørUdlejning);
+
+    return simulatedLevering;
+  }
+
+  private static double viewPrisliste(String fakturaTekst) {
+    try {
+      String prislisteSelectQUERY = "SELECT Pris FROM prisliste WHERE FakturaTekst = ?";
+      PreparedStatement preparedStatement = DCM.prepareStatement(prislisteSelectQUERY);
+      preparedStatement.setString(1, fakturaTekst);
+      ResultSet resultSet = preparedStatement.executeQuery();
+      if (resultSet.next()) {
+        return resultSet.getDouble("Pris");
+      }
+      throw new SQLException();
+    } catch (SQLException e) {
+      e.printStackTrace();
+      System.err.println("Det var ikke muligt at view, altså Selecte, fra prisliste tabellen, en Pris hvor FakturaTekst: " + fakturaTekst);
+      throw new RuntimeException();
+    }
+  }
+
+  private static double calculateTransportTillæg(LeveringsType simulatedLeveringsType) {
+    if (simulatedLeveringsType == LeveringsType.STANDARD) {
+      return 0;
+    } else {
+      return viewPrisliste("Transporttillæg");
+    }
+  }
+
+  private static String simulateLeveringsAdresse(LeveringsType typeLevering) {
+    if (typeLevering == LeveringsType.FDM) {
+      return getRandomFDMAdresse();
+    } else {
+      return "Bilabonnement A/S - Rødrovre\nSlotsherrensvej 411C\n2619 Rødovre";
+    }
+  }
+
+  private static String getRandomFDMAdresse() {
+    int randomNum = getRandomNum(3, 1);
+    switch (randomNum) {
+      case 1:
+        return "DS STORE VIRUM\nVirumgårdsvej 4-10\n2830 Virum";
+      case 2:
+        return "DS SALON ODENSE\nBrondovej 13-15\n5250 Odense SV";
+      default:
+        return "DS SALON SILKEBORG\nNørrevænget 9-23\n8600 Silkeborg";
+    }
+  }
+
+  private static LeveringsType decideLeveringsType(BilModel udlejetBilsModel) {
+    String bilensMærke = udlejetBilsModel.getMærke();
+    switch (bilensMærke) {
+      case "DS":
+        return LeveringsType.FDM;
+      default:
+        return LeveringsType.STANDARD;
+    }
+  }
+
+  private static String simulateNumberplate() {
+    StringBuilder simuleretNummerplade = new StringBuilder();
+
+    for (int i = 0; i < 2; i++) {
+      simuleretNummerplade.append(pickRandomChar());
+    }
+    for (int i = 0; i < 5; i++) {
+      simuleretNummerplade.append(getRandomNum(10));
+    }
+    return simuleretNummerplade.toString();
+  }
+
+  private static char pickRandomChar() {
+    int randomNum = getRandomNum(28, 1);
+
+    return switch (randomNum) {
+      case 1 -> 'A';
+      case 2 -> 'B';
+      case 3 -> 'C';
+      case 4 -> 'D';
+      case 5 -> 'E';
+      case 6 -> 'F';
+      case 7 -> 'G';
+      case 8 -> 'H';
+      case 9 -> 'I';
+      case 10 -> 'J';
+      case 11 -> 'K';
+      case 12 -> 'L';
+      case 13 -> 'M';
+      case 14 -> 'N';
+      case 15 -> 'O';
+      case 16 -> 'P';
+      case 17 -> 'Q';
+      case 18 -> 'R';
+      case 19 -> 'S';
+      case 20 -> 'T';
+      case 21 -> 'U';
+      case 22 -> 'V';
+      case 23 -> 'X';
+      case 24 -> 'Y';
+      case 25 -> 'Z';
+      case 26 -> 'Æ';
+      case 27 -> 'Ø';
+      default -> 'Å';
+    };
+  }
+
+  private static LocalDate simulateDatoValg() {
+    LocalDate simuleretDato = LocalDate.now();
+    int dageTilStartDato = getRandomNum(7, 1);
+    return simuleretDato.plusDays(dageTilStartDato);
+  }
+
+  private static Bil simulateValgAfKlarBIL() throws NoCarReadyToRentOutException {
+    List<Bil> alleBiler = new BilRepo().ViewAlleBiler();
+    List<Bil> bilerDerErKLAR = new ArrayList<>();
+
+    for (Bil bil : alleBiler) {
+      BilTilstand bilensTilstand = bil.getTilstand();
+      if (bilensTilstand == BilTilstand.KLAR) {
+        bilerDerErKLAR.add(bil);
+      }
+    }
+
+    int antalBilerDerErKLAR = bilerDerErKLAR.size();
+    if (antalBilerDerErKLAR > 0) {
+      int randomNum = getRandomNum(antalBilerDerErKLAR);
+      return bilerDerErKLAR.get(randomNum);
+    } else {
+      System.err.println("Der blev forsøgt at simulere et valg af bil, ud fra en liste, hvor ingen af dem har BilTilstanden: KLAR, af alle Biler: " + alleBiler);
+      throw new NoCarReadyToRentOutException("Antallet af alle Biler er: " + alleBiler.size() + ". Antallet af Biler der er KLAR: " + antalBilerDerErKLAR);
+    }
   }
 
   private static Kunde simulateKundeInfo() {
