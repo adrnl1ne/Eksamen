@@ -15,7 +15,7 @@ import java.util.Random;
 // Marcus: Alt inde i denne klasse er lavet af mig
 public class BilAbonnement {
 
-  private static BilRepo bilRepo = new BilRepo();
+  private static final BilRepo bilRepo = new BilRepo();
   private static final Connection DCM = com.exam.utilities.DCM.getConn();
 
 
@@ -281,7 +281,7 @@ public class BilAbonnement {
   }
 
   private static Bil simulateValgAfKlarBIL() throws NoCarReadyToRentOutException {
-    List<Bil> alleBiler = new BilRepo().ViewAlleBiler();
+    List<Bil> alleBiler = bilRepo.ViewAlleBiler();
     List<Bil> bilerDerErKLAR = new ArrayList<>();
 
     for (Bil bil : alleBiler) {
