@@ -144,6 +144,7 @@ public class SkadesRapportRepo {
     }
   }
 
+  // Marcus
   private List<Skade> viewAlleSkader(SkadesRapport skadesRapport) {
     List<Skade> skader = new ArrayList<>();
     int skadesRapport_ID = skadesRapport.getSkadesrapport_ID();
@@ -219,6 +220,26 @@ public class SkadesRapportRepo {
       System.err.println("Det var ikke muligt at view, altså Select, alle SkadesRapporter.");
     }
     return skadesRapporter;
+  }
+
+  // Marcus
+  public List<SkadesRapport> viewAlleSkadesRapporter(Bil bilen) {
+    String bilensStelnummer = bilen.getStelnummer();
+    return this.viewAlleSkadesRapporter(bilensStelnummer);
+
+  }
+
+  // Marcus
+  public List<SkadesRapport> viewAlleSkadesRapporter(String stelnummer) {
+    List<SkadesRapport> alleSkadesRapporter = this.viewAlleSkadesRapporter();
+    List<SkadesRapport> alleSkadesRapporterForBilen = new ArrayList<>();
+    for (SkadesRapport rapport : alleSkadesRapporter) {
+      String rapportensStelnummer = rapport.getBilen().getStelnummer();
+      if (rapportensStelnummer.equals(stelnummer)) {
+        alleSkadesRapporterForBilen.add(rapport);
+      }
+    }
+    return alleSkadesRapporterForBilen;
   }
 
   // Marcus
