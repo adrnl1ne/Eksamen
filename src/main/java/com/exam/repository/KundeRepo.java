@@ -59,12 +59,13 @@ public class KundeRepo {
     String CPR = kunde.getCprnumber();
 
     try {
-      String KontaktInfoQUERY = "SELECT * FROM kontaktinfo WHERE CPR = ?";
+      String KontaktInfoQUERY = "SELECT * FROM kontaktinfo WHERE CPR = ? AND Counter = (SELECT MAX(counter) FROM kontaktinfo WHERE CPR = ?)";
       PreparedStatement preparedStatement = DCM.prepareStatement(KontaktInfoQUERY);
       preparedStatement.setString(1, CPR);
+      preparedStatement.setString(2,CPR);
       ResultSet resultSet = preparedStatement.executeQuery();
-      List<KontaktInfo> kontaktinformationer = new ArrayList<>();
-      while (resultSet.next()) {
+
+      if (resultSet.next()) {
         KontaktInfo kontaktInfo = new KontaktInfo(kunde);
         int lejeAftale_ID = resultSet.getInt("Lejeaftale_ID");
         kontaktInfo.setKundensAftale(new LejeAftale(lejeAftale_ID));
@@ -84,25 +85,10 @@ public class KundeRepo {
         kontaktInfo.setMobilNumber(mobil);
         int counter = resultSet.getInt("Counter");
         kontaktInfo.setCounter(counter);
-        kontaktinformationer.add(kontaktInfo);
+        kunde.setNyesteInfo(kontaktInfo);
+        return kontaktInfo;
       }
-
-      KontaktInfo newestKontaktInfo = null;
-      int highestCounter = 0;
-      for (KontaktInfo kInfo : kontaktinformationer) {
-        int theCounter = kInfo.getCounter();
-        if (theCounter > highestCounter) {
-          newestKontaktInfo = kInfo;
-        }
-      }
-
-      if (newestKontaktInfo != null) {
-        int lejeAftalens_ID = newestKontaktInfo.getKundensAftale().getLejeAftale_ID();
-        LejeAftale kontaktLejeAftale = new LejeaftaleRepo().viewLejeaftale(lejeAftalens_ID);
-        newestKontaktInfo.setKundensAftale(kontaktLejeAftale);
-      }
-
-      return newestKontaktInfo;
+      return null;
 
     } catch (SQLException e) {
       e.printStackTrace();
@@ -131,15 +117,7 @@ public class KundeRepo {
         kunde.setNyesteInfo(nyesteKontaktInfo);
 
 
-        // Tilføjer alle de Lejeaftaler en kunde har
-        List<LejeAftale> lejeAftaler = new LejeaftaleRepo().viewAlleLejeaftaler();
-        for (LejeAftale lejeAftale : lejeAftaler) {
-          String lejeAftalesKundesCPR = lejeAftale.getKunden().getCprnumber();
-          if (lejeAftalesKundesCPR.equals(kunde.getCprnumber())) {
-            lejeAftaler.add(lejeAftale);
-          }
-        }
-        kunde.setLejeaftaler(lejeAftaler);
+        // Til sidst bringes en kunde over, der mangler sine LejeAftaler, men disse kan hentes fra LejeaftaleRepo
         return kunde;
       }
       return null;

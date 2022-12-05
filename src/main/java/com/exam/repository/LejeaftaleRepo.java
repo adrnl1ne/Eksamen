@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class LejeaftaleRepo {
@@ -204,14 +203,6 @@ public class LejeaftaleRepo {
         int leje_ID = resultSet.getInt("Lejeaftale_ID");
         lejeAftalen = new LejeAftale(leje_ID);
 
-        List<SkadesRapport> alleSkadesRapporter = new SkadesRapportRepo().viewAlleSkadesRapporter();
-        for (SkadesRapport rapport : alleSkadesRapporter) {
-          int rapportensLejeAftale_ID = rapport.getLejeaftalen().getLejeAftale_ID();
-          if (rapportensLejeAftale_ID == leje_ID) {
-            lejeAftalen.setRapport(rapport);
-          }
-        }
-
         String CPR = resultSet.getString("CPR");
         kunden = new KundeRepo().viewKunde(CPR);
         lejeAftalen.setKunden(kunden);
@@ -238,7 +229,7 @@ public class LejeaftaleRepo {
         lejeAftalen.setKontakt(kontaktInfo);
 
 
-
+        // Der sendes over en LejeAftale, der ikke har den SkadesRapport, som er tilknyttet til den, hvis der er en
         return lejeAftalen;
       }
     } catch (SQLException e) {
@@ -408,6 +399,24 @@ public class LejeaftaleRepo {
     return lejeaftaler;
   }
 
+  // Marcus
+  public List<LejeAftale> viewAlleLejeaftaler(Kunde kunde) {
+    String kundensCPR = kunde.getCprnumber();
+    return viewAlleLejeAftaler(kundensCPR);
+
+  }
+  // Marcus
+  public List<LejeAftale> viewAlleLejeAftaler(String CPR) {
+    List<LejeAftale> alleLejeAftaler = this.viewAlleLejeaftaler();
+    List<LejeAftale> alleLejeAftalerForKunden = new ArrayList<>();
+    for (LejeAftale aftale : alleLejeAftaler) {
+      String aftalensCPR = aftale.getKunden().getCprnumber();
+      if (aftalensCPR.equals(CPR)) {
+        alleLejeAftalerForKunden.add(aftale);
+      }
+    }
+    return alleLejeAftalerForKunden;
+  }
 
 
   // Marcus
