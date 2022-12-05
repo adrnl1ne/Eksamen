@@ -1,9 +1,7 @@
 package com.exam.repository;
 
 
-import com.exam.model.entities.biler.Bil;
-import com.exam.model.entities.biler.BilModel;
-import com.exam.model.entities.biler.BilTilstand;
+import com.exam.model.entities.biler.*;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -120,11 +118,46 @@ public class BilRepo {
             throw new RuntimeException(e);
         }
         return udlejedeBiler;
+    }
+
+        //Jakob
+    public List<LejeAftale> viewLejeaftelerPåUdlejetBiler() {
+        List<LejeAftale> udlejetBilsLejeaftale = new ArrayList<>();
+        List<Bil> udlejetBiler = viewUdlejetBiler();
+
+        for (Bil udlejetBil: udlejetBiler) {
+            try {
+                String Query = "SELECT Lejeaftale_ID FROM lejeaftale WHERE Stelnummer=? " +
+                        "AND Lejeaftale_ID=(SELECT MAX(Lejeaftale_ID) FROM lejeaftale WHERE Stelnummer=?)";
+
+                PreparedStatement preparedStatement = DCM.prepareStatement(Query);
+                preparedStatement.setString(1, udlejetBil.getStelnummer());
+                preparedStatement.setString(2, udlejetBil.getStelnummer());
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                if (resultSet.next()) {
+               int lejeaftale_ID = resultSet.getInt(1);
+                    LejeAftale lejeAftale = new LejeaftaleRepo().viewLejeaftale(lejeaftale_ID);
+                    if (lejeAftale != null) {
+                        udlejetBilsLejeaftale.add(lejeAftale);
+                    }
+                }
+
+
+            } catch (SQLException e){
+                System.err.println("fuck dig, viewSamletPrisPåUdlejet virker ikke");
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
+        }
+
+        return udlejetBilsLejeaftale;
 
     }
 
 
     public void updateBil(Bil bil) {
+        viewBil(bil.getStelnummer());
         try {
             String Stelnummer = bil.getStelnummer();
             BilTilstand tilstand = bil.getTilstand();
@@ -140,6 +173,27 @@ public class BilRepo {
         } catch (SQLException e) {
             e.printStackTrace();
             System.err.println("Kan ikke opdatere " + bil);
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public void updateTilstand(Bil bil) {
+        viewBil(bil.getStelnummer());
+        try {
+            String Stelnummer = bil.getStelnummer();
+            BilTilstand tilstand = bil.getTilstand();
+            int Tilstands_ID = tilstand.getInt();
+
+            String QUERY = "UPDATE bil SET Tilstands_ID =? WHERE Stelnummer=?";
+            PreparedStatement preparedStatement = DCM.prepareStatement(QUERY);
+
+            preparedStatement.setInt(1, Tilstands_ID);
+            preparedStatement.setString(2, Stelnummer);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Kan ikke opdatere bil: " + viewBil(bil.getStelnummer()));
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }

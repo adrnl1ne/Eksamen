@@ -1,5 +1,8 @@
 package com.exam.model.entities.biler;
 
+import com.exam.repository.BilRepo;
+import com.exam.repository.LejeaftaleRepo;
+
 import java.time.LocalDate;
 
 public class LejeAftale {
@@ -12,6 +15,48 @@ public class LejeAftale {
     private KontaktInfo Kontakt;
     private LocalDate StartDate;
     private String Numberplate;
+
+    private LocalDate Slutdato;
+
+
+    public double calculatePrice() {
+        int abnmtLængde = abonnement.getAbonnementLængde();
+        double prisPrMåned = abonnement.getPriceprmonth();
+        double farveprisPrMåned = abonnement.getXtraColorprice();
+        double sum = (prisPrMåned + farveprisPrMåned) * abnmtLængde + abonnement.getUdbetaling();
+        return sum;
+    }
+
+    //Jakob
+    /*public void setSlutdato(LocalDate Slutdato) {
+        this.Slutdato = Slutdato;
+    }*/
+
+    //Jakob
+    /*public LocalDate getSlutdato() {
+        return Slutdato;
+    }
+
+    public LocalDate getSlutdatoDefault() {
+        Slutdato = getStartDate().plusMonths(abonnement.getAbonnementLængde());
+        return Slutdato;
+    }
+
+
+    public void setSlutdato(BilRepo bilRepo, LejeaftaleRepo lejeaftaleRepo) {
+        bilRepo.viewBil(getBilen().getStelnummer());
+        BilTilstand tilstand = getBilen().getTilstand();
+        int Tilstands_ID = tilstand.getInt();
+        if (Tilstands_ID == 3 && lejeaftaleRepo.isLejeperiodeOverstået(this)) {
+            System.out.println("Slutdato er: " + getSlutdatoDefault());
+            getSlutdatoDefault();
+        } else {
+            setSlutdato(LocalDate.now());
+            System.out.println("Slutdato er: " + getSlutdato());
+
+        }
+
+    }*/
 
     public LejeAftale(int Lejeaftale_ID) {
         this.LejeAftale_ID = Lejeaftale_ID;
@@ -26,8 +71,6 @@ public class LejeAftale {
     }
 
     // getters and setters og toString
-
-
 
 
     public int getLejeAftale_ID() {
@@ -102,18 +145,19 @@ public class LejeAftale {
         Numberplate = numberplate;
     }
 
+
     @Override
     public String toString() {
         return "LejeAftale{" +
-            "LejeAftale_ID=" + LejeAftale_ID +
-            ", Bilen=" + Bilen +
-            ", Rapport=" + Rapport +
-            ", abonnement=" + abonnement +
-            ", Leveringen=" + Leveringen +
-            ", Kunden=" + Kunden +
-            ", Kontakt=" + Kontakt +
-            ", StartDate=" + StartDate +
-            ", Numberplate='" + Numberplate + '\'' +
-            '}';
+                "LejeAftale_ID=" + LejeAftale_ID +
+                ", Bilen=" + Bilen +
+                ", Rapport=" + Rapport +
+                ", abonnement=" + abonnement +
+                ", Leveringen=" + Leveringen +
+                ", Kunden=" + Kunden +
+                ", Kontakt=" + Kontakt +
+                ", StartDate=" + StartDate +
+                ", Numberplate='" + Numberplate + '\'' +
+                '}';
     }
 }

@@ -1,5 +1,7 @@
 package com.exam.model.entities.biler;
 
+import com.exam.repository.SkadesRapportRepo;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -8,9 +10,10 @@ public class SkadesRapport {
     private Bil Bilen;
     private List<Skade> Skader;
     private LejeAftale Lejeaftalen;
-    private LocalDate Afleveringsdate;
+    private LocalDate Afleveringsdate = LocalDate.now();
     private double Kørselsdistance;
-    private LejeAftale lejeaftalen;
+
+
 
     public SkadesRapport(int Skadesrapport_ID) {
         this.Skadesrapport_ID = Skadesrapport_ID;
@@ -80,7 +83,7 @@ public class SkadesRapport {
                 ", Lejeaftalen=" + Lejeaftalen.toString() +
                 ", Afleveringsdate=" + Afleveringsdate.toString() +
                 ", Kørselsdistance=" + Kørselsdistance +
-                ", lejeaftalen=" + lejeaftalen.toString() +
+                ", lejeaftalen=" + Lejeaftalen.toString() +
                 '}';
     }
 }

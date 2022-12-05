@@ -52,7 +52,6 @@ public class SkadesRapportRepo {
       throw new RuntimeException();
     }
   }
-
   // Marcus
   private void createSkade(Skade skaden) {
 
