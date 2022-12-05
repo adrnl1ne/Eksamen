@@ -14,9 +14,12 @@ import java.util.List;
 @Repository
 public class BilRepo {
     //Jakob
+    private static CallableStatement cstmt = null;
+    private static ResultSet rs = null;
     private final Connection DCM = com.exam.utilities.DCM.getConn();
+
     //Jakob
-    public void DeleteBil(Bil bil) { // at kunne fjerne en bil er ikke vigtigt at kunne for vores projekt, men godt at vise vi at kan gøre det
+    public void deleteBil(Bil bil) {
         String stelnummer = bil.getStelnummer();
         String Delete_Query = "DELETE FROM bil WHERE Stelnummer=?";
         try {
@@ -30,7 +33,7 @@ public class BilRepo {
     }
 
     //Jakob
-    public void CreateBil(Bil bil) { // Create biler er heler ikke så vigtigt at kunne gøre, da vi vil kun inserte et antal biler vi bruger til vores projekt en gang
+    public void createBil(Bil bil) {
 
         String QUERY = "INSERT INTO bil (Stelnummer, Model_ID, Km_Kørt, Tilstands_ID) VALUES (?,?,?,?)";
         try {
@@ -47,7 +50,7 @@ public class BilRepo {
     }
 
     //Jakob
-    public Bil ViewBil(String Stelnummer) {
+    public Bil viewBil(String Stelnummer) {
         try {
             String Model_QUERY = "SELECT * FROM Bil WHERE Stelnummer=?";
             PreparedStatement preparedStatement = DCM.prepareStatement(Model_QUERY);
@@ -59,28 +62,31 @@ public class BilRepo {
                 int Model_ID = resultSet.getInt("Model_ID");
                 double KmKørt = resultSet.getDouble("Km_Kørt");
 
-                String Tilstand_QUERY = "SELECT Biltilstand FROM biltilstand WHERE TilStands_ID = ?"; // dette burde være en metode for sig selv
+                String Tilstand_QUERY = "SELECT Biltilstand FROM biltilstand WHERE TilStands_ID = ?";
                 PreparedStatement preparedStatement1 = DCM.prepareStatement(Tilstand_QUERY);
                 preparedStatement1.setInt(1, Tilstands_ID);
                 ResultSet resultSet1 = preparedStatement1.executeQuery();
                 if (resultSet1.next()) {
-                    BilTilstand tilstand = BilTilstand.getEnum(resultSet1.getInt(Tilstands_ID)); // der bruges en int til at finde en enum, som så bruge til at finde en enum, som var det en int
+                    BilTilstand tilstand = BilTilstand.getEnum(resultSet1.getInt(Tilstands_ID));
                     Bil bil = new Bil(stelnummer);
                     bil.setTilstand(tilstand);
                     bil.setModel_ID(Model_ID);
                     bil.setKm_kørte(KmKørt);
-                    BilModel bilModel = new BilmodelRepo().ViewBilmodel(Model_ID);
+                    BilModel bilModel = new BilmodelRepo().viewBilmodel(Model_ID);
                     bil.setModel(bilModel);
                     return bil; // Der mangler stadig at sætte alle de skadesrapporter, som denne bil har
                 }
             }
-        } catch (SQLException e) { // bare håndter en exception, som jeg har vist i BilmodelRepo
+        } catch (SQLException e) {
             e.printStackTrace();
+            System.err.println("Ikke muligt at se bil med stelnummeret: " + Stelnummer);
+            throw new RuntimeException(e);
         }
         return null;
     }
+
     //Jakob
-    public List<Bil> ViewAlleBiler() {
+    public List<Bil> viewAlleBiler() {
         List<Bil> alleBiler = new ArrayList<>();
 
         try {
@@ -89,40 +95,55 @@ public class BilRepo {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 String stelnummer = resultSet.getString("Stelnummer");
-                Bil bil = ViewBil(stelnummer);
-                alleBiler.add(bil);
+                alleBiler.add(viewBil(stelnummer));
             }
-        } catch (SQLException e) { // skal bare have en err i stedet for out og sige view, select et eller stadig i beskeden
-            System.out.println("Fejl, Kan ikke se alle biler");
+        } catch (SQLException e) {
+            System.err.println("Fejl, Kan ikke se alle biler");
             e.printStackTrace();
             throw new RuntimeException(e);
         }
         return alleBiler;
     }
 
-    // denne metode, burde hedde updateBil
-    public void updateBilModel(Bil bil) { // Det som skal updates er tilstanden og kilometer kørt, for en Citroën C1 er altid en Citroën C1
+    public List<Bil> viewUdlejetBiler() {
+        List<Bil> udlejedeBiler = new ArrayList<>();
+        try {
+            cstmt = DCM.prepareCall("{call viewudlejet(2)}");
+            cstmt.execute();
+            rs = cstmt.getResultSet();
+            String stelnummer = rs.getString("Stelnummer");
+            udlejedeBiler.add(viewBil(stelnummer));
+
+        } catch (SQLException e) {
+            System.err.println("Fejl, kan ikke hente biler");
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        return udlejedeBiler;
+
+    }
+
+
+    public void updateBil(Bil bil) {
         try {
             String Stelnummer = bil.getStelnummer();
             BilTilstand tilstand = bil.getTilstand();
             int Tilstands_ID = tilstand.getInt();
-            int Model_ID = bil.getModel_ID();
+
             double Km_Kørt = bil.getKm_kørte();
-            String QUERY = "UPDATE bil SET Tilstands_ID =?, Model_ID =?, Km_Kørt =? WHERE Stelnummer=?";
+            String QUERY = "UPDATE bil SET Tilstands_ID =?, Km_Kørt =? WHERE Stelnummer=?";
             PreparedStatement preparedStatement = DCM.prepareStatement(QUERY);
             preparedStatement.setInt(1, Tilstands_ID);
-            preparedStatement.setInt(2, Model_ID);
-            preparedStatement.setDouble(3, Km_Kørt);
-            preparedStatement.setString(4, Stelnummer);
+            preparedStatement.setDouble(2, Km_Kørt);
+            preparedStatement.setString(3, Stelnummer);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Kan ikke opdatere " + bil); // mangler bare err i stedet for out
+            System.err.println("Kan ikke opdatere " + bil);
             throw new RuntimeException(e);
         }
     }
 
-    // Vi mangler en metode der bringe en liste af alle biltilstande, som er public
 
 }
 

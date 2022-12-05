@@ -46,7 +46,7 @@ public class LejeaftaleRepo {
     }
 
     potentielBilTilUdlejning.setTilstand(BilTilstand.UDLEJET);
-    new BilRepo().updateBilModel(potentielBilTilUdlejning);
+    new BilRepo().updateBil(potentielBilTilUdlejning);
     Abonnement abonnement = lejeAftale.getAbonnement();
     Levering levering = lejeAftale.getLeveringen();
     KontaktInfo kontakt = lejeAftale.getKontakt();
@@ -208,7 +208,7 @@ public class LejeaftaleRepo {
         lejeAftalen.setKunden(kunden);
 
         String stelnummer = resultSet.getString("Stelnummer");
-        Bil udlejetBil = new BilRepo().ViewBil(stelnummer);
+        Bil udlejetBil = new BilRepo().viewBil(stelnummer);
         lejeAftalen.setBilen(udlejetBil);
 
         LocalDate startDato = resultSet.getDate("StartDato").toLocalDate();
@@ -388,8 +388,7 @@ public class LejeaftaleRepo {
 
       while (resultSet.next()) {
         int lejeAftale_ID = resultSet.getInt("Lejeaftale_ID");
-        LejeAftale lejeAftale = viewLejeaftale(lejeAftale_ID);
-        lejeaftaler.add(lejeAftale);
+        lejeaftaler.add(viewLejeaftale(lejeAftale_ID));
       }
     } catch (SQLException e) {
       e.printStackTrace();

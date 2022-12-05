@@ -121,7 +121,7 @@ public class SkadesRapportRepo {
         skadesRapport.setLejeaftalen(lejeAftale);
 
         String stelnummer = resultSet.getString("Stelnummer");
-        Bil bil = new BilRepo().ViewBil(stelnummer);
+        Bil bil = new BilRepo().viewBil(stelnummer);
         skadesRapport.setBilen(bil);
 
         LocalDate afleveringsdato = resultSet.getDate("Afleveringsdato").toLocalDate();

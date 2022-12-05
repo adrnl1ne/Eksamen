@@ -14,7 +14,7 @@ public class BilmodelRepo {
     private final Connection DCM = com.exam.utilities.DCM.getConn();
 
     //Jakob
-    public BilModel ViewBilmodel(int Model_ID) {
+    public BilModel viewBilmodel(int Model_ID) {
         try {
             String Model_ID_QUERY = "SELECT * FROM bilmodel WHERE Model_ID=?";
             PreparedStatement preparedStatement = DCM.prepareStatement(Model_ID_QUERY);
@@ -30,12 +30,12 @@ public class BilmodelRepo {
                 double Stålpris = resultSet.getDouble("Stålpris");
                 double KmPrX = resultSet.getDouble("KmPrX");
 
-                String EnergiType_QUERY = "SELECT Energi FROM energitype WHERE Energitype_ID=?"; // Dette burde være i en privat metode for sig selv og dermed bringe den type energi det er
+                String EnergiType_QUERY = "SELECT Energi FROM energitype WHERE Energitype_ID=?";
                 PreparedStatement preparedStatement1 = DCM.prepareStatement(EnergiType_QUERY);
                 preparedStatement1.setInt(1, Energitype_ID);
                 ResultSet resultSet1 = preparedStatement1.executeQuery();
                 if (resultSet1.next()) {
-                    EnergiType type = EnergiType.getEnum(resultSet1.getInt(Energitype_ID)); // der bruges en int til at finde en enum og dermed bruge den emum, som var det en int, til at finde en enum
+                    EnergiType type = EnergiType.getEnum(resultSet1.getInt(Energitype_ID));
                     BilModel bilModel = new BilModel(model_ID);
                     bilModel.setMærke(Mærke);
                     bilModel.setEnergitype(type);
@@ -47,16 +47,16 @@ public class BilmodelRepo {
                     return bilModel; // Der mangler stadig at komme bilmodellens abonnementpriser med og der mangler også hvad udstyr bilen har
                 }
             }
-        } catch (SQLException e) { // Her skal exceptionen håndteres bedre, som her:
+        } catch (SQLException e) {
             e.printStackTrace();
-            // System.err.println("Det var ikke muligt at (view/Selecte, Update, fjerne/Delete) objektet og hvis muligt slut med + objekt eller en int, som et ID");
-            // throw new RuntimeException();
+            System.out.println("Kan ikke ikke se bil med model_id" + Model_ID);
+            throw new RuntimeException(e);
         }
         return null;
     }
 
     //Jakob
-    public List<BilModel> ViewAlleBilModeller() {
+    public List<BilModel> viewAlleBilModeller() {
         List<BilModel> alleBilModeller = new ArrayList<>();
 
         try {
@@ -65,12 +65,11 @@ public class BilmodelRepo {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 int Model_ID = resultSet.getInt("Model_ID");
-                BilModel bilModel = ViewBilmodel(Model_ID);
-                alleBilModeller.add(bilModel);
+                alleBilModeller.add(viewBilmodel(Model_ID));
             }
 
         } catch (SQLException e) {
-            System.out.println("Fejl, Kan ikke se alle bilmodeller"); // Her skal bare stå err i stedet for out
+            System.err.println("Fejl, Kan ikke se alle bilmodeller");
             e.printStackTrace();
             throw new RuntimeException(e);
         }
@@ -78,7 +77,7 @@ public class BilmodelRepo {
     }
 
 
-    public void updateBilModel(BilModel bilModel) { // Update er egentlig ikke særlig vigtig, da de bilmodeler vi har ikke kommer til at ændre sig
+    public void updateBilModel(BilModel bilModel) {
         try {
             int Model_ID = bilModel.getModel_ID();
             EnergiType Energitype = bilModel.getEnergitype();

@@ -281,7 +281,7 @@ public class BilAbonnement {
   }
 
   private static Bil simulateValgAfKlarBIL() throws NoCarReadyToRentOutException {
-    List<Bil> alleBiler = bilRepo.ViewAlleBiler();
+    List<Bil> alleBiler = bilRepo.viewAlleBiler();
     List<Bil> bilerDerErKLAR = new ArrayList<>();
 
     for (Bil bil : alleBiler) {
