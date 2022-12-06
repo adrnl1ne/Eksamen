@@ -1,7 +1,5 @@
 package com.exam.model.entities.biler;
 
-import com.exam.model.entities.biler.BilModel;
-
 public class AbonnementsPriser {
     private BilModel bilModel;
     private boolean isUnlimited;

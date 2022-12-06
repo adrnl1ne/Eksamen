@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="">
+<head>
+  <meta charset="ISO-8859-1">
+  <title>Vaerksted Management System</title>
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+  <!-- Brand -->
+  <a class="navbar-brand" href="#">Vaerksted Management System</a>
+
+  <!-- Toggler/collapsibe Button -->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <!-- Navbar links -->
+<!--  <div class="collapse navbar-collapse" id="collapsibleNavbar">-->
+<div class="top-nav">
+        <a href="/EditKunde" class="hero-btn">Edit</a>
+</div>
+</nav>
+<br>
+<br>
+<div class = "container">
+  <div class = "row">
+    <div class ="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
+      <h1 class = "text-center"> Create New Skade </h1>
+      <div class = "card-body">
+        <form th:action="@{/Kunde}" th:object = "${Kunde}" method="POST">
+          <div class ="form-group">
+            <label> Kunde First Name </label>
+            <input
+                    type = "text"
+                    name = "firstName"
+                    th:text = "${firstName}"
+                    class = "form-control"
+                    placeholder="Enter kunde First Name"
+            />
+          </div>
+
+          <div class ="form-group">
+            <label> Kunde Last Name </label>
+            <input
+                    type = "text"
+                    name = "lastName"
+                    th:text = "${lastName}"
+                    class = "form-control"
+                    placeholder="Enter Kunde Last Name"
+            />
+          </div>
+
+          <div class ="form-group">
+            <label> Kunde Email </label>
+            <input
+                    type = "text"
+                    name = "email"
+                    th:text = "${email}"
+                    class = "form-control"
+                    placeholder="Enter Kunde Email"
+            />
+          </div>
+
+          <div class = "box-footer">
+            <button type="submit" class = "btn btn-primary">
+              Submit
+            </button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+

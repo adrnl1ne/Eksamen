@@ -1,134 +1,179 @@
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EKSAMENS PROJEKT - WEBSITE</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,600,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eksamens Projekt - Webside</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,600,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 <section class="header">
-
-    <nav>
-        <a href="index.html"><img src="../static/Pictures/Logo.png" alt=""></a>
-        <div class="nav-links" id="navLinks">
-            <i class="fa fa-close" onclick="hideMenu()"></i>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="Admin.html">Admin</a></li>
-                <li><a href="Skadeogfejl.html">Vaerksted</a></li>
-                <li><a href="ForretningsUdvikler.html">Forretningsudvikler</a></li>
-                <li><a href="Tjenester.html">Service</a></li>
-            </ul>
-        </div>
-        <i class="fa fa-bars" onclick="showMenu()"></i>
-    </nav>
-
-    <div class="text-box">
-        <h1>Danmarks bedst leasing forretning</h1>
-        <p>Velkomme here kan du have oversigt og updaterer oplysningerner,<br>vaersgo kom bare du .</p>
-        <a href="Tjenester.html" class="hero-btn">click here bare for sjov</a>
+  <nav>
+    <a href="index"><img src="/Pictures/Logo.png" alt=""></a>
+    <div class="nav-links" id="navLinks">
+      <i class="fa fa-close" onclick="hideMenu()"></i>
+      <ul>
+        <li><a href="index">HOME</a></li>
+      </ul>
     </div>
+    <i class="fa fa-bars" onclick="showMenu()"></i>
+  </nav>
+  <div class="text-box">
+    <h1>Bilabbonnement A/S</h1>
+    <p>En af Danmarks Bedst Leasing Firma<br>Det Bliver Nemmere At Eje En Bil</p>
+    <a href="/Medarbejder" class="hero-btn">Medarbejder Login</a>
+  </div>
 </section>
 
-<!---------- Tjenester ----------->
+<!---------- Vores Services ----------->
 
 <section class="course">
-    <h1>Vores Tjenester</h1>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-    <div class="row">
-        <div class="course-col">
-            <h3>At lease</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquet turpis nulla, eleifend faucibus est sollicitudin ut. Maecenas ut venenatis ex, et dapibus purus Donec sit.</p>
-        </div>
-        <div class="course-col">
-            <h3>At Leje</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquet turpis nulla, eleifend faucibus est sollicitudin ut. Maecenas ut venenatis ex, et dapibus purus Donec sit.</p>
-        </div>
-        <div class="course-col">
-            <h3> At Kobe efter leasing</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquet turpis nulla, eleifend faucibus est sollicitudin ut. Maecenas ut venenatis ex, et dapibus purus Donec sit.</p>
-        </div>
+  <h1>Vi Tilbyder</h1>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+  <div class="row">
+    <div class="course-col">
+      <h3>At Leje</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquet turpis nulla, eleifend faucibus est sollicitudin ut. Maecenas ut venenatis ex, et dapibus purus Donec sit.</p>
     </div>
+    <div class="course-col">
+      <h3>At Kobe</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquet turpis nulla, eleifend faucibus est sollicitudin ut. Maecenas ut venenatis ex, et dapibus purus Donec sit.</p>
+    </div>
+    <div class="course-col">
+      <h3>At Lease</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquet turpis nulla, eleifend faucibus est sollicitudin ut. Maecenas ut venenatis ex, et dapibus purus Donec sit.</p>
+    </div>
+  </div>
+</section>
+<!---------- Vores Vaersted ---------->
+<section class="campus">
+  <h1>Vores Vaerksteder</h1>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+  <div class="row">
+    <div class="campus-col">
+      <a href="/Index"><img src="/Pictures/Garage.png" alt=""></a>
+      <div class="layer">
+        <h3>Lokale Mekaniker</h3>
+      </div>
+    </div>
+    <div class="campus-col">
+      <a href="/Index"><img src="/Pictures/mecanic.png" alt=""></a>
+      <div class="layer">
+        <h3>FDM</h3>
+      </div>
+    </div>
+    <div class="campus-col">
+      <a href="/Index"><img src="/Pictures/dinmecaniker.png" alt=""></a>
+      <div class="layer">
+        <h3>Vores Mekaniker</h3>
+      </div>
+    </div>
+  </div>
+</section>
+<!---------- Vores Biler ---------->
+<section class="facility">
+  <h1>Vores Biler</h1>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+  <div class="row">
+    <div class="facility-col">
+
+      <a href="/Index"><img src="/Pictures/car1.png" alt=""></a>
+      <h3>World Class</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquet turpis nulla.</p>
+    </div>
+    <div class="facility-col">
+
+      <a href="/"><img src="/Pictures/car2.png" alt=""></a>
+      <h3>Largest Cars</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquet turpis nulla.</p>
+    </div>
+    <div class="facility-col">
+
+      <a href="/Index"><img src="/Pictures/car3.png" alt=""></a>
+      <h3>Good Taste</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquet turpis nulla.</p>
+    </div>
+  </div>
 </section>
 
 
-
-
-<!---------- Trustpilot ---------->
+<!---------- TrustPilot ---------->
 
 <section class="testimonials">
-    <h1>Hvad siger vores kunder</h1>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-    <div class="row">
-        <div class="testimonial-col">
-            <a><img src="../static/Pictures/truspilot1.png" alt=""></a>
-            <div>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquet turpis nulla, eleifend faucibus est sollicitudin ut. Maecenas ut venenatis ex, et dapibus purus.</p>
-                <h3>Christine Berkley</h3>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star-o"></i>
-            </div>
-        </div>
-        <div class="testimonial-col">
-            <a><img src="../static/Pictures/trustpilot2.png" alt=""></a>
-            <div>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquet turpis nulla, eleifend faucibus est sollicitudin ut. Maecenas ut venenatis ex, et dapibus purus.</p>
-                <h3>David Byer</h3>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star-half-o"></i>
-            </div>
-        </div>
+  <h1>Hvad Siger Vores Kunder</h1>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+  <div class="row">
+    <div class="testimonial-col">
 
+      <a href="/Index"><img src="../static/Pictures/truspilot1.png" alt=""></a>
+      <div>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquet turpis nulla, eleifend faucibus est sollicitudin ut. Maecenas ut venenatis ex, et dapibus purus.</p>
+        <h3>David  Hansen</h3>
+        <i class="fa fa-star"></i>
+        <i class="fa fa-star"></i>
+        <i class="fa fa-star"></i>
+        <i class="fa fa-star"></i>
+        <i class="fa fa-star-o"></i>
+      </div>
     </div>
+    <div class="testimonial-col">
+
+      <a href="/Index"><img src="/Pictures/trustpilot2.png" alt=""></a>
+      <div>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquet turpis nulla, eleifend faucibus est sollicitudin ut. Maecenas ut venenatis ex, et dapibus purus.</p>
+        <h3>Christine Byer</h3>
+        <i class="fa fa-star"></i>
+        <i class="fa fa-star"></i>
+        <i class="fa fa-star"></i>
+        <i class="fa fa-star"></i>
+        <i class="fa fa-star-half-o"></i>
+      </div>
+    </div>
+
+  </div>
 </section>
 
-<!------ Call To Action ------>
+<!------ Kontakt US------>
 
 <section class="cta">
 
-    <h1>For at hore Mere om vores Produkter<br>Vi leveret i hele Danmark</h1>
-    <a href="https://kea.dk/uddannelser/erhvervsakademi/datamatiker" class="hero-btn">Kontakt US</a>
+  <h1>Prove vores Luksus Biler<br>Vi Leverer I Hele Danmark</h1>
+  <a href="https://bilabonnement.dk/bilabonnement-minileasing?utm_source=bing&utm_medium=cpc&utm_campaign=Bilabonnement-G664746713&utm_term=bilabonnement&utm_content=Bilabonnement" class="hero-btn">Kontakt os</a>
 
 </section>
 
 <!-------- footer ---------->
 
 <section class="footer">
-    <h4>Om os</h4>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquet turpis nulla, eleifend faucibus est<br>sollicitudin ut. Maecenas ut venenatis ex, et dapibus purus.</p>
-    <div class="icons">
-        <a href="https://kea.dk/uddannelser/erhvervsakademi/datamatiker"><i class="fa fa-facebook"></i></a>
-        <a href="https://https://kea.dk/uddannelser/erhvervsakademi/datamatiker"><i class="fa fa-twitter"></i></a>
-        <a href="https://https://kea.dk/uddannelser/erhvervsakademi/datamatiker"><i class="fa fa-instagram"></i></a>
-        <a href="https://https://kea.dk/uddannelser/erhvervsakademi/datamatiker"><i class="fa fa-linkedin"></i></a>
+  <h4>About Us</h4>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquet turpis nulla, eleifend faucibus est<br>sollicitudin ut. Maecenas ut venenatis ex, et dapibus purus.</p>
+  <div class="icons">
+    <a href="https://kea.dk/uddannelser/erhvervsakademi/datamatiker"><i class="fa fa-facebook"></i></a>
+    <a href="https://kea.dk/uddannelser/erhvervsakademi/datamatiker"><i class="fa fa-twitter"></i></a>
+    <a href="https://kea.dk/uddannelser/erhvervsakademi/datamatiker"><i class="fa fa-instagram"></i></a>
+    <a href="https://kea.dk/uddannelser/erhvervsakademi/datamatiker"><i class="fa fa-linkedin"></i></a>
 
-    </div>
-    <a href="https://https://kea.dk/uddannelser/erhvervsakademi/datamatiker" class="footer-link"><p>made with <i class="fa fa-heart-o"></i> by Flavie,Jakob,Markus</p></a>
+  </div>
+  <a href="https://kea.dk/uddannelser/erhvervsakademi/datamatiker" class="footer-link"><p>made with <i class="fa fa-heart-o"></i> by Flavie ,Jakob,Markus</p></a>
 </section>
 
 
 <!----JavaScript for toggle menu---->
 <script>
-    var navLinks = document.getElementById("navLinks");
+  var navLinks = document.getElementById("navLinks");
 
-    function showMenu() {
-        navLinks.style.right = "0";
-    }
+  function showMenu() {
+    navLinks.style.right = "0";
+  }
 
-    function hideMenu() {
-        navLinks.style.right = "-200px";
-    }
+  function hideMenu() {
+    navLinks.style.right = "-200px";
+  }
 </script>
 
 </body>
 </html>
+
 
 
 

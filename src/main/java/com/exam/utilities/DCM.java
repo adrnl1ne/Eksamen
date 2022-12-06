@@ -11,7 +11,7 @@ public class DCM {
     private static String password;
     private static Connection conn = createConnection();
 
-    private static Connection createConnection() {
+    public static Connection createConnection() {
         hostname = System.getenv("hostname");
         username = System.getenv("username");
         password = System.getenv("password");

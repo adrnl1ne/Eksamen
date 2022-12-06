@@ -6,7 +6,7 @@
 .header{
     min-height: 100vh;
     width: 100%;
-    background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(static/Pictures/adminbaggrung.png);
+    background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(Pictures/baggrund.png);
     background-position: center;
     background-size: cover;
     position: relative;
@@ -122,7 +122,7 @@ nav .fa{
     }
 }
 
-/*---------- Biler --------*/
+/*---------- Vores Services --------*/
 
 .course{
     width: 80%;
@@ -162,7 +162,7 @@ h3{
     margin: 10px 0;
 }
 .course-col:hover{
-    box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
 }
 
 @media (max-width:700px){
@@ -171,7 +171,7 @@ h3{
     }
 }
 
-/*---------------- vaerksted ----------------*/
+/*---------------- vores vaersted ----------------*/
 
 .campus{
     width: 80%;
@@ -219,7 +219,7 @@ h3{
     opacity: 1;
 }
 
-/*-------------- Biler ----------------*/
+/*-------------- Vores Biler ----------------*/
 
 .facility{
     width: 80%;
@@ -246,7 +246,7 @@ h3{
     text-align: left;
 }
 
-/*---------------- Trustpilot------------------*/
+/*---------------- TrustPilot ------------------*/
 
 .testimonials{
     width: 80%;
@@ -289,13 +289,12 @@ h3{
     }
 }
 
-/*-------- Call To Action ----------*/
-
+/*-------- Kontakt Os ----------*/
 
 .cta{
     margin: 100px auto;
     width: 80%;
-    background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url(static/Pictures/baggrund.png);
+    background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url(Pictures/baggrund2.png);
     background-position: center;
     background-size: cover;
     border-radius: 10px;
@@ -344,7 +343,7 @@ h3{
 .sub-header{
     height: 50vh;
     width: 100%;
-    background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(static/Pictures/baggrund.png);
+    background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(Pictures/baggrund.png);
     background-position: center;
     background-size: cover;
     text-align: center;
@@ -394,7 +393,7 @@ h3{
     width: 100%;
 }
 
-/*---------- Admin Page -------------*/
+/*---------- Blog Page -------------*/
 
 .blog-content{
     width: 80%;
