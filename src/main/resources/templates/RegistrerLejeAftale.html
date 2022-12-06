@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Admin registerer lejeaftaler fra BilAbonnement.dk</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,600,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <form method="GET" action="/Admin/RegistrerAftale/deleteAftale" id="deleteAftale"></form>
+    <form method="GET" action="/Admin/RegistrerAftale/createAftale" id="createAftale"></form>
+
+    <section>
+        <div th:if="${lejeaftale != null}">
+            <h2>Kundens info:</h2>
+            <table>
+                <tr>
+                    <th>CPR</th>
+                    <th>Konto nr.</th>
+                    <th>Reg. nr.</th>
+                    <th>Fornavn</th>
+                    <th>Efternavn</th>
+                    <th>E-mail</th>
+                    <th>Tlf. nr.</th>
+                    <th>Adresse</th>
+                    <th>Post nr.</th>
+                    <th>By</th>
+                </tr>
+                <tr>
+                    <td th:text="${lejeaftale.getKunden().getCprnumber()}"></td>
+                    <td th:text="${lejeaftale.getKunden().getKontoNum()}"></td>
+                    <td th:text="${lejeaftale.getKunden().getRegNum()}"></td>
+                    <td th:text="${lejeaftale.getKontakt().getFirstName()}"></td>
+                    <td th:text="${lejeaftale.getKontakt().getLastName()}"></td>
+                    <td th:text="${lejeaftale.getKontakt().getEmail()}"></td>
+                    <td th:text="${lejeaftale.getKontakt().getMobilNumber()}"></td>
+                    <td th:text="${lejeaftale.getKontakt().getAddress()}"></td>
+                    <td th:text="${lejeaftale.getKontakt().getPostnr()}"></td>
+                    <td th:text="${lejeaftale.getKontakt().getCity()}"></td>
+                </tr>
+            </table>
+
+            <h2>Lejeaftalens info:</h2>
+            <table>
+                <tr>
+                    <th>Start Dato</th>
+                    <th>Nummerplade</th>
+                    <th>Samlet Pris</th>
+                </tr>
+                <tr>
+                    <td th:text="${lejeaftale.displayStartDate()}"></td>
+                    <td th:text="${lejeaftale.getNumberplate()}"></td>
+                    <td th:text="${lejeaftale.calculatePrice()} + ' kr.'"></td>
+                </tr>
+            </table>
+
+            <h2>Leveringens info:</h2>
+            <table>
+                <tr>
+                    <th>Type Levering</th>
+                    <th>Leveringsadresse</th>
+                    <th>Afleveringsadresse</th>
+                    <th>Km Kørsel inden udlejning</th>
+                    <th>Transporttillæg</th>
+                </tr>
+                <tr>
+                    <td th:text="${lejeaftale.getLeveringen().getType()}"></td>
+                    <td th:text="${lejeaftale.getLeveringen().getLeveringsadresse()}"></td>
+                    <td th:text="${lejeaftale.getLeveringen().getAfleveringsadress()}"></td>
+                    <td th:text="${lejeaftale.getLeveringen().getKørselDistanceInden()}"></td>
+                    <td th:text="${lejeaftale.getLeveringen().getTransportTillæg()} + ' kr.'"></td>
+                </tr>
+            </table>
+
+            <h2>Abonnementets info:</h2>
+            <table>
+                <tr>
+                    <th>Type Abonnement</th>
+                    <th>Længde på Abonnement</th>
+                    <th>Km kørsel per måned</th>
+                    <th>Abonnement prisen per måned</th>
+                    <th>Pris per dag over afleveringsdatoen</th>
+                    <th>Udbetaling</th>
+                    <th>Farvevalg pris</th>
+                    <th>Pris for hver overkørt km</th>
+                </tr>
+                <tr>
+                    <td th:text="${lejeaftale.getAbonnement().displayAbonnementType()}"></td>
+                    <td th:text="${lejeaftale.getAbonnement().getAbonnementLængde()} + ' Måneder'"></td>
+                    <td th:text="${lejeaftale.getAbonnement().getKmprMd()} + ' km/måned'"></td>
+                    <td th:text="${lejeaftale.getAbonnement().getPriceprmonth()} + ' kr./måned'"></td>
+                    <td th:text="${lejeaftale.getAbonnement().getAfleveringPrice()} + ' kr./dag'"></td>
+                    <td th:text="${lejeaftale.getAbonnement().getUdbetaling()} + ' kr.'"></td>
+                    <td th:text="${lejeaftale.getAbonnement().getXtraColorprice()} + ' kr./måned'"></td>
+                    <td th:text="${lejeaftale.getAbonnement().getPriceForOverDrive()} + ' kr./km'"></td>
+                </tr>
+            </table>
+
+            <h2>Bilens info:</h2>
+            <table>
+                <tr>
+                    <th>Stelnummer</th>
+                    <th>Bilen Tilstand</th>
+                    <th>Mærket</th>
+                    <th>Modelen</th>
+                    <th>Kilometer bilen har kørt</th>
+                </tr>
+                <tr>
+                    <td th:text="${lejeaftale.getBilen().getStelnummer()}"></td>
+                    <td th:text="${lejeaftale.getBilen().getTilstand()}"></td>
+                    <td th:text="${lejeaftale.getBilen().getModel().getMærke()}"></td>
+                    <td th:text="${lejeaftale.getBilen().getModel().getModel()}"></td>
+                    <td th:text="${lejeaftale.getBilen().getKm_kørte()}"></td>
+                </tr>
+            </table>
+
+            <table>
+                <tr>
+                    <th>Klik her hvis lejeaftalen <strong>Ikke Accepteres</strong></th>
+                    <th>Klik her hvis lejeaftalen <strong>Accepteres</strong></th>
+                </tr>
+                <tr>
+                    <td><button type="submit" form="deleteAftale">NEJ!</button></td>
+                    <td><button type="submit" form="createAftale">NEJ!</button></td>
+                </tr>
+            </table>
+
+        </div>
+
+        <div th:if="${lejeaftale == null}">
+            Der er ikke flere biler, der kan udlejes mere!
+        </div>
+
+    </section>
+
+</body>
+</html>

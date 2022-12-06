@@ -15,6 +15,14 @@ public class Abonnement {
         this.Lejeaftalen = lejeaftalen;
     }
 
+    public String displayAbonnementType() {
+        if (isUnlimited) {
+            return "Unlimited";
+        } else {
+            return "Limited";
+        }
+    }
+
     // getters, setters and tostring.
     public LejeAftale getLejeaftalen() {
         return Lejeaftalen;

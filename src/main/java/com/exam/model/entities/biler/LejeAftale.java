@@ -4,6 +4,7 @@ import com.exam.repository.BilRepo;
 import com.exam.repository.LejeaftaleRepo;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class LejeAftale {
     private int LejeAftale_ID;
@@ -68,6 +69,11 @@ public class LejeAftale {
         KontaktInfo kundensKontaktInfo = kunden.getNyesteinfo();
         this.Kontakt = kundensKontaktInfo;
         kundensKontaktInfo.setKundensAftale(this);
+    }
+
+    public String displayStartDate() {
+        DateTimeFormatter formatedStartDate = DateTimeFormatter.ofPattern("dd_MM-yyyy");
+        return StartDate.format(formatedStartDate);
     }
 
     // getters and setters og toString
