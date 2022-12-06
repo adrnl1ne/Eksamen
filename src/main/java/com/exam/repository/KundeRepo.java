@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminRepo {
+public class KundeRepo {
 
   private final Connection DCM = com.exam.utilities.DCM.getConn();
 

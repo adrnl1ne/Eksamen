@@ -19,17 +19,24 @@ public class IndexController {
 
     @GetMapping("/")
     public String showHomepage(){
-        return "Index";
+        return "index";
     }
     @GetMapping("/Medarbejder")
     public String showMedarbejder(){
         return "MedarbejderHome";
     }
-    @GetMapping("/CreateKunde")
+
+    @GetMapping("/Admin")
+    public String showAdminSide(){ return "Admin";}
+
+    @GetMapping("/værksted")
     public String showManagementHome(Model model){
-        model.addAttribute("firstName","flavie");
-        model.addAttribute("lastName", "Hansen");
-        return "CreateKunde";
+        model.addAttribute("Cprnummer","");
+        model.addAttribute("LejeaftaleID","");
+        model.addAttribute("SkadeType","");
+        model.addAttribute("Skadetypepris", "");
+        model.addAttribute("SkadetypeID ", "");
+        return "værksted";
     }
 
     @GetMapping("/EditKunde")
