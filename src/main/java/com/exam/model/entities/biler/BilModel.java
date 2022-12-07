@@ -1,6 +1,9 @@
 package com.exam.model.entities.biler;
 
-    public class BilModel {
+import java.util.ArrayList;
+import java.util.List;
+
+public class BilModel {
 
         private AbonnementsPriser Abopris;
         private String Mærke;
@@ -11,6 +14,7 @@ package com.exam.model.entities.biler;
         private double KmPrX;
         private boolean isGearManuel;
         private EnergiType Energitype;
+        private List<String> udstyr;
 
 
         //getters and setters and toStrings
@@ -92,7 +96,22 @@ package com.exam.model.entities.biler;
             this.Energitype = energitype;
         }
 
-        @Override
+  public List<String> getUdstyr() {
+    return udstyr;
+  }
+
+  public void setUdstyr(List<String> udstyr) {
+    this.udstyr = udstyr;
+  }
+
+  public void setUdstyr(String udstyr) {
+          if (udstyr == null) {
+            this.setUdstyr(new ArrayList<>());
+          }
+          this.udstyr.add(udstyr);
+  }
+
+  @Override
         public String toString() {
             return "BilModel{" +
                     "Abopris=" + Abopris +

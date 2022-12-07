@@ -70,7 +70,7 @@ public class BilRepo {
                     bil.setTilstand(tilstand);
                     bil.setModel_ID(Model_ID);
                     bil.setKm_kørte(KmKørt);
-                    BilModel bilModel = new BilmodelRepo().viewBilmodel(Model_ID);
+                    BilModel bilModel = new BilModelRepository().viewBilmodel(Model_ID);
                     bil.setModel(bilModel);
                     return bil; // Der mangler stadig at sætte alle de skadesrapporter, som denne bil har
                 }

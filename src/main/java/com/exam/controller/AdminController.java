@@ -24,6 +24,7 @@ public class AdminController {
     return "RegistrerLejeAftale";
   }
 
+  //note bare test
   @GetMapping("/Admin/RegistrerAftale/createAftale")
   public String createAftale(HttpSession session) {
     LejeAftale sessionAftale = (LejeAftale) session.getAttribute("sessionLejeAftale");

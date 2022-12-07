@@ -11,6 +11,7 @@ public class AbonnementsPriser {
     private double PriceForColorChoice;
     private double StartUdbetaling;
 
+
     // getters and setters and to string
 
 
